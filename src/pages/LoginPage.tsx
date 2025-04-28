@@ -1,25 +1,26 @@
+// src/pages/LoginPage.tsx
 import React, { useState } from 'react'
 import {
-  Container,
+  Avatar,
   Box,
-  TextField,
   Button,
+  Container,
+  CssBaseline,
+  TextField,
   Typography,
   Alert,
+  Paper,
 } from '@mui/material'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { useNavigate } from 'react-router-dom'
 import { authService } from '../api/authService'
 import type { LoginUser } from '../api/models'
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate()
-
-  const [form, setForm] = useState<LoginUser>({
-    email: '',
-    password: '',
-  })
+  const [form, setForm] = useState<LoginUser>({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string|null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange =
     (field: keyof LoginUser) =>
@@ -32,13 +33,13 @@ const LoginPage: React.FC = () => {
     setLoading(true)
     try {
       await authService.login(form)
-      // on success the httpOnly cookie is set by the backend
+      // On success, httpOnly cookie is set by backend
       navigate('/competitions')
     } catch (err: any) {
       if (err.response?.status === 401) {
         setError('Invalid email or password')
       } else {
-        setError('An unexpected error occurred')
+        setError('Something went wrong. Please try again.')
       }
     } finally {
       setLoading(false)
@@ -46,49 +47,68 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="xs">
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Paper
+        elevation={3}
         sx={{
           mt: 8,
+          p: 4,
           display: 'flex',
           flexDirection: 'column',
-          gap: 2,
+          alignItems: 'center',
         }}
       >
-        <Typography variant="h4" align="center">
-          Referee Login
+        <Avatar sx={{ bgcolor: 'primary.main', mb: 1 }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Referee Sign In
         </Typography>
 
-        {error && <Alert severity="error">{error}</Alert>}
+        {error && (
+          <Alert severity="error" sx={{ width: '100%', mt: 2 }}>
+            {error}
+          </Alert>
+        )}
 
-        <TextField
-          label="Email"
-          type="email"
-          required
-          fullWidth
-          value={form.email}
-          onChange={handleChange('email')}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          required
-          fullWidth
-          value={form.password}
-          onChange={handleChange('password')}
-        />
-
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          disabled={loading}
-        >
-          {loading ? 'Logging in…' : 'Log In'}
-        </Button>
-      </Box>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, width: '100%' }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            type="email"
+            autoComplete="email"
+            autoFocus
+            value={form.email}
+            onChange={handleChange('email')}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={form.password}
+            onChange={handleChange('password')}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            disabled={loading}
+            sx={{ mt: 2, mb: 1 }}
+          >
+            {loading ? 'Signing in…' : 'Sign In'}
+          </Button>
+        </Box>
+      </Paper>
     </Container>
   )
 }
