@@ -15,9 +15,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { useNavigate } from 'react-router-dom'
 import { authService } from '../api/authService'
 import type { LoginUser } from '../api/models'
+import { useAuth } from '../contexts/AuthContext'
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate()
+  const { setRoles } = useAuth()
   const [form, setForm] = useState<LoginUser>({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -32,8 +34,10 @@ const LoginPage: React.FC = () => {
     setError(null)
     setLoading(true)
     try {
-      await authService.login(form)
-      // On success, httpOnly cookie is set by backend
+      const response = await authService.login(form)
+      // Store the user's roles
+      setRoles(response.roles)
+      // On success, httpOnly cookie is set by backend and roles are stored
       navigate('/competitions')
     } catch (err: any) {
       if (err.response?.status === 401) {

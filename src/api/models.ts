@@ -34,11 +34,16 @@ export interface LoginUser {
   password: string
 }
 
+// Authentication Response
+export interface LoginResponse {
+  roles: string[]
+}
+
 // src/api/models.ts
 export interface CompetitionResponse {
   id: number
   name: string
-  date: string      // ISO string
+  date: string       // ISO date
   location: string
   description: string
   organizer: string
@@ -47,4 +52,27 @@ export interface CompetitionResponse {
 
 export interface CompetitionListResponse {
   competitions: CompetitionResponse[]
+}
+
+// Competition Creation
+export interface CompetitionInput {
+  name: string
+  date: string
+  location: string
+  description: string
+  organizer: string
+  contact: string
+}
+
+// Zone Creation
+export interface ZoneInput {
+  competition_id: number
+  zone: string
+  category: string
+  points_door1: number
+  points_door2: number
+  points_door3: number
+  points_door4: number
+  points_door5: number
+  points_door6: number
 }
