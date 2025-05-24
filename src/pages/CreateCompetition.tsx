@@ -22,6 +22,7 @@ import { format } from 'date-fns'
 import { competitionService } from '../api/competitionService'
 import type { CompetitionInput, ZoneInput } from '../api/models'
 import { CustomSubmitButton } from '../components/CustomSubmitButton'
+import { getErrorMessage } from '../utils/errorHandling'
 
 // Steps for the stepper
 const steps = ['Competition Details', 'Add Zones']
@@ -132,9 +133,10 @@ const CreateCompetition: React.FC = () => {
       
       setSuccessMessage('Competition created successfully')
       setTimeout(() => setSuccessMessage(null), 3000)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err)
-      setError('Failed to create competition. Please try again.')
+      const apiError = getErrorMessage(err)
+      setError(apiError.message)
     } finally {
       setLoading(false)
     }
@@ -160,9 +162,10 @@ const CreateCompetition: React.FC = () => {
       setTimeout(() => {
         navigate('/competitions')
       }, 2000)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err)
-      setError('Failed to add zones. Please try again.')
+      const apiError = getErrorMessage(err)
+      setError(apiError.message)
     } finally {
       setLoading(false)
     }

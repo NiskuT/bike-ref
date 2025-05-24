@@ -19,11 +19,13 @@ import type { CompetitionResponse } from '../api/models'
 import { format } from 'date-fns'
 import { Add as AddIcon, Logout as LogoutIcon } from '@mui/icons-material'
 import { useAuth } from '../contexts/AuthContext'
+import { getErrorMessage } from '../utils/errorHandling'
 
 const CompetitionListPage: React.FC = () => {
   const [comps, setComps] = useState<CompetitionResponse[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [logoutLoading, setLogoutLoading] = useState(false)
   const navigate = useNavigate()
   const { canCreateCompetition, logout, isAuthenticated } = useAuth()
 
@@ -39,14 +41,24 @@ const CompetitionListPage: React.FC = () => {
       .then(setComps)
       .catch((err) => {
         console.error(err)
-        setError('Could not load competitions.')
+        const apiError = getErrorMessage(err)
+        setError(apiError.message)
       })
       .finally(() => setLoading(false))
   }, [isAuthenticated, navigate])
 
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
+  const handleLogout = async () => {
+    setLogoutLoading(true)
+    try {
+      await logout()
+      navigate('/login')
+    } catch (error) {
+      console.error('Logout failed:', error)
+      // Still navigate to login even if logout fails
+      navigate('/login')
+    } finally {
+      setLogoutLoading(false)
+    }
   }
 
   if (loading) {
@@ -60,7 +72,14 @@ const CompetitionListPage: React.FC = () => {
   if (error) {
     return (
       <Container maxWidth="sm" sx={{ mt: 4 }}>
-        <Alert severity="error">{error}</Alert>
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button variant="outlined" onClick={() => window.location.reload()}>
+            Retry
+          </Button>
+        </Box>
       </Container>
     )
   }
@@ -88,8 +107,9 @@ const CompetitionListPage: React.FC = () => {
               color="secondary"
               startIcon={<LogoutIcon />}
               onClick={handleLogout}
+              disabled={logoutLoading}
             >
-              Logout
+              {logoutLoading ? 'Signing out...' : 'Logout'}
             </Button>
           </Box>
         </Box>

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { authService } from '../api/authService'
 
 export interface AuthContextType {
   roles: string[]
@@ -9,7 +10,7 @@ export interface AuthContextType {
   canCreateCompetition: () => boolean
   isAdmin: () => boolean
   setRoles: (roles: string[]) => void
-  logout: () => void
+  logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -57,10 +58,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }
 
-  const logout = () => {
-    setRolesState([])
-    setIsAuthenticated(false)
-    localStorage.removeItem('userRoles')
+  const logout = async (): Promise<void> => {
+    try {
+      // Call backend logout to clear HTTP-only cookies
+      await authService.logout()
+    } catch (error) {
+      console.error('Logout error:', error)
+      // Continue with local cleanup even if server call fails
+    } finally {
+      // Clear local state
+      setRolesState([])
+      setIsAuthenticated(false)
+      localStorage.removeItem('userRoles')
+    }
   }
 
   // Check if user has a specific role

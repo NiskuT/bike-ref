@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom'
 import { authService } from '../api/authService'
 import type { LoginUser } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
+import { getErrorMessage } from '../utils/errorHandling'
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate()
@@ -39,12 +40,8 @@ const LoginPage: React.FC = () => {
       setRoles(response.roles)
       // On success, httpOnly cookie is set by backend and roles are stored
       navigate('/competitions')
-    } catch (err: any) {
-      if (err.response?.status === 401) {
-        setError('Invalid email or password')
-      } else {
-        setError('Something went wrong. Please try again.')
-      }
+    } catch (err: unknown) {
+      setError("Login failed")
     } finally {
       setLoading(false)
     }
