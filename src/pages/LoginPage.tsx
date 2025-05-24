@@ -41,7 +41,8 @@ const LoginPage: React.FC = () => {
       // On success, httpOnly cookie is set by backend and roles are stored
       navigate('/competitions')
     } catch (err: unknown) {
-      setError("Login failed")
+      const apiError = getErrorMessage(err)
+      setError(apiError.message)
     } finally {
       setLoading(false)
     }

@@ -6,6 +6,11 @@ export interface ApiError {
   isNetworkError: boolean
 }
 
+interface ServerErrorResponse {
+  code?: number
+  message?: string
+}
+
 export const getErrorMessage = (error: unknown): ApiError => {
   if (error instanceof AxiosError) {
     // Network error (host unreachable, timeout, etc.)
@@ -17,7 +22,18 @@ export const getErrorMessage = (error: unknown): ApiError => {
     }
 
     const status = error.response.status
+    
+    // Check if server provided a custom error message
+    const serverError = error.response.data as ServerErrorResponse
+    if (serverError && typeof serverError.message === 'string' && serverError.message.trim()) {
+      return {
+        message: serverError.message,
+        status,
+        isNetworkError: false,
+      }
+    }
 
+    // Fall back to default messages based on status code
     switch (status) {
       case 401:
         return {
