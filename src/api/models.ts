@@ -14,6 +14,21 @@ export interface RunInput {
   door6?: boolean
 }
 
+// Updated RunInput for referee interface
+export interface RunSubmission {
+  chrono_sec: number
+  competition_id: number
+  door1: boolean
+  door2: boolean
+  door3: boolean
+  door4: boolean
+  door5: boolean
+  door6: boolean
+  dossard: number
+  penality: number
+  zone: string
+}
+
 export interface RunResponse {
   run_number: number
   competition_id: number
@@ -27,6 +42,15 @@ export interface RunResponse {
   door4: boolean
   door5: boolean
   door6: boolean
+}
+
+// Participant model
+export interface Participant {
+  category: string
+  competition_id: number
+  dossard_number: number
+  first_name: string
+  last_name: string
 }
 
 export interface LoginUser {

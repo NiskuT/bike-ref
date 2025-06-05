@@ -93,11 +93,10 @@ const ZoneListPage: React.FC = () => {
   }, [competitionId, competitionIdNum, canRefereeCompetition])
 
   const handleRefereeZone = (zone: Zone) => {
-    // Navigate to referee interface for this zone
-    // This would be implemented later when you create the referee flow
-    console.log('Refereeing zone:', zone)
-    // For now, we'll just log it - you can implement the actual referee interface later
-    alert(`Referee mode for zone "${zone.zone}" - Category: ${zone.category}`)
+    // Navigate to referee interface with zone data
+    navigate(`/competitions/${competitionId}/referee`, {
+      state: { zone }
+    })
   }
 
   const handleEditZone = (zone: Zone) => {

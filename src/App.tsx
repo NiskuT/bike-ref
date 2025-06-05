@@ -1,8 +1,8 @@
 import LoginPage from './pages/LoginPage'
 import CompetitionListPage from './pages/CompetitionListPage'
-import RunRegistrationWrapper from './pages/RunRegistrationWrapper'
 import CreateCompetition from './pages/CreateCompetition'
 import ZoneListPage from './pages/ZoneListPage'
+import RefereeInterface from './pages/RefereeInterface'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
@@ -42,10 +42,10 @@ export const App = () => (
         />
         
         <Route
-          path="/competitions/:competitionId/participants/:dossard/run"
+          path="/competitions/:competitionId/referee"
           element={
             <ProtectedRoute requireAuth={true}>
-              <RunRegistrationWrapper />
+              <RefereeInterface />
             </ProtectedRoute>
           }
         />

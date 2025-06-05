@@ -12,11 +12,13 @@ interface RunRegistrationPageProps {
   competitionId: number
   dossard: number
   zone: string
-  competitorName: string
+  competitorName?: string
+  onRunComplete?: (runData: any) => void
+  hideNavigation?: boolean
 }
 
 export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
-  competitionId, dossard, zone, competitorName
+  competitionId, dossard, zone, competitorName, onRunComplete, hideNavigation: _hideNavigation
 }) => {
   const [doors, setDoors] = useState<DoorsState>({
     door1: false, door2: false, door3: false,
@@ -29,19 +31,28 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    
+    const runData = {
+      competition_id: competitionId,
+      dossard,
+      zone,
+      chrono_sec: chrono,
+      penality: penalty,
+      ...doors,
+    }
+
     try {
-      await runService.createRun({
-        competition_id: competitionId,
-        dossard,
-        zone,
-        chrono_sec: chrono,
-        penality: penalty,
-        ...doors,
-      })
-      // TODO: reset form or navigate on success
-      setDoors({ door1:false,door2:false,door3:false,door4:false,door5:false,door6:false })
-      setPenalty(0)
-      setChrono(0)
+      if (onRunComplete) {
+        // Referee interface mode - just pass data back
+        onRunComplete(runData)
+      } else {
+        // Legacy mode - submit directly
+        await runService.create(runData)
+        // Reset form on success
+        setDoors({ door1:false,door2:false,door3:false,door4:false,door5:false,door6:false })
+        setPenalty(0)
+        setChrono(0)
+      }
     } catch (err) {
       console.error(err)
       // TODO: show a Snackbar
@@ -53,9 +64,11 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
   return (
     <Container maxWidth="xs">
       <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, display: 'grid', gap: 3 }}>
-        <Typography variant="h5" align="center">
-          {competitorName}
-        </Typography>
+        {competitorName && (
+          <Typography variant="h5" align="center">
+            {competitorName}
+          </Typography>
+        )}
 
         <Typography variant="subtitle1">Portes</Typography>
         <DoorGrid doors={doors} onChange={setDoors} />
