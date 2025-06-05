@@ -41,12 +41,13 @@ const ZoneListPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null) // zone being deleted
   
-  // Edit dialog state
-  const [editDialog, setEditDialog] = useState<{
+  // Zone dialog state (for both editing and creating)
+  const [zoneDialog, setZoneDialog] = useState<{
     open: boolean
+    mode: 'create' | 'edit'
     zone: Zone | null
-  }>({ open: false, zone: null })
-  const [editForm, setEditForm] = useState<ZoneInput>({
+  }>({ open: false, mode: 'create', zone: null })
+  const [zoneForm, setZoneForm] = useState<ZoneInput>({
     competition_id: 0,
     zone: '',
     category: '',
@@ -57,7 +58,7 @@ const ZoneListPage: React.FC = () => {
     points_door5: 0,
     points_door6: 0,
   })
-  const [editLoading, setEditLoading] = useState(false)
+  const [zoneFormLoading, setZoneFormLoading] = useState(false)
 
   const competitionIdNum = Number(competitionId)
   const canAdminCompetition = canAccessCompetition(competitionIdNum, 'admin')
@@ -100,7 +101,7 @@ const ZoneListPage: React.FC = () => {
   }
 
   const handleEditZone = (zone: Zone) => {
-    setEditForm({
+    setZoneForm({
       competition_id: competitionIdNum,
       zone: zone.zone,
       category: zone.category,
@@ -111,28 +112,60 @@ const ZoneListPage: React.FC = () => {
       points_door5: zone.points_door5,
       points_door6: zone.points_door6,
     })
-    setEditDialog({ open: true, zone })
+    setZoneDialog({ open: true, mode: 'edit', zone })
   }
 
-  const handleSaveEdit = async () => {
-    setEditLoading(true)
+  const handleCreateZone = () => {
+    setZoneForm({
+      competition_id: competitionIdNum,
+      zone: '',
+      category: '',
+      points_door1: 0,
+      points_door2: 0,
+      points_door3: 0,
+      points_door4: 0,
+      points_door5: 0,
+      points_door6: 0,
+    })
+    setZoneDialog({ open: true, mode: 'create', zone: null })
+  }
+
+  const handleSaveZone = async () => {
+    setZoneFormLoading(true)
     try {
-      await competitionService.updateZone(editForm)
+      if (zoneDialog.mode === 'create') {
+        await competitionService.addZone(zoneForm)
+        
+        // Add to local state
+        const newZone: Zone = {
+          zone: zoneForm.zone,
+          category: zoneForm.category,
+          points_door1: zoneForm.points_door1,
+          points_door2: zoneForm.points_door2,
+          points_door3: zoneForm.points_door3,
+          points_door4: zoneForm.points_door4,
+          points_door5: zoneForm.points_door5,
+          points_door6: zoneForm.points_door6,
+        }
+        setZones([...zones, newZone])
+      } else {
+        await competitionService.updateZone(zoneForm)
+        
+        // Update local state
+        setZones(zones.map(z => 
+          z.zone === zoneForm.zone && z.category === zoneForm.category
+            ? { ...zoneForm } 
+            : z
+        ))
+      }
       
-      // Update local state
-      setZones(zones.map(z => 
-        z.zone === editForm.zone && z.category === editForm.category
-          ? { ...editForm } 
-          : z
-      ))
-      
-      setEditDialog({ open: false, zone: null })
+      setZoneDialog({ open: false, mode: 'create', zone: null })
     } catch (err) {
       console.error(err)
       const apiError = getErrorMessage(err)
       setError(apiError.message)
     } finally {
-      setEditLoading(false)
+      setZoneFormLoading(false)
     }
   }
 
@@ -162,16 +195,16 @@ const ZoneListPage: React.FC = () => {
     }
   }
 
-  const handleEditFormChange = (field: keyof ZoneInput) => (
+  const handleZoneFormChange = (field: keyof ZoneInput) => (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (field.startsWith('points_door')) {
-      setEditForm({
-        ...editForm,
+      setZoneForm({
+        ...zoneForm,
         [field]: parseInt(e.target.value, 10) || 0,
       })
     } else {
-      setEditForm({ ...editForm, [field]: e.target.value })
+      setZoneForm({ ...zoneForm, [field]: e.target.value })
     }
   }
 
@@ -311,36 +344,40 @@ const ZoneListPage: React.FC = () => {
           color="primary"
           aria-label="add zone"
           sx={{ position: 'fixed', bottom: 16, right: 16 }}
-          onClick={() => navigate(`/competitions/${competitionId}/add-zone`)}
+          onClick={handleCreateZone}
         >
           <AddIcon />
         </Fab>
       )}
 
-      {/* Edit Zone Dialog */}
+      {/* Zone Dialog (Create/Edit) */}
       <Dialog 
-        open={editDialog.open} 
-        onClose={() => setEditDialog({ open: false, zone: null })}
+        open={zoneDialog.open} 
+        onClose={() => setZoneDialog({ open: false, mode: 'create', zone: null })}
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>Edit Zone: {editDialog.zone?.zone}</DialogTitle>
+        <DialogTitle>
+          {zoneDialog.mode === 'create' ? 'Create New Zone' : `Edit Zone: ${zoneDialog.zone?.zone}`}
+        </DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
             <TextField
               label="Zone Name"
-              value={editForm.zone}
-              onChange={handleEditFormChange('zone')}
-              disabled // Zone name shouldn't be editable
+              value={zoneForm.zone}
+              onChange={handleZoneFormChange('zone')}
+              disabled={zoneDialog.mode === 'edit'} // Zone name shouldn't be editable in edit mode
               fullWidth
+              required
             />
             
             <TextField
               label="Category"
-              value={editForm.category}
-              onChange={handleEditFormChange('category')}
-              disabled // Category shouldn't be editable
+              value={zoneForm.category}
+              onChange={handleZoneFormChange('category')}
+              disabled={zoneDialog.mode === 'edit'} // Category shouldn't be editable in edit mode
               fullWidth
+              required
             />
             
             <Typography variant="subtitle2" sx={{ mt: 2 }}>
@@ -353,8 +390,8 @@ const ZoneListPage: React.FC = () => {
                   key={doorNum}
                   type="number"
                   label={`Door ${doorNum}`}
-                  value={editForm[`points_door${doorNum}` as keyof ZoneInput]}
-                  onChange={handleEditFormChange(`points_door${doorNum}` as keyof ZoneInput)}
+                  value={zoneForm[`points_door${doorNum}` as keyof ZoneInput]}
+                  onChange={handleZoneFormChange(`points_door${doorNum}` as keyof ZoneInput)}
                   InputProps={{ inputProps: { min: 0 } }}
                   sx={{ flex: '1 1 30%', minWidth: '100px' }}
                 />
@@ -363,15 +400,15 @@ const ZoneListPage: React.FC = () => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setEditDialog({ open: false, zone: null })}>
+          <Button onClick={() => setZoneDialog({ open: false, mode: 'create', zone: null })}>
             Cancel
           </Button>
           <Button 
-            onClick={handleSaveEdit} 
+            onClick={handleSaveZone} 
             variant="contained"
-            disabled={editLoading}
+            disabled={zoneFormLoading}
           >
-            {editLoading ? 'Saving...' : 'Save Changes'}
+            {zoneFormLoading ? 'Saving...' : (zoneDialog.mode === 'create' ? 'Create Zone' : 'Save Changes')}
           </Button>
         </DialogActions>
       </Dialog>
