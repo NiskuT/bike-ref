@@ -64,7 +64,7 @@ export interface CompetitionInput {
   contact: string
 }
 
-// Zone Creation
+// Zone Creation/Update
 export interface ZoneInput {
   competition_id: number
   zone: string
@@ -75,4 +75,29 @@ export interface ZoneInput {
   points_door4: number
   points_door5: number
   points_door6: number
+}
+
+// Zone from API (without competition_id as it's in the parent response)
+export interface Zone {
+  zone: string
+  category: string
+  points_door1: number
+  points_door2: number
+  points_door3: number
+  points_door4: number
+  points_door5: number
+  points_door6: number
+}
+
+// Zone List Response
+export interface ZoneListResponse {
+  competition_id: number
+  zones: Zone[]
+}
+
+// Zone Deletion
+export interface ZoneDeleteInput {
+  competition_id: number
+  zone: string
+  category: string
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { Alert, Container, Box } from '@mui/material'
+import { Alert, Container } from '@mui/material'
 
 interface ProtectedRouteProps {
   children: React.ReactNode

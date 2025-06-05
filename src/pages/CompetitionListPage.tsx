@@ -128,7 +128,7 @@ const CompetitionListPage: React.FC = () => {
                 key={c.id}
                 onClick={() =>
                   navigate(
-                    `/competitions/${c.id}/participants` // adjust if your participant list route differs
+                    `/competitions/${c.id}/zones`
                   )
                 }
               >
