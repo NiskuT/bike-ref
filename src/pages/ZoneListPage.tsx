@@ -231,13 +231,39 @@ const ZoneListPage: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <Container 
+      maxWidth="md" 
+      sx={{ 
+        mt: { xs: 2, sm: 4 }, 
+        mb: { xs: 2, sm: 4 },
+        px: { xs: 2, sm: 3 }
+      }}
+    >
       {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-        <IconButton onClick={() => navigate('/competitions')} sx={{ mr: 2 }}>
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        mb: { xs: 2, sm: 3 },
+        flexWrap: 'wrap'
+      }}>
+        <IconButton 
+          onClick={() => navigate('/competitions')} 
+          sx={{ 
+            mr: { xs: 1, sm: 2 },
+            p: { xs: 1, sm: 1.5 }
+          }}
+        >
           <BackIcon />
         </IconButton>
-        <Typography variant="h4" component="h1">
+        <Typography 
+          variant="h4" 
+          component="h1"
+          sx={{
+            fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
+            fontWeight: 500,
+            lineHeight: 1.2
+          }}
+        >
           Competition Zones
         </Typography>
       </Box>
@@ -252,17 +278,21 @@ const ZoneListPage: React.FC = () => {
           sx={{ 
             display: 'flex', 
             flexWrap: 'wrap', 
-            gap: 3,
-            justifyContent: 'flex-start'
+            gap: { xs: 2, sm: 3 },
+            justifyContent: { xs: 'center', sm: 'flex-start' }
           }}
         >
           {zones.map((zone) => (
             <Box 
               key={`${zone.zone}-${zone.category}`}
               sx={{ 
-                flex: '1 1 calc(33.333% - 16px)',
-                minWidth: '300px',
-                maxWidth: '400px'
+                flex: { 
+                  xs: '1 1 100%', 
+                  sm: '1 1 calc(50% - 12px)', 
+                  md: '1 1 calc(33.333% - 16px)' 
+                },
+                minWidth: { xs: '280px', sm: '300px' },
+                maxWidth: { xs: '400px', sm: '400px', md: '400px' }
               }}
             >
               <Card elevation={2} sx={{ height: '100%' }}>

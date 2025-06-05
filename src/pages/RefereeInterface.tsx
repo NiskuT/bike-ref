@@ -308,27 +308,69 @@ const RefereeInterface: React.FC = () => {
       case 'run-registration':
         return (
           <Box>
-            <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Typography variant="h6">
+            <Paper elevation={1} sx={{ p: { xs: 1.5, sm: 2 }, mb: 2 }}>
+              {/* Mobile-first responsive header */}
+              <Box sx={{ 
+                display: 'flex', 
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' }, 
+                gap: { xs: 1, sm: 2 },
+                mb: { xs: 1, sm: 0 }
+              }}>
+                <Typography 
+                  variant="h6" 
+                  sx={{ 
+                    fontSize: { xs: '1.1rem', sm: '1.25rem' },
+                    fontWeight: 600
+                  }}
+                >
                   Run Registration
                 </Typography>
-                <Divider orientation="vertical" flexItem />
-                <Typography variant="body2">
-                  {state.participant?.first_name} {state.participant?.last_name} 
-                  (#{state.participant?.dossard_number})
-                </Typography>
-                <Chip 
-                  label={`${state.zone.zone} - ${state.zone.category}`} 
-                  size="small"
-                  color="primary" 
+                
+                {/* Show divider only on larger screens */}
+                <Divider 
+                  orientation="vertical" 
+                  flexItem 
+                  sx={{ display: { xs: 'none', sm: 'block' } }} 
                 />
+                
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  alignItems: { xs: 'flex-start', sm: 'center' },
+                  gap: { xs: 0.5, sm: 1 },
+                  flexWrap: 'wrap'
+                }}>
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      fontSize: { xs: '0.875rem', sm: '0.875rem' },
+                      lineHeight: 1.2
+                    }}
+                  >
+                    {state.participant?.first_name} {state.participant?.last_name} 
+                    (#{state.participant?.dossard_number})
+                  </Typography>
+                  <Chip 
+                    label={`${state.zone.zone} - ${state.zone.category}`} 
+                    size="small"
+                    color="primary"
+                    sx={{ 
+                      height: { xs: '24px', sm: '28px' },
+                      fontSize: { xs: '0.75rem', sm: '0.8125rem' }
+                    }}
+                  />
+                </Box>
               </Box>
+              
               <Button
                 variant="outlined"
                 size="small"
                 onClick={handleBackToDossard}
-                sx={{ mt: 1 }}
+                sx={{ 
+                  mt: { xs: 1, sm: 1 },
+                  fontSize: { xs: '0.75rem', sm: '0.8125rem' }
+                }}
               >
                 Cancel & Back to Dossard Input
               </Button>
@@ -376,13 +418,39 @@ const RefereeInterface: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+    <Container 
+      maxWidth="sm" 
+      sx={{ 
+        mt: { xs: 2, sm: 4 }, 
+        mb: { xs: 2, sm: 4 },
+        px: { xs: 2, sm: 3 }
+      }}
+    >
       {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-        <IconButton onClick={handleBackToZones} sx={{ mr: 2 }}>
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        mb: { xs: 2, sm: 3 },
+        flexWrap: 'wrap'
+      }}>
+        <IconButton 
+          onClick={handleBackToZones} 
+          sx={{ 
+            mr: { xs: 1, sm: 2 },
+            p: { xs: 1, sm: 1.5 }
+          }}
+        >
           <BackIcon />
         </IconButton>
-        <Typography variant="h4" component="h1">
+        <Typography 
+          variant="h4" 
+          component="h1"
+          sx={{
+            fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
+            fontWeight: 500,
+            lineHeight: 1.2
+          }}
+        >
           Referee Interface
         </Typography>
       </Box>

@@ -85,19 +85,47 @@ const CompetitionListPage: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 3 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h4">
+    <Container 
+      maxWidth="sm" 
+      sx={{ 
+        mt: { xs: 2, sm: 4 },
+        px: { xs: 2, sm: 3 }
+      }}
+    >
+      <Paper elevation={3} sx={{ p: { xs: 2, sm: 3 } }}>
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: 'space-between', 
+          alignItems: { xs: 'stretch', sm: 'center' }, 
+          mb: 2,
+          gap: { xs: 2, sm: 0 }
+        }}>
+          <Typography 
+            variant="h4"
+            sx={{
+              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
+              fontWeight: 500,
+              lineHeight: 1.2,
+              textAlign: { xs: 'center', sm: 'left' }
+            }}
+          >
             Competitions
           </Typography>
-          <Box sx={{ display: 'flex', gap: 1 }}>
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 1,
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: 'stretch'
+          }}>
             {canCreateCompetition() && (
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
                 onClick={() => navigate('/new-competition')}
+                size="small"
+                sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
               >
                 New
               </Button>
@@ -108,6 +136,8 @@ const CompetitionListPage: React.FC = () => {
               startIcon={<LogoutIcon />}
               onClick={handleLogout}
               disabled={logoutLoading}
+              size="small"
+              sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
             >
               {logoutLoading ? 'Signing out...' : 'Logout'}
             </Button>
