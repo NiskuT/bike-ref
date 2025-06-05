@@ -53,6 +53,28 @@ export interface Participant {
   last_name: string
 }
 
+// Live Ranking models
+export interface RankingEntry {
+  category: string
+  chrono_sec: number
+  dossard: number
+  first_name: string
+  last_name: string
+  number_of_runs: number
+  penality: number
+  rank: number
+  total_points: number
+}
+
+export interface LiveRankingResponse {
+  category: string
+  competition_id: number
+  page: number
+  page_size: number
+  rankings: RankingEntry[]
+  total: number
+}
+
 export interface LoginUser {
   email: string
   password: string

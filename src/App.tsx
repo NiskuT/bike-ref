@@ -3,6 +3,7 @@ import CompetitionListPage from './pages/CompetitionListPage'
 import CreateCompetition from './pages/CreateCompetition'
 import ZoneListPage from './pages/ZoneListPage'
 import RefereeInterface from './pages/RefereeInterface'
+import LiveRankingPage from './pages/LiveRankingPage'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
@@ -54,14 +55,23 @@ export const App = () => (
             }
           />
           
-          <Route
-            path="/competitions/:competitionId/referee"
-            element={
-              <ProtectedRoute requireAuth={true}>
-                <RefereeInterface />
-              </ProtectedRoute>
-            }
-          />
+                  <Route
+          path="/competitions/:competitionId/referee"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <RefereeInterface />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/competitions/:competitionId/live-ranking"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <LiveRankingPage />
+            </ProtectedRoute>
+          }
+        />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

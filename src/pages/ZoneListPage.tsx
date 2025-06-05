@@ -24,6 +24,7 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
   ArrowBack as BackIcon,
+  EmojiEvents as TrophyIcon,
 } from '@mui/icons-material'
 import { useParams, useNavigate } from 'react-router-dom'
 import { competitionService } from '../api/competitionService'
@@ -244,7 +245,8 @@ const ZoneListPage: React.FC = () => {
         display: 'flex', 
         alignItems: 'center', 
         mb: { xs: 2, sm: 3 },
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        gap: { xs: 1, sm: 0 }
       }}>
         <IconButton 
           onClick={() => navigate('/competitions')} 
@@ -261,11 +263,30 @@ const ZoneListPage: React.FC = () => {
           sx={{
             fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
             fontWeight: 500,
-            lineHeight: 1.2
+            lineHeight: 1.2,
+            flexGrow: 1
           }}
         >
           Competition Zones
         </Typography>
+        
+        {/* Live Ranking Button */}
+        {canRefereeCompetition && (
+          <Button
+            variant="outlined"
+            color="primary"
+            startIcon={<TrophyIcon />}
+            onClick={() => navigate(`/competitions/${competitionId}/live-ranking`)}
+            size="small"
+            sx={{
+              ml: 'auto',
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
+              px: { xs: 1.5, sm: 2 }
+            }}
+          >
+            Live Ranking
+          </Button>
+        )}
       </Box>
 
       {/* Zones Grid */}
