@@ -4,6 +4,7 @@ import CreateCompetition from './pages/CreateCompetition'
 import ZoneListPage from './pages/ZoneListPage'
 import RefereeInterface from './pages/RefereeInterface'
 import LiveRankingPage from './pages/LiveRankingPage'
+import ParticipantManagementPage from './pages/ParticipantManagementPage'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
@@ -69,6 +70,15 @@ export const App = () => (
           element={
             <ProtectedRoute requireAuth={true}>
               <LiveRankingPage />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/competitions/:competitionId/participants"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <ParticipantManagementPage />
             </ProtectedRoute>
           }
         />

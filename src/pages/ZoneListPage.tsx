@@ -25,6 +25,7 @@ import {
   Add as AddIcon,
   ArrowBack as BackIcon,
   EmojiEvents as TrophyIcon,
+  Group as GroupIcon,
 } from '@mui/icons-material'
 import { useParams, useNavigate } from 'react-router-dom'
 import { competitionService } from '../api/competitionService'
@@ -270,22 +271,44 @@ const ZoneListPage: React.FC = () => {
           Competition Zones
         </Typography>
         
-        {/* Live Ranking Button */}
+        {/* Action Buttons */}
         {canRefereeCompetition && (
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<TrophyIcon />}
-            onClick={() => navigate(`/competitions/${competitionId}/live-ranking`)}
-            size="small"
-            sx={{
-              ml: 'auto',
-              fontSize: { xs: '0.75rem', sm: '0.875rem' },
-              px: { xs: 1.5, sm: 2 }
-            }}
-          >
-            Live Ranking
-          </Button>
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 1, 
+            ml: 'auto',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: 'stretch'
+          }}>
+            {canAdminCompetition && (
+              <Button
+                variant="outlined"
+                color="secondary"
+                startIcon={<GroupIcon />}
+                onClick={() => navigate(`/competitions/${competitionId}/participants`)}
+                size="small"
+                sx={{
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  px: { xs: 1.5, sm: 2 }
+                }}
+              >
+                Participants
+              </Button>
+            )}
+            <Button
+              variant="outlined"
+              color="primary"
+              startIcon={<TrophyIcon />}
+              onClick={() => navigate(`/competitions/${competitionId}/live-ranking`)}
+              size="small"
+              sx={{
+                fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                px: { xs: 1.5, sm: 2 }
+              }}
+            >
+              Live Ranking
+            </Button>
+          </Box>
         )}
       </Box>
 

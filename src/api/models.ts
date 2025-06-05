@@ -53,6 +53,20 @@ export interface Participant {
   last_name: string
 }
 
+// Participant creation model
+export interface ParticipantInput {
+  category: string
+  competition_id: number
+  dossard_number: number
+  first_name: string
+  last_name: string
+}
+
+// Participant list response
+export interface ParticipantListResponse {
+  participants: Participant[]
+}
+
 // Live Ranking models
 export interface RankingEntry {
   category: string
