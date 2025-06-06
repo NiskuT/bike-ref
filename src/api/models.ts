@@ -161,3 +161,11 @@ export interface ZoneDeleteInput {
   zone: string
   category: string
 }
+
+// Referee Management
+export interface RefereeInput {
+  competition_id: number
+  email: string
+  first_name: string
+  last_name: string
+}

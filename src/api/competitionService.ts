@@ -6,7 +6,8 @@ import type {
   CompetitionInput, 
   ZoneInput, 
   ZoneListResponse,
-  ZoneDeleteInput 
+  ZoneDeleteInput,
+  RefereeInput 
 } from './models'
 
 export const competitionService = {
@@ -38,5 +39,10 @@ export const competitionService = {
   deleteZone: (zoneData: ZoneDeleteInput) =>
     client
       .delete('/competition/zone', { data: zoneData })
+      .then((r) => r.data),
+      
+  addReferee: (referee: RefereeInput) =>
+    client
+      .post('/competition/referee', referee)
       .then((r) => r.data),
 }

@@ -26,10 +26,11 @@ import {
   ArrowBack as BackIcon,
   EmojiEvents as TrophyIcon,
   Group as GroupIcon,
+  PersonAdd as PersonAddIcon,
 } from '@mui/icons-material'
 import { useParams, useNavigate } from 'react-router-dom'
 import { competitionService } from '../api/competitionService'
-import type { Zone, ZoneInput } from '../api/models'
+import type { Zone, ZoneInput, RefereeInput } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
 import { getErrorMessage } from '../utils/errorHandling'
 
@@ -61,6 +62,16 @@ const ZoneListPage: React.FC = () => {
     points_door6: 0,
   })
   const [zoneFormLoading, setZoneFormLoading] = useState(false)
+
+  // Referee dialog state
+  const [refereeDialog, setRefereeDialog] = useState(false)
+  const [refereeForm, setRefereeForm] = useState<RefereeInput>({
+    competition_id: 0,
+    email: '',
+    first_name: '',
+    last_name: '',
+  })
+  const [refereeFormLoading, setRefereeFormLoading] = useState(false)
 
   const competitionIdNum = Number(competitionId)
   const canAdminCompetition = canAccessCompetition(competitionIdNum, 'admin')
@@ -209,6 +220,39 @@ const ZoneListPage: React.FC = () => {
     }
   }
 
+  const handleAddReferee = () => {
+    setRefereeForm({
+      competition_id: competitionIdNum,
+      email: '',
+      first_name: '',
+      last_name: '',
+    })
+    setRefereeDialog(true)
+  }
+
+  const handleSaveReferee = async () => {
+    setRefereeFormLoading(true)
+    try {
+      await competitionService.addReferee(refereeForm)
+      setRefereeDialog(false)
+      
+      // You could show a success message here if needed
+      // For now, we'll just close the dialog
+    } catch (err) {
+      console.error(err)
+      const apiError = getErrorMessage(err)
+      setError(apiError.message)
+    } finally {
+      setRefereeFormLoading(false)
+    }
+  }
+
+  const handleRefereeFormChange = (field: keyof RefereeInput) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRefereeForm({ ...refereeForm, [field]: e.target.value })
+  }
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
@@ -281,19 +325,34 @@ const ZoneListPage: React.FC = () => {
             alignItems: 'stretch'
           }}>
             {canAdminCompetition && (
-              <Button
-                variant="outlined"
-                color="secondary"
-                startIcon={<GroupIcon />}
-                onClick={() => navigate(`/competitions/${competitionId}/participants`)}
-                size="small"
-                sx={{
-                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                  px: { xs: 1.5, sm: 2 }
-                }}
-              >
-                Participants
-              </Button>
+              <>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  startIcon={<GroupIcon />}
+                  onClick={() => navigate(`/competitions/${competitionId}/participants`)}
+                  size="small"
+                  sx={{
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                    px: { xs: 1.5, sm: 2 }
+                  }}
+                >
+                  Participants
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  startIcon={<PersonAddIcon />}
+                  onClick={handleAddReferee}
+                  size="small"
+                  sx={{
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                    px: { xs: 1.5, sm: 2 }
+                  }}
+                >
+                  Add Referee
+                </Button>
+              </>
             )}
             <Button
               variant="outlined"
@@ -482,6 +541,59 @@ const ZoneListPage: React.FC = () => {
             disabled={zoneFormLoading}
           >
             {zoneFormLoading ? 'Saving...' : (zoneDialog.mode === 'create' ? 'Create Zone' : 'Save Changes')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Add Referee Dialog */}
+      <Dialog 
+        open={refereeDialog} 
+        onClose={() => setRefereeDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          Add New Referee
+        </DialogTitle>
+        <DialogContent>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+            <TextField
+              label="Email"
+              type="email"
+              value={refereeForm.email}
+              onChange={handleRefereeFormChange('email')}
+              fullWidth
+              required
+              helperText="The referee will receive login credentials via email"
+            />
+            
+            <TextField
+              label="First Name"
+              value={refereeForm.first_name}
+              onChange={handleRefereeFormChange('first_name')}
+              fullWidth
+              required
+            />
+            
+            <TextField
+              label="Last Name"
+              value={refereeForm.last_name}
+              onChange={handleRefereeFormChange('last_name')}
+              fullWidth
+              required
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setRefereeDialog(false)}>
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSaveReferee} 
+            variant="contained"
+            disabled={refereeFormLoading || !refereeForm.email || !refereeForm.first_name || !refereeForm.last_name}
+          >
+            {refereeFormLoading ? 'Adding Referee...' : 'Add Referee'}
           </Button>
         </DialogActions>
       </Dialog>
