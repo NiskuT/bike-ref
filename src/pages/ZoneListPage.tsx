@@ -17,6 +17,7 @@ import {
   Chip,
   IconButton,
   Fab,
+  Snackbar,
 } from '@mui/material'
 import {
   SportsSoccer as RefereeIcon,
@@ -72,6 +73,7 @@ const ZoneListPage: React.FC = () => {
     last_name: '',
   })
   const [refereeFormLoading, setRefereeFormLoading] = useState(false)
+  const [refereeSuccessMessage, setRefereeSuccessMessage] = useState(false)
 
   const competitionIdNum = Number(competitionId)
   const canAdminCompetition = canAccessCompetition(competitionIdNum, 'admin')
@@ -236,8 +238,8 @@ const ZoneListPage: React.FC = () => {
       await competitionService.addReferee(refereeForm)
       setRefereeDialog(false)
       
-      // You could show a success message here if needed
-      // For now, we'll just close the dialog
+      // Show success message
+      setRefereeSuccessMessage(true)
     } catch (err) {
       console.error(err)
       const apiError = getErrorMessage(err)
@@ -595,10 +597,27 @@ const ZoneListPage: React.FC = () => {
           >
             {refereeFormLoading ? 'Adding Referee...' : 'Add Referee'}
           </Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
-  )
-}
+                 </DialogActions>
+       </Dialog>
+
+       {/* Success Message Snackbar */}
+       <Snackbar
+         open={refereeSuccessMessage}
+         autoHideDuration={4000}
+         onClose={() => setRefereeSuccessMessage(false)}
+         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+       >
+         <Alert 
+           onClose={() => setRefereeSuccessMessage(false)} 
+           severity="success" 
+           variant="filled"
+           sx={{ width: '100%' }}
+         >
+           Referee added successfully! An email with login credentials has been sent.
+         </Alert>
+       </Snackbar>
+     </Container>
+   )
+ }
 
 export default ZoneListPage 
