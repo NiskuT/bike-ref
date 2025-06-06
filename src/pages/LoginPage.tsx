@@ -11,7 +11,7 @@ import {
   Alert,
   Paper,
 } from '@mui/material'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { DirectionsBike as BikeIcon } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { authService } from '../api/authService'
 import type { LoginUser } from '../api/models'
@@ -62,10 +62,13 @@ const LoginPage: React.FC = () => {
         }}
       >
         <Avatar sx={{ bgcolor: 'primary.main', mb: 1 }}>
-          <LockOutlinedIcon />
+          <BikeIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Referee Sign In
+        <Typography component="h1" variant="h5" sx={{ mb: 1 }}>
+          BikeRef
+        </Typography>
+        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
+          Competition Management System
         </Typography>
 
         {error && (

@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom'
 import { competitionService } from '../api/competitionService'
 import type { CompetitionResponse } from '../api/models'
 import { format } from 'date-fns'
-import { Add as AddIcon, Logout as LogoutIcon } from '@mui/icons-material'
+import { Add as AddIcon, Logout as LogoutIcon, DirectionsBike as BikeIcon } from '@mui/icons-material'
 import { useAuth } from '../contexts/AuthContext'
 import { getErrorMessage } from '../utils/errorHandling'
 
@@ -101,17 +101,45 @@ const CompetitionListPage: React.FC = () => {
           mb: 2,
           gap: { xs: 2, sm: 0 }
         }}>
-          <Typography 
-            variant="h4"
-            sx={{
-              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
-              fontWeight: 500,
-              lineHeight: 1.2,
-              textAlign: { xs: 'center', sm: 'left' }
-            }}
-          >
-            Competitions
-          </Typography>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: { xs: 'center', sm: 'flex-start' }
+          }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1,
+            }}>
+              <BikeIcon 
+                sx={{ 
+                  fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }, 
+                  color: 'primary.main' 
+                }} 
+              />
+              <Typography 
+                variant="h4"
+                sx={{
+                  fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
+                  fontWeight: 500,
+                  lineHeight: 1.2,
+                }}
+              >
+                BikeRef
+              </Typography>
+            </Box>
+            <Typography 
+              variant="subtitle1" 
+              color="text.secondary"
+              sx={{
+                fontSize: { xs: '0.875rem', sm: '1rem' },
+                mt: 0.5,
+                textAlign: { xs: 'center', sm: 'left' }
+              }}
+            >
+              Competition Management
+            </Typography>
+          </Box>
           <Box sx={{ 
             display: 'flex', 
             gap: 1,
