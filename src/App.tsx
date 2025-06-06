@@ -14,6 +14,9 @@ import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
 const theme = createTheme({
   palette: {
     mode: 'light',
+    background: {
+      default: '#f0f0f0',
+    },
   },
   typography: {
     fontFamily: 'system-ui, Avenir, Helvetica, Arial, sans-serif',
