@@ -22,13 +22,14 @@ import { format } from 'date-fns'
 import { competitionService } from '../api/competitionService'
 import type { CompetitionInput, ZoneInput } from '../api/models'
 import { CustomSubmitButton } from '../components/CustomSubmitButton'
+import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
 
-// Steps for the stepper
-const steps = ['Competition Details', 'Add Zones']
+// Steps are now translated dynamically in the render
 
 const CreateCompetition: React.FC = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [activeStep, setActiveStep] = useState(0)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -86,7 +87,7 @@ const CreateCompetition: React.FC = () => {
   // Add a zone to the list
   const handleAddZone = () => {
     if (currentZone.zone.trim() === '' || currentZone.category.trim() === '') {
-      setError('Zone name and category are required')
+      setError(`${t('zones.labels.zoneName')} and ${t('zones.labels.category')} are required`)
       return
     }
     
@@ -106,7 +107,7 @@ const CreateCompetition: React.FC = () => {
       points_door6: 0,
     })
     
-    setSuccessMessage('Zone added successfully')
+    setSuccessMessage(t('createCompetition.success.message'))
     setTimeout(() => setSuccessMessage(null), 3000)
   }
   
@@ -131,7 +132,7 @@ const CreateCompetition: React.FC = () => {
       // Update current zone with competition ID
       setCurrentZone({ ...currentZone, competition_id: result.id })
       
-      setSuccessMessage('Competition created successfully')
+      setSuccessMessage(t('createCompetition.success.message'))
       setTimeout(() => setSuccessMessage(null), 3000)
     } catch (err: unknown) {
       console.error(err)
@@ -158,7 +159,7 @@ const CreateCompetition: React.FC = () => {
         await competitionService.addZone(zone)
       }
       
-      setSuccessMessage('All zones added successfully')
+      setSuccessMessage(t('createCompetition.success.message'))
       setTimeout(() => {
         navigate('/competitions')
       }, 2000)
@@ -178,7 +179,7 @@ const CreateCompetition: React.FC = () => {
         <TextField
           required
           fullWidth
-          label="Competition Name"
+          label={t('createCompetition.step1.labels.name')}
           value={competition.name}
           onChange={handleCompetitionChange('name')}
         />
@@ -187,7 +188,7 @@ const CreateCompetition: React.FC = () => {
           <TextField
             required
             fullWidth
-            label="Date"
+            label={t('createCompetition.step1.labels.date')}
             type="date"
             value={competition.date}
             onChange={handleCompetitionChange('date')}
@@ -198,7 +199,7 @@ const CreateCompetition: React.FC = () => {
           <TextField
             required
             fullWidth
-            label="Location"
+            label={t('createCompetition.step1.labels.location')}
             value={competition.location}
             onChange={handleCompetitionChange('location')}
             sx={{ flex: '1 1 45%', minWidth: '200px' }}
@@ -207,7 +208,7 @@ const CreateCompetition: React.FC = () => {
         
         <TextField
           fullWidth
-          label="Description"
+          label={t('createCompetition.step1.labels.description')}
           multiline
           rows={3}
           value={competition.description}
@@ -218,7 +219,7 @@ const CreateCompetition: React.FC = () => {
           <TextField
             required
             fullWidth
-            label="Organizer"
+            label={t('createCompetition.step1.labels.organizer')}
             value={competition.organizer}
             onChange={handleCompetitionChange('organizer')}
             sx={{ flex: '1 1 45%', minWidth: '200px' }}
@@ -227,7 +228,7 @@ const CreateCompetition: React.FC = () => {
           <TextField
             required
             fullWidth
-            label="Contact"
+            label={t('createCompetition.step1.labels.contact')}
             value={competition.contact}
             onChange={handleCompetitionChange('contact')}
             sx={{ flex: '1 1 45%', minWidth: '200px' }}
@@ -238,7 +239,7 @@ const CreateCompetition: React.FC = () => {
       <Box sx={{ mt: 3 }}>
         <CustomSubmitButton
           loading={loading}
-          label="Create Competition"
+          label={t('createCompetition.buttons.createCompetition')}
         />
       </Box>
     </Box>
@@ -250,7 +251,7 @@ const CreateCompetition: React.FC = () => {
       {/* Zone Creation Form */}
       <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
         <Typography variant="h6" gutterBottom>
-          Add Zone
+          {t('createCompetition.step2.addZone')}
         </Typography>
         
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -258,7 +259,7 @@ const CreateCompetition: React.FC = () => {
             <TextField
               required
               fullWidth
-              label="Zone Name"
+              label={t('zones.labels.zoneName')}
               value={currentZone.zone}
               onChange={handleZoneChange('zone')}
               sx={{ flex: '1 1 45%', minWidth: '200px' }}
@@ -267,7 +268,7 @@ const CreateCompetition: React.FC = () => {
             <TextField
               required
               fullWidth
-              label="Category"
+              label={t('zones.labels.category')}
               value={currentZone.category}
               onChange={handleZoneChange('category')}
               sx={{ flex: '1 1 45%', minWidth: '200px' }}
@@ -275,7 +276,7 @@ const CreateCompetition: React.FC = () => {
           </Box>
           
           <Typography variant="subtitle2" gutterBottom>
-            Points per Door
+            {t('zones.labels.pointsDoor')}
           </Typography>
           
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
@@ -284,7 +285,7 @@ const CreateCompetition: React.FC = () => {
                 key={doorNum}
                 fullWidth
                 type="number"
-                label={`Door ${doorNum}`}
+                label={`${t('zones.labels.pointsDoor')} ${doorNum}`}
                 value={currentZone[`points_door${doorNum}` as keyof ZoneInput]}
                 onChange={handleZoneChange(`points_door${doorNum}` as keyof ZoneInput)}
                 InputProps={{ inputProps: { min: 0 } }}
@@ -300,7 +301,7 @@ const CreateCompetition: React.FC = () => {
             onClick={handleAddZone}
             sx={{ mt: 1, alignSelf: 'flex-start' }}
           >
-            Add Zone
+            {t('createCompetition.step2.addZone')}
           </Button>
         </Box>
       </Paper>
@@ -309,7 +310,7 @@ const CreateCompetition: React.FC = () => {
       {zones.length > 0 && (
         <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
           <Typography variant="h6" gutterBottom>
-            Added Zones
+            {t('createCompetition.step2.title')}
           </Typography>
           
           <List>
@@ -324,7 +325,7 @@ const CreateCompetition: React.FC = () => {
                 >
                   <ListItemText
                     primary={zone.zone}
-                    secondary={`Category: ${zone.category}`}
+                    secondary={`${t('zones.labels.category')}: ${zone.category}`}
                   />
                 </ListItem>
                 {index < zones.length - 1 && <Divider />}
@@ -342,7 +343,7 @@ const CreateCompetition: React.FC = () => {
         disabled={loading || zones.length === 0}
         sx={{ mt: 2 }}
       >
-        {loading ? 'Saving...' : 'Finish'}
+        {loading ? t('createCompetition.buttons.creating') : t('common.buttons.submit')}
       </Button>
     </Box>
   )
@@ -351,12 +352,12 @@ const CreateCompetition: React.FC = () => {
     <Container component="main" maxWidth="md">
       <Paper elevation={3} sx={{ p: 4, mt: 4, mb: 4 }}>
         <Typography component="h1" variant="h4" align="center" gutterBottom>
-          Create New Competition
+          {t('createCompetition.title')}
         </Typography>
         
         <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
-          {steps.map(label => (
-            <Step key={label}>
+          {[t('createCompetition.step1.title'), t('createCompetition.step2.title')].map((label, index) => (
+            <Step key={index}>
               <StepLabel>{label}</StepLabel>
             </Step>
           ))}

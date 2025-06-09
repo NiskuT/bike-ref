@@ -209,6 +209,11 @@
     "genderLabels": {
       "men": "Men",
       "women": "Women"
+    },
+    "errors": {
+      "invalidDossard": "Please enter a valid dossard number.",
+      "missingData": "Missing run data or participant information.",
+      "invalidCompetition": "Invalid competition or zone data. Please return to the zone list."
     }
   },
   "createCompetition": {
@@ -239,6 +244,17 @@
       "title": "Competition Created!",
       "message": "Your competition has been created successfully.",
       "viewCompetition": "View Competition"
+    }
+  },
+  "runRegistration": {
+    "title": "Run Registration",
+    "labels": {
+      "doors": "Doors",
+      "penalty": "Penalty",
+      "chrono": "Timer"
+    },
+    "buttons": {
+      "validate": "Validate"
     }
   }
 } 

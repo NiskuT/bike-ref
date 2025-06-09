@@ -15,10 +15,12 @@ import { LockReset as LockResetIcon, ArrowBack as BackIcon } from '@mui/icons-ma
 import { useNavigate } from 'react-router-dom'
 import { authService } from '../api/authService'
 import type { ForgotPasswordRequest } from '../api/models'
+import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
 
 const ForgotPasswordPage: React.FC = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [form, setForm] = useState<ForgotPasswordRequest>({ email: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -66,10 +68,10 @@ const ForgotPasswordPage: React.FC = () => {
             <LockResetIcon />
           </Avatar>
           <Typography component="h1" variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
-            Password Reset Sent
+            {t('auth.forgotPassword.successTitle')}
           </Typography>
           <Alert severity="success" sx={{ width: '100%', mb: 3 }}>
-            A new password has been sent to your email address. Please check your inbox and use the new password to log in.
+            {t('auth.forgotPassword.successMessage')}
           </Alert>
           <Button
             fullWidth
@@ -77,7 +79,7 @@ const ForgotPasswordPage: React.FC = () => {
             onClick={() => navigate('/login')}
             sx={{ mt: 1 }}
           >
-            Return to Login
+            {t('auth.forgotPassword.returnToLogin')}
           </Button>
         </Paper>
       </Container>
@@ -101,10 +103,10 @@ const ForgotPasswordPage: React.FC = () => {
           <LockResetIcon />
         </Avatar>
         <Typography component="h1" variant="h5" sx={{ mb: 1 }}>
-          Reset Password
+          {t('auth.forgotPassword.title')}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, textAlign: 'center' }}>
-          Enter your email address and we'll send you a new password
+          {t('auth.forgotPassword.subtitle')}
         </Typography>
 
         {error && (
@@ -119,7 +121,7 @@ const ForgotPasswordPage: React.FC = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={t('auth.forgotPassword.emailLabel')}
             name="email"
             type="email"
             autoComplete="email"
@@ -135,7 +137,7 @@ const ForgotPasswordPage: React.FC = () => {
             disabled={loading}
             sx={{ mt: 3, mb: 2 }}
           >
-            {loading ? 'Sending...' : 'Send New Password'}
+            {loading ? t('auth.forgotPassword.sending') : t('auth.forgotPassword.sendButton')}
           </Button>
           <Box sx={{ textAlign: 'center' }}>
             <Link
@@ -151,7 +153,7 @@ const ForgotPasswordPage: React.FC = () => {
               }}
             >
               <BackIcon fontSize="small" />
-              Back to Login
+              {t('auth.forgotPassword.backToLogin')}
             </Link>
           </Box>
         </Box>

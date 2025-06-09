@@ -36,6 +36,7 @@ import { liveRankingService } from '../api/liveRankingService'
 import { competitionService } from '../api/competitionService'
 import type { LiveRankingResponse, Zone } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
+import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
 import { useConnectionMonitor } from '../hooks/useConnectionMonitor'
 
@@ -45,6 +46,7 @@ const LiveRankingPage: React.FC = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const { canAccessCompetition } = useAuth()
+  const { t } = useTranslation()
   const { shouldRefreshData, isOnline } = useConnectionMonitor()
 
   const competitionIdNum = Number(competitionId)
@@ -188,7 +190,7 @@ const LiveRankingPage: React.FC = () => {
             {genderLabel}
           </Typography>
           <Alert severity="info">
-            No rankings found for {genderLabel.toLowerCase()}.
+            {t('liveRanking.noRankings')} {genderLabel.toLowerCase()}.
           </Alert>
         </Box>
       )
@@ -205,7 +207,7 @@ const LiveRankingPage: React.FC = () => {
             {genderLabel}
           </Typography>
           <Chip 
-            label={`${rankingData.total} participants`} 
+            label={`${rankingData.total} ${t('liveRanking.participantsCount')}`} 
             color="primary" 
             variant="outlined"
             size="small"
@@ -244,11 +246,11 @@ const LiveRankingPage: React.FC = () => {
                         {entry.first_name} {entry.last_name}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        Dossard #{entry.dossard}
+                        {t('liveRanking.tableHeaders.dossard')} #{entry.dossard}
                       </Typography>
                     </Box>
                     <Chip 
-                      label={`${entry.total_points} pts`}
+                      label={`${entry.total_points} ${t('liveRanking.pointsUnit')}`}
                       color="primary"
                       size="small"
                     />
@@ -259,9 +261,9 @@ const LiveRankingPage: React.FC = () => {
                     fontSize: '0.875rem',
                     color: 'text.secondary'
                   }}>
-                    <span>Time: {formatTime(entry.chrono_sec)}</span>
-                    <span>Penalty: {entry.penality}</span>
-                    <span>Runs: {entry.number_of_runs}</span>
+                    <span>{t('liveRanking.tableHeaders.time')}: {formatTime(entry.chrono_sec)}</span>
+                    <span>{t('liveRanking.tableHeaders.penalty')}: {entry.penality}</span>
+                    <span>{t('liveRanking.tableHeaders.runs')}: {entry.number_of_runs}</span>
                   </Box>
                 </CardContent>
               </Card>
@@ -273,13 +275,13 @@ const LiveRankingPage: React.FC = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Rank</TableCell>
-                  <TableCell>Participant</TableCell>
-                  <TableCell>Dossard</TableCell>
-                  <TableCell align="right">Total Points</TableCell>
-                  <TableCell align="right">Time</TableCell>
-                  <TableCell align="right">Penalty</TableCell>
-                  <TableCell align="right">Runs</TableCell>
+                  <TableCell>{t('liveRanking.tableHeaders.rank')}</TableCell>
+                  <TableCell>{t('liveRanking.tableHeaders.participant')}</TableCell>
+                  <TableCell>{t('liveRanking.tableHeaders.dossard')}</TableCell>
+                  <TableCell align="right">{t('liveRanking.tableHeaders.totalPoints')}</TableCell>
+                  <TableCell align="right">{t('liveRanking.tableHeaders.time')}</TableCell>
+                  <TableCell align="right">{t('liveRanking.tableHeaders.penalty')}</TableCell>
+                  <TableCell align="right">{t('liveRanking.tableHeaders.runs')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -400,7 +402,7 @@ const LiveRankingPage: React.FC = () => {
             flexGrow: 1
           }}
         >
-          Live Rankings
+          {t('liveRanking.title')}
         </Typography>
         <IconButton 
           onClick={handleRefresh}
@@ -420,10 +422,10 @@ const LiveRankingPage: React.FC = () => {
         alignItems: { xs: 'stretch', sm: 'center' }
       }}>
         <FormControl sx={{ minWidth: { xs: '100%', sm: 200 } }}>
-          <InputLabel>Category</InputLabel>
+          <InputLabel>{t('liveRanking.categoryLabel')}</InputLabel>
           <Select
             value={selectedCategory}
-            label="Category"
+            label={t('liveRanking.categoryLabel')}
             onChange={handleCategoryChange}
             size="small"
           >
@@ -443,7 +445,7 @@ const LiveRankingPage: React.FC = () => {
             justifyContent: { xs: 'center', sm: 'flex-start' }
           }}>
             <Chip 
-              label={`Category: ${selectedCategory}`} 
+              label={`${t('liveRanking.categoryLabel')}: ${selectedCategory}`} 
               color="primary" 
               variant="outlined"
               size="small"
@@ -455,7 +457,7 @@ const LiveRankingPage: React.FC = () => {
       {/* Connection Status */}
       {!isOnline && (
         <Alert severity="warning" sx={{ mb: 3 }}>
-          No internet connection. Data may be outdated.
+          {t('liveRanking.connectionLost')}
         </Alert>
       )}
 
@@ -470,7 +472,7 @@ const LiveRankingPage: React.FC = () => {
       {selectedCategory && (
         <>
           {/* Men's Rankings */}
-          {renderRankingSection(menRankingData, "Men's Rankings", "🏃‍♂️")}
+          {renderRankingSection(menRankingData, t('liveRanking.genderLabels.men'), "🏃‍♂️")}
           
           {/* Divider between men and women if both have data */}
           {(menRankingData?.rankings?.length ?? 0) > 0 && (womenRankingData?.rankings?.length ?? 0) > 0 && (
@@ -478,13 +480,13 @@ const LiveRankingPage: React.FC = () => {
           )}
           
           {/* Women's Rankings */}
-          {renderRankingSection(womenRankingData, "Women's Rankings", "🏃‍♀️")}
+          {renderRankingSection(womenRankingData, t('liveRanking.genderLabels.women'), "🏃‍♀️")}
         </>
       )}
 
       {!selectedCategory && (
         <Alert severity="info">
-          Please select a category to view rankings.
+          {t('liveRanking.selectCategory')}
         </Alert>
       )}
     </Container>

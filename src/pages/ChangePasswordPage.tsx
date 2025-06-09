@@ -20,10 +20,12 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { authService } from '../api/authService'
 import type { ChangePasswordRequest } from '../api/models'
+import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
 
 const ChangePasswordPage: React.FC = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [form, setForm] = useState<ChangePasswordRequest>({
     current_password: '',
     new_password: '',
@@ -89,27 +91,27 @@ const ChangePasswordPage: React.FC = () => {
           <IconButton onClick={() => navigate('/competitions')} sx={{ mr: 2 }}>
             <BackIcon />
           </IconButton>
-          <Typography variant="h4" component="h1">
-            Password Changed
-          </Typography>
-        </Box>
-
-        <Card>
-          <CardContent sx={{ p: 4, textAlign: 'center' }}>
-            <LockIcon sx={{ fontSize: 48, color: 'success.main', mb: 2 }} />
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              Password Successfully Changed
+                      <Typography variant="h4" component="h1">
+              {t('auth.changePassword.successTitle')}
             </Typography>
-            <Alert severity="success" sx={{ mb: 3 }}>
-              Your password has been updated successfully. Please use your new password for future logins.
-            </Alert>
-            <Button
-              variant="contained"
-              onClick={() => navigate('/competitions')}
-              fullWidth
-            >
-              Return to Competitions
-            </Button>
+          </Box>
+
+          <Card>
+            <CardContent sx={{ p: 4, textAlign: 'center' }}>
+              <LockIcon sx={{ fontSize: 48, color: 'success.main', mb: 2 }} />
+              <Typography variant="h6" sx={{ mb: 2 }}>
+                {t('auth.changePassword.successSubtitle')}
+              </Typography>
+              <Alert severity="success" sx={{ mb: 3 }}>
+                {t('auth.changePassword.successMessage')}
+              </Alert>
+              <Button
+                variant="contained"
+                onClick={() => navigate('/competitions')}
+                fullWidth
+              >
+                {t('auth.changePassword.returnToCompetitions')}
+              </Button>
           </CardContent>
         </Card>
       </Container>
@@ -123,7 +125,7 @@ const ChangePasswordPage: React.FC = () => {
           <BackIcon />
         </IconButton>
         <Typography variant="h4" component="h1">
-          Change Password
+          {t('auth.changePassword.title')}
         </Typography>
       </Box>
 
@@ -140,7 +142,7 @@ const ChangePasswordPage: React.FC = () => {
               margin="normal"
               required
               fullWidth
-              label="Current Password"
+              label={t('auth.changePassword.currentPasswordLabel')}
               type={showCurrentPassword ? 'text' : 'password'}
               value={form.current_password}
               onChange={handleChange('current_password')}
@@ -163,12 +165,12 @@ const ChangePasswordPage: React.FC = () => {
               margin="normal"
               required
               fullWidth
-              label="New Password"
+              label={t('auth.changePassword.newPasswordLabel')}
               type={showNewPassword ? 'text' : 'password'}
               value={form.new_password}
               onChange={handleChange('new_password')}
               disabled={loading}
-              helperText="Password must be at least 6 characters long"
+              helperText={t('auth.changePassword.passwordHelp')}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -187,7 +189,7 @@ const ChangePasswordPage: React.FC = () => {
               margin="normal"
               required
               fullWidth
-              label="Confirm New Password"
+              label={t('auth.changePassword.confirmPasswordLabel')}
               type={showConfirmPassword ? 'text' : 'password'}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -214,7 +216,7 @@ const ChangePasswordPage: React.FC = () => {
               sx={{ mt: 3, mb: 2 }}
               size="large"
             >
-              {loading ? 'Changing Password...' : 'Change Password'}
+              {loading ? t('auth.changePassword.changing') : t('auth.changePassword.changeButton')}
             </Button>
           </Box>
         </CardContent>

@@ -45,6 +45,7 @@ import { participantService } from '../api/participantService'
 import { competitionService } from '../api/competitionService'
 import type { Participant, ParticipantInput, Zone } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
+import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
 
 interface TabPanelProps {
@@ -75,6 +76,7 @@ const ParticipantManagementPage: React.FC = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const { canAccessCompetition } = useAuth()
+  const { t } = useTranslation()
 
   const competitionIdNum = Number(competitionId)
   const canManageParticipants = canAccessCompetition(competitionIdNum, 'admin')
@@ -263,7 +265,7 @@ const ParticipantManagementPage: React.FC = () => {
         </Alert>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant="outlined" onClick={() => navigate(`/competitions/${competitionId}/zones`)}>
-            Back to Zones
+            {t('common.buttons.back')}
           </Button>
         </Box>
       </Container>
@@ -307,17 +309,17 @@ const ParticipantManagementPage: React.FC = () => {
             flexGrow: 1
           }}
         >
-          Participant Management
+          {t('participants.title')}
         </Typography>
       </Box>
 
       {/* Category Selection */}
       <Box sx={{ mb: 3 }}>
         <FormControl sx={{ minWidth: { xs: '100%', sm: 250 } }}>
-          <InputLabel>Select Category</InputLabel>
+          <InputLabel>{t('participants.selectCategory')}</InputLabel>
           <Select
             value={selectedCategory}
-            label="Select Category"
+            label={t('participants.selectCategory')}
             onChange={handleCategoryChange}
             size="small"
           >
@@ -344,19 +346,19 @@ const ParticipantManagementPage: React.FC = () => {
           onChange={(_, newValue) => setTabValue(newValue)}
           variant={isMobile ? 'fullWidth' : 'standard'}
         >
-          <Tab icon={<UploadIcon />} label="File Upload" />
-          <Tab icon={<PersonIcon />} label="Single Entry" />
-          <Tab icon={<GroupIcon />} label="View Participants" />
+          <Tab icon={<UploadIcon />} label={t('participants.tabs.fileUpload')} />
+          <Tab icon={<PersonIcon />} label={t('participants.tabs.singleEntry')} />
+          <Tab icon={<GroupIcon />} label={t('participants.tabs.viewParticipants')} />
         </Tabs>
 
         {/* File Upload Tab */}
         <TabPanel value={tabValue} index={0}>
           <Box sx={{ p: { xs: 2, sm: 3 } }}>
             <Typography variant="h6" gutterBottom>
-              Upload Participants from File
+              {t('participants.fileUpload.title')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Upload a CSV or XLSX file with 5 columns in this exact order: Dossard Number, Category, Last Name, First Name, Gender (H/F)
+              {t('participants.fileUpload.description')}
             </Typography>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -376,7 +378,7 @@ const ParticipantManagementPage: React.FC = () => {
                     startIcon={<CloudUploadIcon />}
                     fullWidth={isMobile}
                   >
-                    {uploadFile ? uploadFile.name : 'Choose File'}
+                    {uploadFile ? uploadFile.name : t('participants.fileUpload.chooseFile')}
                   </Button>
                 </label>
               </Box>
@@ -388,7 +390,7 @@ const ParticipantManagementPage: React.FC = () => {
                 startIcon={uploading ? <CircularProgress size={20} /> : <UploadIcon />}
                 fullWidth={isMobile}
               >
-                {uploading ? 'Uploading...' : 'Upload Participants'}
+                {uploading ? t('common.loading.uploading') : t('participants.fileUpload.uploadButton')}
               </Button>
             </Box>
           </Box>
@@ -398,7 +400,7 @@ const ParticipantManagementPage: React.FC = () => {
         <TabPanel value={tabValue} index={1}>
           <Box sx={{ p: { xs: 2, sm: 3 } }}>
             <Typography variant="h6" gutterBottom>
-              Add Single Participant
+              {t('participants.singleEntry.title')}
             </Typography>
             
             <Button
@@ -407,7 +409,7 @@ const ParticipantManagementPage: React.FC = () => {
               onClick={handleOpenSingleParticipantDialog}
               fullWidth={isMobile}
             >
-              Add New Participant
+              {t('participants.singleEntry.addButton')}
             </Button>
           </Box>
         </TabPanel>
@@ -417,10 +419,10 @@ const ParticipantManagementPage: React.FC = () => {
           <Box sx={{ p: { xs: 2, sm: 3 } }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
               <Typography variant="h6">
-                Participants in {selectedCategory}
+                {t('participants.viewParticipants.title')} {selectedCategory}
               </Typography>
               <Chip 
-                label={`${participants.length} participants`} 
+                label={`${participants.length} ${t('participants.viewParticipants.participantsCount')}`} 
                 color="primary" 
                 size="small" 
               />
@@ -432,7 +434,7 @@ const ParticipantManagementPage: React.FC = () => {
               </Box>
             ) : participants.length === 0 ? (
               <Alert severity="info">
-                No participants found for this category.
+                {t('participants.viewParticipants.noParticipants')}
               </Alert>
             ) : isMobile ? (
               // Mobile Card View
@@ -446,7 +448,7 @@ const ParticipantManagementPage: React.FC = () => {
                             {participant.first_name} {participant.last_name}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            Category: {participant.category} • {participant.gender === 'H' ? 'Men' : 'Women'}
+                            {t('participants.viewParticipants.tableHeaders.category')}: {participant.category} • {participant.gender === 'H' ? t('participants.viewParticipants.genderLabels.men') : t('participants.viewParticipants.genderLabels.women')}
                           </Typography>
                         </Box>
                         <Chip 
@@ -465,11 +467,11 @@ const ParticipantManagementPage: React.FC = () => {
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Dossard</TableCell>
-                      <TableCell>First Name</TableCell>
-                      <TableCell>Last Name</TableCell>
-                      <TableCell>Category</TableCell>
-                      <TableCell>Gender</TableCell>
+                      <TableCell>{t('participants.viewParticipants.tableHeaders.dossard')}</TableCell>
+                      <TableCell>{t('participants.viewParticipants.tableHeaders.firstName')}</TableCell>
+                      <TableCell>{t('participants.viewParticipants.tableHeaders.lastName')}</TableCell>
+                      <TableCell>{t('participants.viewParticipants.tableHeaders.category')}</TableCell>
+                      <TableCell>{t('participants.viewParticipants.tableHeaders.gender')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -487,7 +489,7 @@ const ParticipantManagementPage: React.FC = () => {
                         <TableCell>{participant.category}</TableCell>
                         <TableCell>
                           <Chip 
-                            label={participant.gender === 'H' ? 'Men' : 'Women'}
+                            label={participant.gender === 'H' ? t('participants.viewParticipants.genderLabels.men') : t('participants.viewParticipants.genderLabels.women')}
                             color={participant.gender === 'H' ? 'primary' : 'secondary'}
                             size="small"
                             variant="outlined"
@@ -510,14 +512,14 @@ const ParticipantManagementPage: React.FC = () => {
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>Add New Participant</DialogTitle>
+        <DialogTitle>{t('participants.singleEntry.dialogTitle')}</DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
             <FormControl>
-              <InputLabel>Category</InputLabel>
+              <InputLabel>{t('participants.singleEntry.labels.category')}</InputLabel>
               <Select
                 value={singleParticipantForm.category}
-                label="Category"
+                label={t('participants.singleEntry.labels.category')}
                 onChange={(e) => setSingleParticipantForm(prev => ({ ...prev, category: e.target.value }))}
               >
                 {categories.map((category) => (
@@ -529,7 +531,7 @@ const ParticipantManagementPage: React.FC = () => {
             </FormControl>
 
             <TextField
-              label="First Name"
+              label={t('participants.singleEntry.labels.firstName')}
               value={singleParticipantForm.first_name}
               onChange={(e) => setSingleParticipantForm(prev => ({ ...prev, first_name: e.target.value }))}
               required
@@ -537,7 +539,7 @@ const ParticipantManagementPage: React.FC = () => {
             />
 
             <TextField
-              label="Last Name"
+              label={t('participants.singleEntry.labels.lastName')}
               value={singleParticipantForm.last_name}
               onChange={(e) => setSingleParticipantForm(prev => ({ ...prev, last_name: e.target.value }))}
               required
@@ -545,7 +547,7 @@ const ParticipantManagementPage: React.FC = () => {
             />
 
             <TextField
-              label="Dossard Number"
+              label={t('participants.singleEntry.labels.dossardNumber')}
               type="number"
               value={singleParticipantForm.dossard_number || ''}
               onChange={(e) => setSingleParticipantForm(prev => ({ ...prev, dossard_number: parseInt(e.target.value) || 0 }))}
@@ -555,28 +557,28 @@ const ParticipantManagementPage: React.FC = () => {
             />
 
             <FormControl>
-              <InputLabel>Gender</InputLabel>
+              <InputLabel>{t('participants.singleEntry.labels.gender')}</InputLabel>
               <Select
                 value={singleParticipantForm.gender}
-                label="Gender"
+                label={t('participants.singleEntry.labels.gender')}
                 onChange={(e) => setSingleParticipantForm(prev => ({ ...prev, gender: e.target.value as 'H' | 'F' }))}
               >
-                <MenuItem value="H">Men (H)</MenuItem>
-                <MenuItem value="F">Women (F)</MenuItem>
+                <MenuItem value="H">{t('participants.singleEntry.genderOptions.men')}</MenuItem>
+                <MenuItem value="F">{t('participants.singleEntry.genderOptions.women')}</MenuItem>
               </Select>
             </FormControl>
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setSingleParticipantDialog(false)}>
-            Cancel
+            {t('common.buttons.cancel')}
           </Button>
           <Button 
             onClick={handleSingleParticipantSubmit} 
             variant="contained"
             disabled={creatingParticipant}
           >
-            {creatingParticipant ? 'Creating...' : 'Add Participant'}
+            {creatingParticipant ? t('common.loading.saving') : t('participants.singleEntry.addButton')}
           </Button>
         </DialogActions>
       </Dialog>

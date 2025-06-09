@@ -6,6 +6,7 @@ import { PenaltyCounter } from '../components/PenaltyCounter'
 import { ChronoTimer } from '../components/ChronoTimer'
 import { runService } from '../api/runService'
 import { CustomSubmitButton } from '../components/CustomSubmitButton'
+import { useTranslation } from '../contexts/TranslationContext'
 
 
 interface RunRegistrationPageProps {
@@ -20,6 +21,7 @@ interface RunRegistrationPageProps {
 export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
   competitionId, dossard, zone, competitorName, onRunComplete, hideNavigation: _hideNavigation
 }) => {
+  const { t } = useTranslation()
   const [doors, setDoors] = useState<DoorsState>({
     door1: false, door2: false, door3: false,
     door4: false, door5: false, door6: false,
@@ -70,16 +72,16 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
           </Typography>
         )}
 
-        <Typography variant="subtitle1">Portes</Typography>
+        <Typography variant="subtitle1">{t('runRegistration.labels.doors')}</Typography>
         <DoorGrid doors={doors} onChange={setDoors} />
 
-        <Typography variant="subtitle1">Pénalité</Typography>
+        <Typography variant="subtitle1">{t('runRegistration.labels.penalty')}</Typography>
         <PenaltyCounter value={penalty} onChange={setPenalty} />
 
-        <Typography variant="subtitle1">Chrono</Typography>
+        <Typography variant="subtitle1">{t('runRegistration.labels.chrono')}</Typography>
         <ChronoTimer initial={0} onChange={setChrono} />
 
-        <CustomSubmitButton loading={loading} label="Valider" />
+        <CustomSubmitButton loading={loading} label={t('runRegistration.buttons.validate')} />
       </Box>
     </Container>
   )

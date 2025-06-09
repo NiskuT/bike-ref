@@ -35,7 +35,7 @@
   "auth": {
     "login": {
       "title": "BikeRef",
-      "subtitle": "Système de Gestion de Compétitions",
+      "subtitle": "Système de Gestion des Compétitions",
       "emailLabel": "Adresse e-mail",
       "passwordLabel": "Mot de passe",
       "loginButton": "Se connecter",
@@ -209,6 +209,11 @@
     "genderLabels": {
       "men": "Hommes",
       "women": "Femmes"
+    },
+    "errors": {
+      "invalidDossard": "Veuillez saisir un numéro de dossard valide.",
+      "missingData": "Données de passage ou informations du participant manquantes.",
+      "invalidCompetition": "Données de compétition ou de zone invalides. Veuillez retourner à la liste des zones."
     }
   },
   "createCompetition": {
@@ -239,6 +244,17 @@
       "title": "Compétition créée !",
       "message": "Votre compétition a été créée avec succès.",
       "viewCompetition": "Voir la compétition"
+    }
+  },
+  "runRegistration": {
+    "title": "Enregistrement de passage",
+    "labels": {
+      "doors": "Portes",
+      "penalty": "Pénalité",
+      "chrono": "Chrono"
+    },
+    "buttons": {
+      "validate": "Valider"
     }
   }
 } 

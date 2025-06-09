@@ -25,6 +25,7 @@ import { participantService } from '../api/participantService'
 import { runService } from '../api/runService'
 import type { Participant, Zone, RunSubmission } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
+import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
 import { RunRegistrationPage } from './RunRegistrationPage'
 
@@ -45,6 +46,7 @@ const RefereeInterface: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { canAccessCompetition } = useAuth()
+  const { t } = useTranslation()
 
   // Get zone and competition data from navigation state
   const zoneData = location.state?.zone as Zone
@@ -67,25 +69,25 @@ const RefereeInterface: React.FC = () => {
 
   useEffect(() => {
     if (!competitionId || !zoneData) {
-      setError('Invalid competition or zone data. Please return to the zone list.')
+      setError(t('referee.errors.invalidCompetition'))
       return
     }
 
     if (!canRefereeCompetition) {
-      setError('You do not have permission to referee this competition.')
+      setError(t('common.errors.permission'))
       return
     }
   }, [competitionId, zoneData, canRefereeCompetition])
 
   const handleDossardSubmit = async () => {
     if (!state.dossard.trim()) {
-      setError('Please enter a dossard number.')
+      setError(t('referee.errors.invalidDossard'))
       return
     }
 
     const dossardNum = parseInt(state.dossard.trim(), 10)
     if (isNaN(dossardNum) || dossardNum <= 0) {
-      setError('Please enter a valid dossard number.')
+      setError(t('referee.errors.invalidDossard'))
       return
     }
 
@@ -125,7 +127,7 @@ const RefereeInterface: React.FC = () => {
 
   const handleRunSubmit = async () => {
     if (!state.runData || !state.participant) {
-      setError('Missing run data or participant information.')
+      setError(t('referee.errors.missingData'))
       return
     }
 
@@ -188,7 +190,7 @@ const RefereeInterface: React.FC = () => {
         </Alert>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant="outlined" onClick={() => navigate('/competitions')}>
-            Back to Competitions
+            {t('common.buttons.back')}
           </Button>
         </Box>
       </Container>
@@ -202,7 +204,7 @@ const RefereeInterface: React.FC = () => {
         return (
           <Paper elevation={3} sx={{ p: 4 }}>
             <Typography variant="h5" gutterBottom>
-              Enter Participant Dossard
+              {t('referee.steps.dossardInput')}
             </Typography>
             
             <Box sx={{ mb: 3 }}>
@@ -212,14 +214,14 @@ const RefereeInterface: React.FC = () => {
                 sx={{ mr: 1 }} 
               />
               <Chip 
-                label={`Category: ${state.zone.category}`} 
+                label={`${t('zones.labels.category')}: ${state.zone.category}`} 
                 color="secondary" 
               />
             </Box>
 
             <TextField
               fullWidth
-              label="Dossard Number"
+              label={t('referee.labels.dossardNumber')}
               type="number"
               value={state.dossard}
               onChange={(e) => setState(prev => ({ ...prev, dossard: e.target.value }))}
@@ -241,7 +243,7 @@ const RefereeInterface: React.FC = () => {
                 disabled={loading || !state.dossard.trim()}
                 startIcon={loading ? <CircularProgress size={20} /> : <PersonIcon />}
               >
-                {loading ? 'Searching...' : 'Find Participant'}
+                {loading ? t('common.loading.loading') : t('referee.buttons.searchParticipant')}
               </Button>
             </Box>
           </Paper>
@@ -251,7 +253,7 @@ const RefereeInterface: React.FC = () => {
         return (
           <Paper elevation={3} sx={{ p: 4 }}>
             <Typography variant="h5" gutterBottom>
-              Confirm Participant
+              {t('referee.steps.participantConfirmation')}
             </Typography>
 
             {state.participant && (
@@ -261,10 +263,10 @@ const RefereeInterface: React.FC = () => {
                     {state.participant.first_name} {state.participant.last_name}
                   </Typography>
                   <Typography color="text.secondary">
-                    Dossard: {state.participant.dossard_number}
+                    {t('referee.labels.dossardNumber')}: {state.participant.dossard_number}
                   </Typography>
                   <Typography color="text.secondary">
-                    Category: {state.participant.category}
+                    {t('referee.labels.category')}: {state.participant.category}
                   </Typography>
                 </CardContent>
               </Card>
@@ -277,13 +279,13 @@ const RefereeInterface: React.FC = () => {
                 sx={{ mr: 1 }} 
               />
               <Chip 
-                label={`Category: ${state.zone.category}`} 
+                label={`${t('zones.labels.category')}: ${state.zone.category}`} 
                 color="secondary" 
               />
             </Box>
 
             <Typography variant="body1" sx={{ mb: 3 }}>
-              Would you like to proceed with registering a run for this participant?
+              {t('referee.steps.runConfiguration')}
             </Typography>
 
             <Box sx={{ display: 'flex', gap: 2 }}>
@@ -291,7 +293,7 @@ const RefereeInterface: React.FC = () => {
                 variant="outlined"
                 onClick={handleBackToDossard}
               >
-                Back
+                {t('common.buttons.back')}
               </Button>
               <Button
                 variant="contained"
@@ -299,7 +301,7 @@ const RefereeInterface: React.FC = () => {
                 onClick={handleParticipantConfirm}
                 startIcon={<StartIcon />}
               >
-                Start Run Registration
+                {t('referee.buttons.confirmParticipant')}
               </Button>
             </Box>
           </Paper>
@@ -324,7 +326,7 @@ const RefereeInterface: React.FC = () => {
                     fontWeight: 600
                   }}
                 >
-                  Run Registration
+                  {t('referee.steps.runConfiguration')}
                 </Typography>
                 
                 {/* Show divider only on larger screens */}
@@ -372,7 +374,7 @@ const RefereeInterface: React.FC = () => {
                   fontSize: { xs: '0.75rem', sm: '0.8125rem' }
                 }}
               >
-                Cancel & Back to Dossard Input
+                {t('common.buttons.cancel')} & {t('common.buttons.back')}
               </Button>
             </Paper>
             
@@ -391,12 +393,12 @@ const RefereeInterface: React.FC = () => {
           <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
             <CheckIcon color="success" sx={{ fontSize: 48, mb: 2 }} />
             <Typography variant="h5" gutterBottom>
-              Run Completed Successfully!
+              {t('referee.success.title')}
             </Typography>
             
             <Typography variant="body1" sx={{ mb: 3 }}>
-              The run for {state.participant?.first_name} {state.participant?.last_name} 
-              (#{state.participant?.dossard_number}) has been recorded.
+              {t('referee.success.message')} {state.participant?.first_name} {state.participant?.last_name} 
+              (#{state.participant?.dossard_number}).
             </Typography>
 
             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
@@ -406,7 +408,7 @@ const RefereeInterface: React.FC = () => {
                 onClick={handleRunSubmit}
                 disabled={loading}
               >
-                {loading ? 'Submitting...' : 'Submit Run & Continue'}
+                {loading ? t('common.loading.saving') : t('referee.buttons.submitRun')}
               </Button>
             </Box>
           </Paper>
@@ -451,7 +453,7 @@ const RefereeInterface: React.FC = () => {
             lineHeight: 1.2
           }}
         >
-          Referee Interface
+          {t('referee.title')}
         </Typography>
       </Box>
 
