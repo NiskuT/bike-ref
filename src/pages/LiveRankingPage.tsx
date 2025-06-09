@@ -367,7 +367,7 @@ const LiveRankingPage: React.FC = () => {
     <Container 
       maxWidth="lg" 
       sx={{ 
-        mt: { xs: 2, sm: 4 }, 
+        mt: { xs: 3, sm: 4 }, 
         mb: { xs: 2, sm: 4 },
         px: { xs: 2, sm: 3 }
       }}

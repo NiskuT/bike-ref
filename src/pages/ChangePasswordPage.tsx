@@ -84,7 +84,7 @@ const ChangePasswordPage: React.FC = () => {
 
   if (success) {
     return (
-      <Container maxWidth="sm" sx={{ mt: 4 }}>
+      <Container maxWidth="sm" sx={{ mt: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
           <IconButton onClick={() => navigate('/competitions')} sx={{ mr: 2 }}>
             <BackIcon />
@@ -117,7 +117,7 @@ const ChangePasswordPage: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4 }}>
+    <Container maxWidth="sm" sx={{ mt: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
         <IconButton onClick={() => navigate('/competitions')} sx={{ mr: 2 }}>
           <BackIcon />

@@ -55,7 +55,7 @@ const ForgotPasswordPage: React.FC = () => {
         <Paper
           elevation={3}
           sx={{
-            mt: 8,
+            mt: { xs: 4, sm: 8 },
             p: 4,
             display: 'flex',
             flexDirection: 'column',
@@ -90,7 +90,7 @@ const ForgotPasswordPage: React.FC = () => {
       <Paper
         elevation={3}
         sx={{
-          mt: 8,
+          mt: { xs: 4, sm: 8 },
           p: 4,
           display: 'flex',
           flexDirection: 'column',

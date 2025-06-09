@@ -182,7 +182,7 @@ const RefereeInterface: React.FC = () => {
 
   if (error && (!competitionId || !zoneData || !canRefereeCompetition)) {
     return (
-      <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Container maxWidth="md" sx={{ mt: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
         </Alert>

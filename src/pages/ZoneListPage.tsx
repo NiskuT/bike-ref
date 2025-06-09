@@ -257,7 +257,7 @@ const ZoneListPage: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 4, sm: 8 } }}>
         <CircularProgress />
       </Box>
     )
@@ -265,7 +265,7 @@ const ZoneListPage: React.FC = () => {
 
   if (error) {
     return (
-      <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Container maxWidth="md" sx={{ mt: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
         </Alert>
@@ -282,7 +282,7 @@ const ZoneListPage: React.FC = () => {
     <Container 
       maxWidth="md" 
       sx={{ 
-        mt: { xs: 2, sm: 4 }, 
+        mt: { xs: 3, sm: 4 }, 
         mb: { xs: 2, sm: 4 },
         px: { xs: 2, sm: 3 }
       }}

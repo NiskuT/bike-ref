@@ -82,8 +82,9 @@ const CompetitionListPage: React.FC = () => {
     <Container 
       maxWidth="sm" 
       sx={{ 
-        mt: { xs: 2, sm: 4 },
-        px: { xs: 2, sm: 3 }
+        mt: { xs: 3, sm: 4 },
+        px: { xs: 2, sm: 3 },
+        mb: { xs: 2, sm: 4 }
       }}
     >
       <Paper elevation={3} sx={{ p: { xs: 2, sm: 3 } }}>

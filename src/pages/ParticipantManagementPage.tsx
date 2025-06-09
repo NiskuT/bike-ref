@@ -249,7 +249,7 @@ const ParticipantManagementPage: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 4, sm: 8 } }}>
         <CircularProgress />
       </Box>
     )
@@ -257,7 +257,7 @@ const ParticipantManagementPage: React.FC = () => {
 
   if (error && !zones.length) {
     return (
-      <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Container maxWidth="md" sx={{ mt: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
         </Alert>
@@ -274,7 +274,7 @@ const ParticipantManagementPage: React.FC = () => {
     <Container 
       maxWidth="lg" 
       sx={{ 
-        mt: { xs: 2, sm: 4 }, 
+        mt: { xs: 3, sm: 4 }, 
         mb: { xs: 2, sm: 4 },
         px: { xs: 2, sm: 3 }
       }}
