@@ -9,6 +9,7 @@ import LiveRankingPage from './pages/LiveRankingPage'
 import ParticipantManagementPage from './pages/ParticipantManagementPage'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { TranslationProvider } from './contexts/TranslationContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
 
@@ -28,8 +29,9 @@ const theme = createTheme({
 export const App = () => (
   <ThemeProvider theme={theme}>
     <CssBaseline />
-    <AuthProvider>
-      <BrowserRouter>
+    <TranslationProvider>
+      <AuthProvider>
+        <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/competitions" replace />} />
           <Route path="/login" element={<LoginPage />} />
@@ -100,5 +102,6 @@ export const App = () => (
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </TranslationProvider>
   </ThemeProvider>
 )

@@ -19,7 +19,9 @@ import type { CompetitionResponse } from '../api/models'
 import { format } from 'date-fns'
 import { Add as AddIcon, Logout as LogoutIcon, DirectionsBike as BikeIcon, Lock as LockIcon } from '@mui/icons-material'
 import { useAuth } from '../contexts/AuthContext'
+import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
+import LanguageSelector from '../components/LanguageSelector'
 
 const CompetitionListPage: React.FC = () => {
   const [comps, setComps] = useState<CompetitionResponse[]>([])
@@ -28,6 +30,7 @@ const CompetitionListPage: React.FC = () => {
   const [logoutLoading, setLogoutLoading] = useState(false)
   const navigate = useNavigate()
   const { canCreateCompetition, logout } = useAuth()
+  const { t } = useTranslation()
 
   useEffect(() => {
     competitionService
@@ -120,7 +123,7 @@ const CompetitionListPage: React.FC = () => {
                   lineHeight: 1.2,
                 }}
               >
-                BikeRef
+                {t('competitions.title')}
               </Typography>
             </Box>
             <Typography 
@@ -132,7 +135,7 @@ const CompetitionListPage: React.FC = () => {
                 textAlign: { xs: 'center', sm: 'left' }
               }}
             >
-              Competition Management
+              {t('competitions.subtitle')}
             </Typography>
           </Box>
           <Box sx={{ 
@@ -150,7 +153,7 @@ const CompetitionListPage: React.FC = () => {
                 size="small"
                 sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
               >
-                New
+                {t('competitions.buttons.new')}
               </Button>
             )}
             <Button
@@ -161,8 +164,9 @@ const CompetitionListPage: React.FC = () => {
               size="small"
               sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
             >
-              Password
+              {t('competitions.buttons.password')}
             </Button>
+            <LanguageSelector />
             <Button
               variant="outlined"
               color="secondary"
@@ -172,7 +176,7 @@ const CompetitionListPage: React.FC = () => {
               size="small"
               sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
             >
-              {logoutLoading ? 'Signing out...' : 'Logout'}
+              {logoutLoading ? t('competitions.buttons.loggingOut') : t('competitions.buttons.logout')}
             </Button>
           </Box>
         </Box>
@@ -181,8 +185,8 @@ const CompetitionListPage: React.FC = () => {
           {comps.length === 0 ? (
             <Typography variant="body1" sx={{ textAlign: 'center', py: 4 }}>
               {canCreateCompetition() 
-                ? "No competitions found. Create a new one!" 
-                : "No competitions found."
+                ? t('competitions.noCompetitionsAdmin')
+                : t('competitions.noCompetitions')
               }
             </Typography>
           ) : (

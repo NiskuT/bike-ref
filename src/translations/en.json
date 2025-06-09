@@ -1,0 +1,244 @@
+{
+  "common": {
+    "buttons": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "back": "Back",
+      "next": "Next",
+      "previous": "Previous",
+      "submit": "Submit",
+      "confirm": "Confirm",
+      "retry": "Retry",
+      "refresh": "Refresh",
+      "close": "Close",
+      "ok": "OK",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "loading": {
+      "loading": "Loading...",
+      "saving": "Saving...",
+      "deleting": "Deleting...",
+      "uploading": "Uploading...",
+      "refreshing": "Refreshing..."
+    },
+    "errors": {
+      "generic": "An error occurred. Please try again.",
+      "network": "Network error. Please check your connection.",
+      "permission": "You don't have permission to perform this action.",
+      "notFound": "The requested resource was not found.",
+      "serverError": "Server error. Please try again later."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "BikeRef",
+      "subtitle": "Competition Management System",
+      "emailLabel": "Email Address",
+      "passwordLabel": "Password",
+      "loginButton": "Sign In",
+      "loggingIn": "Signing in…",
+      "forgotPassword": "Forgot your password?"
+    },
+    "forgotPassword": {
+      "title": "Reset Password",
+      "subtitle": "Enter your email address and we'll send you a new password",
+      "emailLabel": "Email Address",
+      "sendButton": "Send New Password",
+      "sending": "Sending...",
+      "backToLogin": "Back to Login",
+      "successTitle": "Password Reset Sent",
+      "successMessage": "A new password has been sent to your email address. Please check your inbox and use the new password to log in.",
+      "returnToLogin": "Return to Login"
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "currentPasswordLabel": "Current Password",
+      "newPasswordLabel": "New Password",
+      "confirmPasswordLabel": "Confirm New Password",
+      "changeButton": "Change Password",
+      "changing": "Changing Password...",
+      "passwordHelp": "Password must be at least 6 characters long",
+      "successTitle": "Password Changed",
+      "successSubtitle": "Password Successfully Changed",
+      "successMessage": "Your password has been updated successfully. Please use your new password for future logins.",
+      "returnToCompetitions": "Return to Competitions"
+    }
+  },
+  "competitions": {
+    "title": "BikeRef",
+    "subtitle": "Competition Management",
+    "buttons": {
+      "new": "New",
+      "password": "Password",
+      "logout": "Logout",
+      "loggingOut": "Signing out..."
+    },
+    "noCompetitions": "No competitions found.",
+    "noCompetitionsAdmin": "No competitions found. Create a new one!"
+  },
+  "zones": {
+    "title": "Competition Zones",
+    "buttons": {
+      "participants": "Participants",
+      "addReferee": "Add Referee",
+      "liveRanking": "Live Ranking",
+      "createZone": "Create Zone",
+      "editZone": "Edit Zone",
+      "referee": "Referee"
+    },
+    "noZones": "No zones found for this competition.",
+    "createZoneTitle": "Create New Zone",
+    "editZoneTitle": "Edit Zone",
+    "labels": {
+      "zoneName": "Zone Name",
+      "category": "Category",
+      "pointsDoor": "Points Door"
+    },
+    "addRefereeTitle": "Add Referee",
+    "addRefereeLabels": {
+      "email": "Email",
+      "firstName": "First Name",
+      "lastName": "Last Name"
+    },
+    "addRefereeSuccess": "Referee added successfully! They will receive an email with login instructions."
+  },
+  "participants": {
+    "title": "Participant Management",
+    "selectCategory": "Select Category",
+    "tabs": {
+      "fileUpload": "File Upload",
+      "singleEntry": "Single Entry",
+      "viewParticipants": "View Participants"
+    },
+    "fileUpload": {
+      "title": "Upload Participants from File",
+      "description": "Upload a CSV or XLSX file with 5 columns in this exact order: Dossard Number, Category, Last Name, First Name, Gender (H/F)",
+      "chooseFile": "Choose File",
+      "uploadButton": "Upload Participants"
+    },
+    "singleEntry": {
+      "title": "Add Single Participant",
+      "addButton": "Add New Participant",
+      "dialogTitle": "Add New Participant",
+      "labels": {
+        "dossardNumber": "Dossard Number",
+        "category": "Category",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "gender": "Gender"
+      },
+      "genderOptions": {
+        "men": "Men (H)",
+        "women": "Women (F)"
+      }
+    },
+    "viewParticipants": {
+      "title": "Participants in",
+      "participantsCount": "participants",
+      "noParticipants": "No participants found for this category.",
+      "tableHeaders": {
+        "dossard": "Dossard",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "category": "Category",
+        "gender": "Gender"
+      },
+      "genderLabels": {
+        "men": "Men",
+        "women": "Women"
+      }
+    }
+  },
+  "liveRanking": {
+    "title": "Live Rankings",
+    "categoryLabel": "Category",
+    "genderLabels": {
+      "men": "Men's Rankings",
+      "women": "Women's Rankings"
+    },
+    "tableHeaders": {
+      "rank": "Rank",
+      "participant": "Participant",
+      "dossard": "Dossard",
+      "totalPoints": "Total Points",
+      "time": "Time",
+      "penalty": "Penalty",
+      "runs": "Runs"
+    },
+    "noRankings": "No rankings found for",
+    "selectCategory": "Please select a category to view rankings.",
+    "connectionLost": "No internet connection. Data may be outdated.",
+    "participantsCount": "participants",
+    "pointsUnit": "pts"
+  },
+  "referee": {
+    "title": "Referee Interface",
+    "steps": {
+      "dossardInput": "Enter Dossard",
+      "participantConfirmation": "Confirm Participant",
+      "runConfiguration": "Configure Run",
+      "runSubmission": "Submit Run"
+    },
+    "labels": {
+      "dossardNumber": "Dossard Number",
+      "participant": "Participant",
+      "category": "Category",
+      "gender": "Gender",
+      "time": "Time (seconds)",
+      "penalty": "Penalty Points"
+    },
+    "buttons": {
+      "searchParticipant": "Search Participant",
+      "confirmParticipant": "Confirm Participant",
+      "submitRun": "Submit Run",
+      "newRun": "New Run"
+    },
+    "doors": {
+      "door": "Door",
+      "points": "points"
+    },
+    "success": {
+      "title": "Run Submitted Successfully",
+      "message": "The run has been recorded for participant",
+      "totalPoints": "Total Points",
+      "finalTime": "Final Time"
+    },
+    "genderLabels": {
+      "men": "Men",
+      "women": "Women"
+    }
+  },
+  "createCompetition": {
+    "title": "Create New Competition",
+    "step1": {
+      "title": "Competition Details",
+      "labels": {
+        "name": "Competition Name",
+        "date": "Date",
+        "location": "Location",
+        "description": "Description",
+        "organizer": "Organizer",
+        "contact": "Contact"
+      }
+    },
+    "step2": {
+      "title": "Add Zones",
+      "description": "Create zones for your competition. Each zone represents a different challenge or section.",
+      "addZone": "Add Zone"
+    },
+    "buttons": {
+      "nextStep": "Next Step",
+      "previousStep": "Previous Step",
+      "createCompetition": "Create Competition",
+      "creating": "Creating..."
+    },
+    "success": {
+      "title": "Competition Created!",
+      "message": "Your competition has been created successfully.",
+      "viewCompetition": "View Competition"
+    }
+  }
+} 

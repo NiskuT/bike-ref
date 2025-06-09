@@ -1,0 +1,244 @@
+{
+  "common": {
+    "buttons": {
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "back": "Retour",
+      "next": "Suivant",
+      "previous": "Précédent",
+      "submit": "Soumettre",
+      "confirm": "Confirmer",
+      "retry": "Réessayer",
+      "refresh": "Actualiser",
+      "close": "Fermer",
+      "ok": "OK",
+      "yes": "Oui",
+      "no": "Non"
+    },
+    "loading": {
+      "loading": "Chargement...",
+      "saving": "Enregistrement...",
+      "deleting": "Suppression...",
+      "uploading": "Téléchargement...",
+      "refreshing": "Actualisation..."
+    },
+    "errors": {
+      "generic": "Une erreur s'est produite. Veuillez réessayer.",
+      "network": "Erreur réseau. Veuillez vérifier votre connexion.",
+      "permission": "Vous n'avez pas la permission d'effectuer cette action.",
+      "notFound": "La ressource demandée n'a pas été trouvée.",
+      "serverError": "Erreur serveur. Veuillez réessayer plus tard."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "BikeRef",
+      "subtitle": "Système de Gestion de Compétitions",
+      "emailLabel": "Adresse e-mail",
+      "passwordLabel": "Mot de passe",
+      "loginButton": "Se connecter",
+      "loggingIn": "Connexion en cours…",
+      "forgotPassword": "Mot de passe oublié ?"
+    },
+    "forgotPassword": {
+      "title": "Réinitialiser le mot de passe",
+      "subtitle": "Entrez votre adresse e-mail et nous vous enverrons un nouveau mot de passe",
+      "emailLabel": "Adresse e-mail",
+      "sendButton": "Envoyer un nouveau mot de passe",
+      "sending": "Envoi en cours...",
+      "backToLogin": "Retour à la connexion",
+      "successTitle": "Réinitialisation envoyée",
+      "successMessage": "Un nouveau mot de passe a été envoyé à votre adresse e-mail. Veuillez vérifier votre boîte de réception et utiliser le nouveau mot de passe pour vous connecter.",
+      "returnToLogin": "Retour à la connexion"
+    },
+    "changePassword": {
+      "title": "Changer le mot de passe",
+      "currentPasswordLabel": "Mot de passe actuel",
+      "newPasswordLabel": "Nouveau mot de passe",
+      "confirmPasswordLabel": "Confirmer le nouveau mot de passe",
+      "changeButton": "Changer le mot de passe",
+      "changing": "Changement en cours...",
+      "passwordHelp": "Le mot de passe doit contenir au moins 6 caractères",
+      "successTitle": "Mot de passe modifié",
+      "successSubtitle": "Mot de passe modifié avec succès",
+      "successMessage": "Votre mot de passe a été mis à jour avec succès. Veuillez utiliser votre nouveau mot de passe pour les prochaines connexions.",
+      "returnToCompetitions": "Retour aux compétitions"
+    }
+  },
+  "competitions": {
+    "title": "BikeRef",
+    "subtitle": "Gestion des Compétitions",
+    "buttons": {
+      "new": "Nouveau",
+      "password": "Mot de passe",
+      "logout": "Déconnexion",
+      "loggingOut": "Déconnexion en cours..."
+    },
+    "noCompetitions": "Aucune compétition trouvée.",
+    "noCompetitionsAdmin": "Aucune compétition trouvée. Créez-en une nouvelle !"
+  },
+  "zones": {
+    "title": "Zones de compétition",
+    "buttons": {
+      "participants": "Participants",
+      "addReferee": "Ajouter un arbitre",
+      "liveRanking": "Classement en direct",
+      "createZone": "Créer une zone",
+      "editZone": "Modifier la zone",
+      "referee": "Arbitre"
+    },
+    "noZones": "Aucune zone trouvée pour cette compétition.",
+    "createZoneTitle": "Créer une nouvelle zone",
+    "editZoneTitle": "Modifier la zone",
+    "labels": {
+      "zoneName": "Nom de la zone",
+      "category": "Catégorie",
+      "pointsDoor": "Points Porte"
+    },
+    "addRefereeTitle": "Ajouter un arbitre",
+    "addRefereeLabels": {
+      "email": "E-mail",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille"
+    },
+    "addRefereeSuccess": "Arbitre ajouté avec succès ! Il recevra un e-mail avec les instructions de connexion."
+  },
+  "participants": {
+    "title": "Gestion des participants",
+    "selectCategory": "Sélectionner une catégorie",
+    "tabs": {
+      "fileUpload": "Téléchargement de fichier",
+      "singleEntry": "Saisie unique",
+      "viewParticipants": "Voir les participants"
+    },
+    "fileUpload": {
+      "title": "Télécharger les participants depuis un fichier",
+      "description": "Téléchargez un fichier CSV ou XLSX avec 5 colonnes dans cet ordre exact : Numéro de dossard, Catégorie, Nom de famille, Prénom, Sexe (H/F)",
+      "chooseFile": "Choisir un fichier",
+      "uploadButton": "Télécharger les participants"
+    },
+    "singleEntry": {
+      "title": "Ajouter un participant unique",
+      "addButton": "Ajouter un nouveau participant",
+      "dialogTitle": "Ajouter un nouveau participant",
+      "labels": {
+        "dossardNumber": "Numéro de dossard",
+        "category": "Catégorie",
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "gender": "Sexe"
+      },
+      "genderOptions": {
+        "men": "Hommes (H)",
+        "women": "Femmes (F)"
+      }
+    },
+    "viewParticipants": {
+      "title": "Participants dans",
+      "participantsCount": "participants",
+      "noParticipants": "Aucun participant trouvé pour cette catégorie.",
+      "tableHeaders": {
+        "dossard": "Dossard",
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "category": "Catégorie",
+        "gender": "Sexe"
+      },
+      "genderLabels": {
+        "men": "Hommes",
+        "women": "Femmes"
+      }
+    }
+  },
+  "liveRanking": {
+    "title": "Classements en direct",
+    "categoryLabel": "Catégorie",
+    "genderLabels": {
+      "men": "Classement Hommes",
+      "women": "Classement Femmes"
+    },
+    "tableHeaders": {
+      "rank": "Rang",
+      "participant": "Participant",
+      "dossard": "Dossard",
+      "totalPoints": "Points totaux",
+      "time": "Temps",
+      "penalty": "Pénalité",
+      "runs": "Passages"
+    },
+    "noRankings": "Aucun classement trouvé pour",
+    "selectCategory": "Veuillez sélectionner une catégorie pour voir les classements.",
+    "connectionLost": "Pas de connexion internet. Les données peuvent être obsolètes.",
+    "participantsCount": "participants",
+    "pointsUnit": "pts"
+  },
+  "referee": {
+    "title": "Interface Arbitre",
+    "steps": {
+      "dossardInput": "Saisir le dossard",
+      "participantConfirmation": "Confirmer le participant",
+      "runConfiguration": "Configurer le passage",
+      "runSubmission": "Soumettre le passage"
+    },
+    "labels": {
+      "dossardNumber": "Numéro de dossard",
+      "participant": "Participant",
+      "category": "Catégorie",
+      "gender": "Sexe",
+      "time": "Temps (secondes)",
+      "penalty": "Points de pénalité"
+    },
+    "buttons": {
+      "searchParticipant": "Chercher le participant",
+      "confirmParticipant": "Confirmer le participant",
+      "submitRun": "Soumettre le passage",
+      "newRun": "Nouveau passage"
+    },
+    "doors": {
+      "door": "Porte",
+      "points": "points"
+    },
+    "success": {
+      "title": "Passage soumis avec succès",
+      "message": "Le passage a été enregistré pour le participant",
+      "totalPoints": "Points totaux",
+      "finalTime": "Temps final"
+    },
+    "genderLabels": {
+      "men": "Hommes",
+      "women": "Femmes"
+    }
+  },
+  "createCompetition": {
+    "title": "Créer une nouvelle compétition",
+    "step1": {
+      "title": "Détails de la compétition",
+      "labels": {
+        "name": "Nom de la compétition",
+        "date": "Date",
+        "location": "Lieu",
+        "description": "Description",
+        "organizer": "Organisateur",
+        "contact": "Contact"
+      }
+    },
+    "step2": {
+      "title": "Ajouter des zones",
+      "description": "Créez des zones pour votre compétition. Chaque zone représente un défi ou une section différente.",
+      "addZone": "Ajouter une zone"
+    },
+    "buttons": {
+      "nextStep": "Étape suivante",
+      "previousStep": "Étape précédente",
+      "createCompetition": "Créer la compétition",
+      "creating": "Création en cours..."
+    },
+    "success": {
+      "title": "Compétition créée !",
+      "message": "Votre compétition a été créée avec succès.",
+      "viewCompetition": "Voir la compétition"
+    }
+  }
+} 

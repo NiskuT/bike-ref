@@ -16,11 +16,14 @@ import { useNavigate } from 'react-router-dom'
 import { authService } from '../api/authService'
 import type { LoginUser } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
+import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
+import LanguageSelector from '../components/LanguageSelector'
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate()
   const { setRoles } = useAuth()
+  const { t } = useTranslation()
   const [form, setForm] = useState<LoginUser>({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -51,6 +54,9 @@ const LoginPage: React.FC = () => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
+        <LanguageSelector />
+      </Box>
       <Paper
         elevation={3}
         sx={{
@@ -65,10 +71,10 @@ const LoginPage: React.FC = () => {
           <BikeIcon />
         </Avatar>
         <Typography component="h1" variant="h5" sx={{ mb: 1 }}>
-          BikeRef
+          {t('auth.login.title')}
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
-          Competition Management System
+          {t('auth.login.subtitle')}
         </Typography>
 
         {error && (
@@ -83,7 +89,7 @@ const LoginPage: React.FC = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={t('auth.login.emailLabel')}
             name="email"
             type="email"
             autoComplete="email"
@@ -96,7 +102,7 @@ const LoginPage: React.FC = () => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label={t('auth.login.passwordLabel')}
             type="password"
             id="password"
             autoComplete="current-password"
@@ -110,7 +116,7 @@ const LoginPage: React.FC = () => {
             disabled={loading}
             sx={{ mt: 2, mb: 1 }}
           >
-            {loading ? 'Signing in…' : 'Sign In'}
+            {loading ? t('auth.login.loggingIn') : t('auth.login.loginButton')}
           </Button>
           <Box sx={{ textAlign: 'center', mt: 2 }}>
             <Typography
@@ -128,7 +134,7 @@ const LoginPage: React.FC = () => {
                 },
               }}
             >
-              Forgot your password?
+              {t('auth.login.forgotPassword')}
             </Typography>
           </Box>
         </Box>
