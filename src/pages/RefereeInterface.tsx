@@ -242,6 +242,10 @@ const RefereeInterface: React.FC = () => {
                 onClick={handleDossardSubmit}
                 disabled={loading || !state.dossard.trim()}
                 startIcon={loading ? <CircularProgress size={20} /> : <PersonIcon />}
+                sx={{
+                  minWidth: { xs: 'auto', sm: '200px' },
+                  px: { xs: 1, sm: 2 }
+                }}
               >
                 {loading ? t('common.loading.loading') : t('referee.buttons.searchParticipant')}
               </Button>
@@ -300,6 +304,10 @@ const RefereeInterface: React.FC = () => {
                 color="primary"
                 onClick={handleParticipantConfirm}
                 startIcon={<StartIcon />}
+                sx={{
+                  minWidth: { xs: 'auto', sm: '180px' },
+                  px: { xs: 1, sm: 2 }
+                }}
               >
                 {t('referee.buttons.confirmParticipant')}
               </Button>

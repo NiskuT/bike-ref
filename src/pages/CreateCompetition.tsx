@@ -299,7 +299,12 @@ const CreateCompetition: React.FC = () => {
             color="primary"
             startIcon={<AddIcon />}
             onClick={handleAddZone}
-            sx={{ mt: 1, alignSelf: 'flex-start' }}
+            sx={{ 
+              mt: 1, 
+              alignSelf: 'flex-start',
+              minWidth: { xs: 'auto', sm: '140px' },
+              px: { xs: 1, sm: 2 }
+            }}
           >
             {t('createCompetition.step2.addZone')}
           </Button>

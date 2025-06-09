@@ -94,93 +94,102 @@ const CompetitionListPage: React.FC = () => {
         <LanguageSelector />
       </Box>
       <Paper elevation={3} sx={{ p: { xs: 2, sm: 3 } }}>
+        {/* Header with title - responsive layout */}
         <Box sx={{ 
           display: 'flex', 
-          flexDirection: { xs: 'column', sm: 'row' },
-          justifyContent: 'space-between', 
-          alignItems: { xs: 'stretch', sm: 'center' }, 
-          mb: 2,
-          gap: { xs: 2, sm: 0 }
+          flexDirection: { xs: 'column', sm: 'column' },
+          alignItems: { xs: 'center', sm: 'flex-start' },
+          mb: 2
         }}>
           <Box sx={{ 
             display: 'flex', 
-            flexDirection: 'column',
-            alignItems: { xs: 'center', sm: 'flex-start' }
+            alignItems: 'center', 
+            gap: 1,
           }}>
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: 1,
-            }}>
-              <BikeIcon 
-                sx={{ 
-                  fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }, 
-                  color: 'primary.main' 
-                }} 
-              />
-              <Typography 
-                variant="h4"
-                sx={{
-                  fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
-                  fontWeight: 500,
-                  lineHeight: 1.2,
-                }}
-              >
-                {t('competitions.title')}
-              </Typography>
-            </Box>
+            <BikeIcon 
+              sx={{ 
+                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }, 
+                color: 'primary.main' 
+              }} 
+            />
             <Typography 
-              variant="subtitle1" 
-              color="text.secondary"
+              variant="h4"
               sx={{
-                fontSize: { xs: '0.875rem', sm: '1rem' },
-                mt: 0.5,
-                textAlign: { xs: 'center', sm: 'left' }
+                fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
+                fontWeight: 500,
+                lineHeight: 1.2,
               }}
             >
-              {t('competitions.subtitle')}
+              {t('competitions.title')}
             </Typography>
           </Box>
-          <Box sx={{ 
-            display: 'flex', 
-            gap: 1,
-            flexDirection: { xs: 'column', sm: 'row' },
-            alignItems: 'stretch'
-          }}>
-            {canCreateCompetition() && (
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={() => navigate('/new-competition')}
-                size="small"
-                sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
-              >
-                {t('competitions.buttons.new')}
-              </Button>
-            )}
+          <Typography 
+            variant="subtitle1" 
+            color="text.secondary"
+            sx={{
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              mt: 0.5,
+              textAlign: { xs: 'center', sm: 'left' }
+            }}
+          >
+            {t('competitions.subtitle')}
+          </Typography>
+        </Box>
+
+        {/* Buttons section - mobile: inline with header, desktop: separate row */}
+        <Box sx={{ 
+          display: { xs: 'flex', sm: 'flex' }, 
+          gap: 1,
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { xs: 'stretch', sm: 'flex-start' },
+          mb: { xs: 2, sm: 3 },
+          flexWrap: 'wrap'
+        }}>
+          {canCreateCompetition() && (
             <Button
-              variant="outlined"
+              variant="contained"
               color="primary"
-              startIcon={<LockIcon />}
-              onClick={() => navigate('/change-password')}
+              startIcon={<AddIcon />}
+              onClick={() => navigate('/new-competition')}
               size="small"
-              sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
+              sx={{ 
+                fontSize: { xs: '0.875rem', sm: '0.875rem' },
+                minWidth: { xs: 'auto', sm: '140px' },
+                px: { xs: 1, sm: 2 }
+              }}
             >
-              {t('competitions.buttons.password')}
+              {t('competitions.buttons.new')}
             </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              startIcon={<LogoutIcon />}
-              onClick={handleLogout}
-              disabled={logoutLoading}
-              size="small"
-              sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
-            >
-              {logoutLoading ? t('competitions.buttons.loggingOut') : t('competitions.buttons.logout')}
-            </Button>
-          </Box>
+          )}
+          <Button
+            variant="outlined"
+            color="primary"
+            startIcon={<LockIcon />}
+            onClick={() => navigate('/change-password')}
+            size="small"
+            sx={{ 
+              fontSize: { xs: '0.875rem', sm: '0.875rem' },
+              minWidth: { xs: 'auto', sm: '160px' },
+              px: { xs: 1, sm: 2 }
+            }}
+          >
+            {t('competitions.buttons.password')}
+          </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            startIcon={<LogoutIcon />}
+            onClick={handleLogout}
+            disabled={logoutLoading}
+            size="small"
+            sx={{ 
+              fontSize: { xs: '0.875rem', sm: '0.875rem' },
+              minWidth: { xs: 'auto', sm: '140px' },
+              px: { xs: 1, sm: 2 }
+            }}
+          >
+            {logoutLoading ? t('competitions.buttons.loggingOut') : t('competitions.buttons.logout')}
+          </Button>
         </Box>
       
         <List>

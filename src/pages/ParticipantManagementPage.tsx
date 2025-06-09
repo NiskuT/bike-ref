@@ -377,6 +377,10 @@ const ParticipantManagementPage: React.FC = () => {
                     component="span"
                     startIcon={<CloudUploadIcon />}
                     fullWidth={isMobile}
+                    sx={{
+                      minWidth: { xs: 'auto', sm: '200px' },
+                      px: { xs: 1, sm: 2 }
+                    }}
                   >
                     {uploadFile ? uploadFile.name : t('participants.fileUpload.chooseFile')}
                   </Button>
@@ -389,6 +393,10 @@ const ParticipantManagementPage: React.FC = () => {
                 disabled={!uploadFile || uploading}
                 startIcon={uploading ? <CircularProgress size={20} /> : <UploadIcon />}
                 fullWidth={isMobile}
+                sx={{
+                  minWidth: { xs: 'auto', sm: '180px' },
+                  px: { xs: 1, sm: 2 }
+                }}
               >
                 {uploading ? t('common.loading.uploading') : t('participants.fileUpload.uploadButton')}
               </Button>
@@ -408,6 +416,10 @@ const ParticipantManagementPage: React.FC = () => {
               startIcon={<AddIcon />}
               onClick={handleOpenSingleParticipantDialog}
               fullWidth={isMobile}
+              sx={{
+                minWidth: { xs: 'auto', sm: '180px' },
+                px: { xs: 1, sm: 2 }
+              }}
             >
               {t('participants.singleEntry.addButton')}
             </Button>

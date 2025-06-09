@@ -292,99 +292,95 @@ const ZoneListPage: React.FC = () => {
       {/* Header */}
       <Box sx={{ 
         display: 'flex', 
-        alignItems: { xs: 'flex-start', sm: 'center' }, 
-        mb: { xs: 2, sm: 3 },
-        flexDirection: { xs: 'column', sm: 'row' },
-        gap: { xs: 2, sm: 0 }
+        alignItems: 'center',
+        mb: { xs: 2, sm: 2 }
       }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-          <IconButton 
-            onClick={() => navigate('/competitions')} 
-            sx={{ 
-              mr: { xs: 1, sm: 2 },
-              p: { xs: 1, sm: 1.5 }
-            }}
-          >
-            <BackIcon />
-          </IconButton>
-          <Typography 
-            variant="h4" 
-            component="h1"
-            sx={{
-              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
-              fontWeight: 500,
-              lineHeight: 1.2
-            }}
-          >
-            {t('zones.title')}
-          </Typography>
-        </Box>
-        
-        {/* Action Buttons */}
-        {canRefereeCompetition && (
-          <Box sx={{ 
-            display: 'flex', 
-            gap: { xs: 1, sm: 1.5 }, 
-            flexDirection: { xs: 'column', sm: 'row' },
-            alignItems: 'stretch',
-            minWidth: 0,
-            width: { xs: '100%', sm: 'auto' }
-          }}>
-            {canAdminCompetition && (
-              <>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  startIcon={<GroupIcon />}
-                  onClick={() => navigate(`/competitions/${competitionId}/participants`)}
-                  size="small"
-                  sx={{
-                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                    px: { xs: 1, sm: 1.5 },
-                    py: { xs: 0.5, sm: 0.75 },
-                    minWidth: { xs: 'auto', sm: '120px' },
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  {t('zones.buttons.participants')}
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  startIcon={<PersonAddIcon />}
-                  onClick={handleAddReferee}
-                  size="small"
-                  sx={{
-                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                    px: { xs: 1, sm: 1.5 },
-                    py: { xs: 0.5, sm: 0.75 },
-                    minWidth: { xs: 'auto', sm: '120px' },
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  {t('zones.buttons.addReferee')}
-                </Button>
-              </>
-            )}
-            <Button
-              variant="outlined"
-              color="primary"
-              startIcon={<TrophyIcon />}
-              onClick={() => navigate(`/competitions/${competitionId}/live-ranking`)}
-              size="small"
-              sx={{
-                fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                px: { xs: 1, sm: 1.5 },
-                py: { xs: 0.5, sm: 0.75 },
-                minWidth: { xs: 'auto', sm: '120px' },
-                whiteSpace: 'nowrap'
-              }}
-            >
-              {t('zones.buttons.liveRanking')}
-            </Button>
-          </Box>
-        )}
+        <IconButton 
+          onClick={() => navigate('/competitions')} 
+          sx={{ 
+            mr: { xs: 1, sm: 2 },
+            p: { xs: 1, sm: 1.5 }
+          }}
+        >
+          <BackIcon />
+        </IconButton>
+        <Typography 
+          variant="h4" 
+          component="h1"
+          sx={{
+            fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
+            fontWeight: 500,
+            lineHeight: 1.2
+          }}
+        >
+          {t('zones.title')}
+        </Typography>
       </Box>
+      
+      {/* Action Buttons - mobile: stacked, desktop: separate row */}
+      {canRefereeCompetition && (
+        <Box sx={{ 
+          display: 'flex', 
+          gap: { xs: 1, sm: 1.5 }, 
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { xs: 'stretch', sm: 'flex-start' },
+          mb: { xs: 2, sm: 3 },
+          flexWrap: 'wrap'
+        }}>
+          {canAdminCompetition && (
+            <>
+              <Button
+                variant="outlined"
+                color="secondary"
+                startIcon={<GroupIcon />}
+                onClick={() => navigate(`/competitions/${competitionId}/participants`)}
+                size="small"
+                sx={{
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  px: { xs: 1, sm: 2 },
+                  py: { xs: 0.5, sm: 0.75 },
+                  minWidth: { xs: 'auto', sm: '150px' },
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {t('zones.buttons.participants')}
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                startIcon={<PersonAddIcon />}
+                onClick={handleAddReferee}
+                size="small"
+                sx={{
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  px: { xs: 1, sm: 2 },
+                  py: { xs: 0.5, sm: 0.75 },
+                  minWidth: { xs: 'auto', sm: '160px' },
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {t('zones.buttons.addReferee')}
+              </Button>
+            </>
+          )}
+          <Button
+            variant="outlined"
+            color="primary"
+            startIcon={<TrophyIcon />}
+            onClick={() => navigate(`/competitions/${competitionId}/live-ranking`)}
+            size="small"
+            sx={{
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
+              px: { xs: 1, sm: 2 },
+              py: { xs: 0.5, sm: 0.75 },
+              minWidth: { xs: 'auto', sm: '150px' },
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {t('zones.buttons.liveRanking')}
+          </Button>
+        </Box>
+      )}
 
       {/* Zones Grid */}
       {zones.length === 0 ? (
@@ -449,6 +445,10 @@ const ZoneListPage: React.FC = () => {
                         startIcon={<RefereeIcon />}
                         onClick={() => handleRefereeZone(zone)}
                         size="small"
+                        sx={{
+                          minWidth: { xs: 'auto', sm: '120px' },
+                          px: { xs: 1, sm: 1.5 }
+                        }}
                       >
                         {t('zones.buttons.referee')}
                       </Button>
