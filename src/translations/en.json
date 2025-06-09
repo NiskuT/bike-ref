@@ -103,7 +103,21 @@
       "firstName": "First Name",
       "lastName": "Last Name"
     },
-    "addRefereeSuccess": "Referee added successfully! They will receive an email with login instructions."
+    "addRefereeSuccess": "Referee added successfully! They will receive an email with login instructions.",
+    "editWarningDialog": {
+      "title": "Edit Zone - CAUTION",
+      "message": "You are about to modify this zone configuration:",
+      "warningMessage": "⚠️ CAUTION: Editing zones after the competition has started will NOT update live rankings automatically. This action should only be performed before the competition begins!",
+      "confirmText": "I understand this may affect competition integrity",
+      "editButton": "EDIT ZONE"
+    },
+    "deleteWarningDialog": {
+      "title": "Delete Zone - DANGER", 
+      "message": "You are about to permanently delete this zone:",
+      "warningMessage": "⚠️ DANGER: Deleting zones after the competition has started will NOT update live rankings automatically and may cause data inconsistencies. This action should only be performed before the competition begins!",
+      "confirmText": "I understand this may corrupt competition data",
+      "deleteButton": "DELETE ZONE"
+    }
   },
   "participants": {
     "title": "Participant Management",

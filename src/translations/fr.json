@@ -103,7 +103,21 @@
       "firstName": "Prénom",
       "lastName": "Nom de famille"
     },
-    "addRefereeSuccess": "Arbitre ajouté avec succès ! Il recevra un e-mail avec les instructions de connexion."
+    "addRefereeSuccess": "Arbitre ajouté avec succès ! Il recevra un e-mail avec les instructions de connexion.",
+    "editWarningDialog": {
+      "title": "Modifier la Zone - PRUDENCE",
+      "message": "Vous êtes sur le point de modifier cette configuration de zone :",
+      "warningMessage": "⚠️ PRUDENCE : Modifier les zones après que la compétition ait commencé ne mettra PAS à jour automatiquement les classements en direct. Cette action ne devrait être effectuée qu'avant le début de la compétition !",
+      "confirmText": "Je comprends que cela peut affecter l'intégrité de la compétition",
+      "editButton": "MODIFIER LA ZONE"
+    },
+    "deleteWarningDialog": {
+      "title": "Supprimer la Zone - DANGER", 
+      "message": "Vous êtes sur le point de supprimer définitivement cette zone :",
+      "warningMessage": "⚠️ DANGER : Supprimer des zones après que la compétition ait commencé ne mettra PAS à jour automatiquement les classements en direct et peut causer des incohérences de données. Cette action ne devrait être effectuée qu'avant le début de la compétition !",
+      "confirmText": "Je comprends que cela peut corrompre les données de la compétition",
+      "deleteButton": "SUPPRIMER LA ZONE"
+    }
   },
   "participants": {
     "title": "Gestion des participants",

@@ -18,6 +18,8 @@ import {
   IconButton,
   Fab,
   Snackbar,
+  Checkbox,
+  FormControlLabel,
 } from '@mui/material'
 import {
   SportsSoccer as RefereeIcon,
@@ -28,6 +30,7 @@ import {
   EmojiEvents as TrophyIcon,
   Group as GroupIcon,
   PersonAdd as PersonAddIcon,
+  Warning as WarningIcon,
 } from '@mui/icons-material'
 import { useParams, useNavigate } from 'react-router-dom'
 import { competitionService } from '../api/competitionService'
@@ -65,6 +68,19 @@ const ZoneListPage: React.FC = () => {
     points_door6: 0,
   })
   const [zoneFormLoading, setZoneFormLoading] = useState(false)
+
+  // Zone action confirmation dialogs
+  const [editWarningDialog, setEditWarningDialog] = useState<{
+    open: boolean
+    zone: Zone | null
+    confirmed: boolean
+  }>({ open: false, zone: null, confirmed: false })
+
+  const [deleteWarningDialog, setDeleteWarningDialog] = useState<{
+    open: boolean
+    zone: Zone | null
+    confirmed: boolean
+  }>({ open: false, zone: null, confirmed: false })
 
   // Referee dialog state
   const [refereeDialog, setRefereeDialog] = useState(false)
@@ -109,6 +125,8 @@ const ZoneListPage: React.FC = () => {
       .finally(() => setLoading(false))
   }, [competitionId, competitionIdNum, canRefereeCompetition])
 
+
+
   const handleRefereeZone = (zone: Zone) => {
     // Navigate to referee interface with zone data
     navigate(`/competitions/${competitionId}/referee`, {
@@ -117,6 +135,10 @@ const ZoneListPage: React.FC = () => {
   }
 
   const handleEditZone = (zone: Zone) => {
+    setEditWarningDialog({ open: true, zone, confirmed: false })
+  }
+
+  const handleEditZoneConfirm = (zone: Zone) => {
     setZoneForm({
       competition_id: competitionIdNum,
       zone: zone.zone,
@@ -129,6 +151,7 @@ const ZoneListPage: React.FC = () => {
       points_door6: zone.points_door6,
     })
     setZoneDialog({ open: true, mode: 'edit', zone })
+    setEditWarningDialog({ open: false, zone: null, confirmed: false })
   }
 
   const handleCreateZone = () => {
@@ -185,11 +208,11 @@ const ZoneListPage: React.FC = () => {
     }
   }
 
-  const handleDeleteZone = async (zone: Zone) => {
-    if (!confirm(`Are you sure you want to delete zone "${zone.zone}" in category "${zone.category}"?`)) {
-      return
-    }
+  const handleDeleteZone = (zone: Zone) => {
+    setDeleteWarningDialog({ open: true, zone, confirmed: false })
+  }
 
+  const handleDeleteZoneConfirm = async (zone: Zone) => {
     setDeleteLoading(`${zone.zone}-${zone.category}`)
     try {
       await competitionService.deleteZone({
@@ -202,6 +225,8 @@ const ZoneListPage: React.FC = () => {
       setZones(zones.filter(z => 
         !(z.zone === zone.zone && z.category === zone.category)
       ))
+      
+      setDeleteWarningDialog({ open: false, zone: null, confirmed: false })
     } catch (err) {
       console.error(err)
       const apiError = getErrorMessage(err)
@@ -556,6 +581,132 @@ const ZoneListPage: React.FC = () => {
             disabled={zoneFormLoading}
           >
             {zoneFormLoading ? t('common.loading.saving') : (zoneDialog.mode === 'create' ? t('zones.buttons.createZone') : t('common.buttons.save'))}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Edit Zone Warning Dialog */}
+      <Dialog
+        open={editWarningDialog.open}
+        onClose={() => setEditWarningDialog({ open: false, zone: null, confirmed: false })}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <WarningIcon color="warning" />
+          {t('zones.editWarningDialog.title')}
+        </DialogTitle>
+        <DialogContent>
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            {t('zones.editWarningDialog.warningMessage')}
+          </Alert>
+          
+          <Typography variant="body1" gutterBottom>
+            {t('zones.editWarningDialog.message')}
+          </Typography>
+          
+          {editWarningDialog.zone && (
+            <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
+              <Typography variant="body2">
+                <strong>{editWarningDialog.zone.zone}</strong> - {editWarningDialog.zone.category}
+              </Typography>
+            </Box>
+          )}
+          
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={editWarningDialog.confirmed}
+                onChange={(e) =>
+                  setEditWarningDialog(prev => ({ ...prev, confirmed: e.target.checked }))
+                }
+              />
+            }
+            label={t('zones.editWarningDialog.confirmText')}
+            sx={{ mt: 2 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setEditWarningDialog({ open: false, zone: null, confirmed: false })}
+          >
+            {t('common.buttons.cancel')}
+          </Button>
+          <Button
+            onClick={() => {
+              if (editWarningDialog.confirmed && editWarningDialog.zone) {
+                handleEditZoneConfirm(editWarningDialog.zone)
+              }
+            }}
+            disabled={!editWarningDialog.confirmed}
+            color="warning"
+            variant="contained"
+            startIcon={<EditIcon />}
+          >
+            {t('zones.editWarningDialog.editButton')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Zone Warning Dialog */}
+      <Dialog
+        open={deleteWarningDialog.open}
+        onClose={() => setDeleteWarningDialog({ open: false, zone: null, confirmed: false })}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <WarningIcon color="error" />
+          {t('zones.deleteWarningDialog.title')}
+        </DialogTitle>
+        <DialogContent>
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {t('zones.deleteWarningDialog.warningMessage')}
+          </Alert>
+          
+          <Typography variant="body1" gutterBottom>
+            {t('zones.deleteWarningDialog.message')}
+          </Typography>
+          
+          {deleteWarningDialog.zone && (
+            <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
+              <Typography variant="body2">
+                <strong>{deleteWarningDialog.zone.zone}</strong> - {deleteWarningDialog.zone.category}
+              </Typography>
+            </Box>
+          )}
+          
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={deleteWarningDialog.confirmed}
+                onChange={(e) =>
+                  setDeleteWarningDialog(prev => ({ ...prev, confirmed: e.target.checked }))
+                }
+              />
+            }
+            label={t('zones.deleteWarningDialog.confirmText')}
+            sx={{ mt: 2 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setDeleteWarningDialog({ open: false, zone: null, confirmed: false })}
+          >
+            {t('common.buttons.cancel')}
+          </Button>
+          <Button
+            onClick={() => {
+              if (deleteWarningDialog.confirmed && deleteWarningDialog.zone) {
+                handleDeleteZoneConfirm(deleteWarningDialog.zone)
+              }
+            }}
+            disabled={!deleteWarningDialog.confirmed || deleteLoading !== null}
+            color="error"
+            variant="contained"
+            startIcon={deleteLoading !== null ? <CircularProgress size={16} /> : <DeleteIcon />}
+          >
+            {deleteLoading !== null ? t('common.loading.deleting') : t('zones.deleteWarningDialog.deleteButton')}
           </Button>
         </DialogActions>
       </Dialog>
