@@ -24,6 +24,7 @@ import {
   CardContent,
   useTheme,
   useMediaQuery,
+  Divider,
 } from '@mui/material'
 import {
   ArrowBack as BackIcon,
@@ -47,10 +48,10 @@ const LiveRankingPage: React.FC = () => {
   const competitionIdNum = Number(competitionId)
   const canViewCompetition = canAccessCompetition(competitionIdNum, 'referee')
 
-  const [rankingData, setRankingData] = useState<LiveRankingResponse | null>(null)
+  const [menRankingData, setMenRankingData] = useState<LiveRankingResponse | null>(null)
+  const [womenRankingData, setWomenRankingData] = useState<LiveRankingResponse | null>(null)
   const [zones, setZones] = useState<Zone[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('')
-  const [selectedGender, setSelectedGender] = useState<'H' | 'F'>('H')
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
@@ -96,10 +97,10 @@ const LiveRankingPage: React.FC = () => {
   }, [competitionId, competitionIdNum, canViewCompetition, selectedCategory])
 
   useEffect(() => {
-    if (selectedCategory && selectedGender && !loading) {
+    if (selectedCategory && !loading) {
       fetchRankings()
     }
-  }, [selectedCategory, selectedGender, page])
+  }, [selectedCategory, page])
 
   const fetchRankings = async (isRefresh = false) => {
     if (isRefresh) {
@@ -110,14 +111,26 @@ const LiveRankingPage: React.FC = () => {
     setError(null)
 
     try {
-      const data = await liveRankingService.getLiveRanking({
-        competitionId: competitionIdNum,
-        page,
-        page_size: pageSize,
-        category: selectedCategory,
-        gender: selectedGender,
-      })
-      setRankingData(data)
+      // Fetch both men's and women's rankings
+      const [menData, womenData] = await Promise.all([
+        liveRankingService.getLiveRanking({
+          competitionId: competitionIdNum,
+          page,
+          page_size: pageSize,
+          category: selectedCategory,
+          gender: 'H',
+        }),
+        liveRankingService.getLiveRanking({
+          competitionId: competitionIdNum,
+          page,
+          page_size: pageSize,
+          category: selectedCategory,
+          gender: 'F',
+        }),
+      ])
+      
+      setMenRankingData(menData)
+      setWomenRankingData(womenData)
     } catch (err) {
       console.error(err)
       const apiError = getErrorMessage(err)
@@ -131,11 +144,6 @@ const LiveRankingPage: React.FC = () => {
   const handleCategoryChange = (event: any) => {
     setSelectedCategory(event.target.value)
     setPage(1) // Reset to first page when changing category
-  }
-
-  const handleGenderChange = (event: any) => {
-    setSelectedGender(event.target.value)
-    setPage(1) // Reset to first page when changing gender
   }
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -161,7 +169,168 @@ const LiveRankingPage: React.FC = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-  if (loading && !rankingData) {
+  const renderRankingSection = (rankingData: LiveRankingResponse | null, genderLabel: string, genderIcon?: string) => {
+    if (!rankingData || rankingData.rankings.length === 0) {
+      return (
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+            {genderIcon && <span>{genderIcon}</span>}
+            {genderLabel}
+          </Typography>
+          <Alert severity="info">
+            No rankings found for {genderLabel.toLowerCase()}.
+          </Alert>
+        </Box>
+      )
+    }
+
+    const totalPages = Math.ceil(rankingData.total / pageSize)
+
+    return (
+      <Box sx={{ mb: 4 }}>
+        {/* Gender Section Header */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+          <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {genderIcon && <span>{genderIcon}</span>}
+            {genderLabel}
+          </Typography>
+          <Chip 
+            label={`${rankingData.total} participants`} 
+            color="primary" 
+            variant="outlined"
+            size="small"
+          />
+        </Box>
+
+        {/* Rankings Display */}
+        {isMobile ? (
+          // Mobile Card View
+          <Stack spacing={2} sx={{ mb: 3 }}>
+            {rankingData.rankings.map((entry) => (
+              <Card key={entry.dossard} elevation={2}>
+                <CardContent sx={{ py: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      mr: 2,
+                      minWidth: '60px'
+                    }}>
+                      {entry.rank <= 3 && (
+                        <TrophyIcon 
+                          sx={{ 
+                            color: getTrophyColor(entry.rank), 
+                            mr: 0.5,
+                            fontSize: '1.2rem'
+                          }} 
+                        />
+                      )}
+                      <Typography variant="h6" fontWeight="bold">
+                        #{entry.rank}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ flexGrow: 1 }}>
+                      <Typography variant="subtitle1" fontWeight="600">
+                        {entry.first_name} {entry.last_name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Dossard #{entry.dossard}
+                      </Typography>
+                    </Box>
+                    <Chip 
+                      label={`${entry.total_points} pts`}
+                      color="primary"
+                      size="small"
+                    />
+                  </Box>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between',
+                    fontSize: '0.875rem',
+                    color: 'text.secondary'
+                  }}>
+                    <span>Time: {formatTime(entry.chrono_sec)}</span>
+                    <span>Penalty: {entry.penality}</span>
+                    <span>Runs: {entry.number_of_runs}</span>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+          </Stack>
+        ) : (
+          // Desktop Table View
+          <TableContainer component={Paper} sx={{ mb: 3 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Rank</TableCell>
+                  <TableCell>Participant</TableCell>
+                  <TableCell>Dossard</TableCell>
+                  <TableCell align="right">Total Points</TableCell>
+                  <TableCell align="right">Time</TableCell>
+                  <TableCell align="right">Penalty</TableCell>
+                  <TableCell align="right">Runs</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rankingData.rankings.map((entry) => (
+                  <TableRow key={entry.dossard}>
+                    <TableCell>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        {entry.rank <= 3 && (
+                          <TrophyIcon 
+                            sx={{ 
+                              color: getTrophyColor(entry.rank), 
+                              mr: 0.5,
+                              fontSize: '1.2rem'
+                            }} 
+                          />
+                        )}
+                        <Typography fontWeight="bold">
+                          {entry.rank}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Typography fontWeight="600">
+                        {entry.first_name} {entry.last_name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>{entry.dossard}</TableCell>
+                    <TableCell align="right">
+                      <Chip 
+                        label={entry.total_points}
+                        color="primary"
+                        size="small"
+                      />
+                    </TableCell>
+                    <TableCell align="right">{formatTime(entry.chrono_sec)}</TableCell>
+                    <TableCell align="right">{entry.penality}</TableCell>
+                    <TableCell align="right">{entry.number_of_runs}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+
+        {/* Pagination for this gender */}
+        {totalPages > 1 && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handlePageChange}
+              color="primary"
+              size={isMobile ? 'small' : 'medium'}
+            />
+          </Box>
+        )}
+      </Box>
+    )
+  }
+
+  if (loading && !menRankingData && !womenRankingData) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
         <CircularProgress />
@@ -169,7 +338,7 @@ const LiveRankingPage: React.FC = () => {
     )
   }
 
-  if (error && !rankingData) {
+  if (error && !menRankingData && !womenRankingData) {
     return (
       <Container maxWidth="md" sx={{ mt: 4 }}>
         <Alert severity="error" sx={{ mb: 2 }}>
@@ -183,8 +352,6 @@ const LiveRankingPage: React.FC = () => {
       </Container>
     )
   }
-
-  const totalPages = rankingData ? Math.ceil(rankingData.total / pageSize) : 0
 
   return (
     <Container 
@@ -258,20 +425,7 @@ const LiveRankingPage: React.FC = () => {
           </Select>
         </FormControl>
 
-        <FormControl sx={{ minWidth: { xs: '100%', sm: 150 } }}>
-          <InputLabel>Gender</InputLabel>
-          <Select
-            value={selectedGender}
-            label="Gender"
-            onChange={handleGenderChange}
-            size="small"
-          >
-            <MenuItem value="H">Men (H)</MenuItem>
-            <MenuItem value="F">Women (F)</MenuItem>
-          </Select>
-        </FormControl>
-
-        {rankingData && (
+        {selectedCategory && (
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -279,14 +433,8 @@ const LiveRankingPage: React.FC = () => {
             justifyContent: { xs: 'center', sm: 'flex-start' }
           }}>
             <Chip 
-              label={`Total: ${rankingData.total} participants`} 
+              label={`Category: ${selectedCategory}`} 
               color="primary" 
-              variant="outlined"
-              size="small"
-            />
-            <Chip 
-              label={`Page ${page} of ${totalPages}`} 
-              color="secondary" 
               variant="outlined"
               size="small"
             />
@@ -301,145 +449,25 @@ const LiveRankingPage: React.FC = () => {
         </Alert>
       )}
 
-      {/* Rankings Table/Cards */}
-      {rankingData && rankingData.rankings.length > 0 ? (
+      {/* Rankings Sections */}
+      {selectedCategory && (
         <>
-          {isMobile ? (
-            // Mobile Card View
-            <Stack spacing={2} sx={{ mb: 3 }}>
-              {rankingData.rankings.map((entry) => (
-                <Card key={entry.dossard} elevation={2}>
-                  <CardContent sx={{ py: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        mr: 2,
-                        minWidth: '60px'
-                      }}>
-                        {entry.rank <= 3 && (
-                          <TrophyIcon 
-                            sx={{ 
-                              color: getTrophyColor(entry.rank), 
-                              mr: 0.5,
-                              fontSize: '1.2rem'
-                            }} 
-                          />
-                        )}
-                        <Typography variant="h6" fontWeight="bold">
-                          #{entry.rank}
-                        </Typography>
-                      </Box>
-                      <Box sx={{ flexGrow: 1 }}>
-                        <Typography variant="subtitle1" fontWeight="600">
-                          {entry.first_name} {entry.last_name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Dossard #{entry.dossard} • {entry.gender === 'H' ? 'Men' : 'Women'}
-                        </Typography>
-                      </Box>
-                      <Chip 
-                        label={`${entry.total_points} pts`}
-                        color="primary"
-                        size="small"
-                      />
-                    </Box>
-                    <Box sx={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between',
-                      fontSize: '0.875rem',
-                      color: 'text.secondary'
-                    }}>
-                      <span>Time: {formatTime(entry.chrono_sec)}</span>
-                      <span>Penalty: {entry.penality}</span>
-                      <span>Runs: {entry.number_of_runs}</span>
-                    </Box>
-                  </CardContent>
-                </Card>
-              ))}
-            </Stack>
-          ) : (
-            // Desktop Table View
-            <TableContainer component={Paper} sx={{ mb: 3 }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Rank</TableCell>
-                    <TableCell>Participant</TableCell>
-                    <TableCell>Dossard</TableCell>
-                    <TableCell>Gender</TableCell>
-                    <TableCell align="right">Total Points</TableCell>
-                    <TableCell align="right">Time</TableCell>
-                    <TableCell align="right">Penalty</TableCell>
-                    <TableCell align="right">Runs</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rankingData.rankings.map((entry) => (
-                    <TableRow key={entry.dossard}>
-                      <TableCell>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          {entry.rank <= 3 && (
-                            <TrophyIcon 
-                              sx={{ 
-                                color: getTrophyColor(entry.rank), 
-                                mr: 0.5,
-                                fontSize: '1.2rem'
-                              }} 
-                            />
-                          )}
-                          <Typography fontWeight="bold">
-                            {entry.rank}
-                          </Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell>
-                        <Typography fontWeight="600">
-                          {entry.first_name} {entry.last_name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>{entry.dossard}</TableCell>
-                      <TableCell>
-                        <Chip 
-                          label={entry.gender === 'H' ? 'Men' : 'Women'}
-                          color={entry.gender === 'H' ? 'primary' : 'secondary'}
-                          size="small"
-                          variant="outlined"
-                        />
-                      </TableCell>
-                      <TableCell align="right">
-                        <Chip 
-                          label={entry.total_points}
-                          color="primary"
-                          size="small"
-                        />
-                      </TableCell>
-                      <TableCell align="right">{formatTime(entry.chrono_sec)}</TableCell>
-                      <TableCell align="right">{entry.penality}</TableCell>
-                      <TableCell align="right">{entry.number_of_runs}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+          {/* Men's Rankings */}
+          {renderRankingSection(menRankingData, "Men's Rankings", "🏃‍♂️")}
+          
+          {/* Divider between men and women if both have data */}
+          {(menRankingData?.rankings?.length ?? 0) > 0 && (womenRankingData?.rankings?.length ?? 0) > 0 && (
+            <Divider sx={{ my: 4 }} />
           )}
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-              <Pagination
-                count={totalPages}
-                page={page}
-                onChange={handlePageChange}
-                color="primary"
-                size={isMobile ? 'small' : 'medium'}
-              />
-            </Box>
-          )}
+          
+          {/* Women's Rankings */}
+          {renderRankingSection(womenRankingData, "Women's Rankings", "🏃‍♀️")}
         </>
-      ) : (
+      )}
+
+      {!selectedCategory && (
         <Alert severity="info">
-          No rankings found for the selected category.
+          Please select a category to view rankings.
         </Alert>
       )}
     </Container>
