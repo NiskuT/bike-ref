@@ -48,7 +48,6 @@ import type { Participant, ParticipantInput, Zone } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
 import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
-import RunManagementDialog from '../components/RunManagementDialog'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -107,12 +106,6 @@ const ParticipantManagementPage: React.FC = () => {
     gender: 'H',
   })
   const [creatingParticipant, setCreatingParticipant] = useState(false)
-
-  // Run management state
-  const [runManagementDialog, setRunManagementDialog] = useState<{
-    open: boolean
-    participant: Participant | null
-  }>({ open: false, participant: null })
 
   // Get unique categories from zones
   const categories = zones.map(zone => zone.category)
@@ -258,11 +251,7 @@ const ParticipantManagementPage: React.FC = () => {
   }
 
   const handleViewRuns = (participant: Participant) => {
-    setRunManagementDialog({ open: true, participant })
-  }
-
-  const handleCloseRunManagement = () => {
-    setRunManagementDialog({ open: false, participant: null })
+    navigate(`/competitions/${competitionId}/participants/${participant.dossard_number}/runs`)
   }
 
   if (loading) {
@@ -638,13 +627,7 @@ const ParticipantManagementPage: React.FC = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Run Management Dialog */}
-      <RunManagementDialog
-        open={runManagementDialog.open}
-        onClose={handleCloseRunManagement}
-        participant={runManagementDialog.participant}
-        competitionId={competitionIdNum}
-      />
+
     </Container>
   )
 }

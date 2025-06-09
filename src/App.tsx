@@ -7,6 +7,7 @@ import ZoneListPage from './pages/ZoneListPage'
 import RefereeInterface from './pages/RefereeInterface'
 import LiveRankingPage from './pages/LiveRankingPage'
 import ParticipantManagementPage from './pages/ParticipantManagementPage'
+import RunManagementPage from './pages/RunManagementPage'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { TranslationProvider } from './contexts/TranslationContext'
@@ -96,6 +97,15 @@ export const App = () => (
           element={
             <ProtectedRoute requireAuth={true}>
               <ParticipantManagementPage />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/competitions/:competitionId/participants/:dossard/runs"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <RunManagementPage />
             </ProtectedRoute>
           }
         />
