@@ -27,15 +27,9 @@ const CompetitionListPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [logoutLoading, setLogoutLoading] = useState(false)
   const navigate = useNavigate()
-  const { canCreateCompetition, logout, isAuthenticated } = useAuth()
+  const { canCreateCompetition, logout } = useAuth()
 
   useEffect(() => {
-    // Redirect to login if not authenticated
-    if (!isAuthenticated) {
-      navigate('/login')
-      return
-    }
-
     competitionService
       .list()
       .then(setComps)
@@ -45,7 +39,7 @@ const CompetitionListPage: React.FC = () => {
         setError(apiError.message)
       })
       .finally(() => setLoading(false))
-  }, [isAuthenticated, navigate])
+  }, [])
 
   const handleLogout = async () => {
     setLogoutLoading(true)

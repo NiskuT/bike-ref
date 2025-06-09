@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { Alert, Container } from '@mui/material'
+import { Alert, Container, CircularProgress, Box } from '@mui/material'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -25,12 +25,22 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const { 
     isAuthenticated, 
+    isLoading,
     hasAnyRole, 
     canCreateCompetition, 
     canAccessCompetition 
   } = useAuth()
 
-  // Check authentication
+  // Show loading spinner while authentication state is being loaded
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  // Check authentication - only redirect if not loading and not authenticated
   if (requireAuth && !isAuthenticated) {
     return <Navigate to={fallbackPath} replace />
   }

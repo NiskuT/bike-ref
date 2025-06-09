@@ -37,6 +37,7 @@ import { competitionService } from '../api/competitionService'
 import type { LiveRankingResponse, Zone } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
 import { getErrorMessage } from '../utils/errorHandling'
+import { useConnectionMonitor } from '../hooks/useConnectionMonitor'
 
 const LiveRankingPage: React.FC = () => {
   const { competitionId } = useParams<{ competitionId: string }>()
@@ -44,6 +45,7 @@ const LiveRankingPage: React.FC = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const { canAccessCompetition } = useAuth()
+  const { shouldRefreshData, isOnline } = useConnectionMonitor()
 
   const competitionIdNum = Number(competitionId)
   const canViewCompetition = canAccessCompetition(competitionIdNum, 'referee')
@@ -101,6 +103,14 @@ const LiveRankingPage: React.FC = () => {
       fetchRankings()
     }
   }, [selectedCategory, page])
+
+  // Auto-refresh data when connection is restored
+  useEffect(() => {
+    if (shouldRefreshData && selectedCategory && !loading) {
+      console.log('Connection restored, refreshing rankings data')
+      fetchRankings(true) // Use refresh mode
+    }
+  }, [shouldRefreshData, selectedCategory, loading])
 
   const fetchRankings = async (isRefresh = false) => {
     if (isRefresh) {
@@ -441,6 +451,13 @@ const LiveRankingPage: React.FC = () => {
           </Box>
         )}
       </Box>
+
+      {/* Connection Status */}
+      {!isOnline && (
+        <Alert severity="warning" sx={{ mb: 3 }}>
+          No internet connection. Data may be outdated.
+        </Alert>
+      )}
 
       {/* Error Display */}
       {error && (

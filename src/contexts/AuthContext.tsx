@@ -4,6 +4,7 @@ import { authService } from '../api/authService'
 export interface AuthContextType {
   roles: string[]
   isAuthenticated: boolean
+  isLoading: boolean
   hasRole: (role: string) => boolean
   hasAnyRole: (roles: string[]) => boolean
   canAccessCompetition: (competitionId: number, action: 'admin' | 'referee') => boolean
@@ -30,6 +31,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [roles, setRolesState] = useState<string[]>([])
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
     // Load roles from localStorage on app start
@@ -44,7 +46,44 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem('userRoles')
       }
     }
-  }, [])
+    
+    // Mark loading as complete
+    setIsLoading(false)
+
+    // Handle app visibility changes (mobile specific)
+    const handleVisibilityChange = () => {
+      if (!document.hidden && isAuthenticated) {
+        // App became visible again, could verify auth status here if needed
+        console.log('App became visible, user is authenticated')
+        
+        // Optional: You could add a periodic auth check here
+        // but since your backend has auto-refresh, this might not be necessary
+      }
+    }
+
+    // Handle online/offline status
+    const handleOnline = () => {
+      console.log('Connection restored')
+      // App came back online - auth should be handled by your backend auto-refresh
+    }
+
+    const handleOffline = () => {
+      console.log('Connection lost')
+      // Don't logout on offline - wait for connection to restore
+    }
+
+    // Add event listeners for mobile app lifecycle
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    // Cleanup event listeners
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [isAuthenticated])
 
   const setRoles = (newRoles: string[]) => {
     setRolesState(newRoles)
@@ -116,6 +155,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const value: AuthContextType = {
     roles,
     isAuthenticated,
+    isLoading,
     hasRole,
     hasAnyRole,
     canAccessCompetition,
