@@ -10,4 +10,4 @@ export type Language = keyof typeof translations
 export type TranslationKeys = typeof en
 
 export const supportedLanguages: Language[] = ['en', 'fr']
-export const defaultLanguage: Language = 'en' 
+export const defaultLanguage: Language = 'fr' 

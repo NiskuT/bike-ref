@@ -90,6 +90,9 @@ const CompetitionListPage: React.FC = () => {
         mb: { xs: 2, sm: 4 }
       }}
     >
+      <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
+        <LanguageSelector />
+      </Box>
       <Paper elevation={3} sx={{ p: { xs: 2, sm: 3 } }}>
         <Box sx={{ 
           display: 'flex', 
@@ -166,7 +169,6 @@ const CompetitionListPage: React.FC = () => {
             >
               {t('competitions.buttons.password')}
             </Button>
-            <LanguageSelector />
             <Button
               variant="outlined"
               color="secondary"
