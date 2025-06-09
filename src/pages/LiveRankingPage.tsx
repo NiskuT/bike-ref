@@ -50,6 +50,7 @@ const LiveRankingPage: React.FC = () => {
   const [rankingData, setRankingData] = useState<LiveRankingResponse | null>(null)
   const [zones, setZones] = useState<Zone[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [selectedGender, setSelectedGender] = useState<'H' | 'F'>('H')
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
@@ -95,10 +96,10 @@ const LiveRankingPage: React.FC = () => {
   }, [competitionId, competitionIdNum, canViewCompetition, selectedCategory])
 
   useEffect(() => {
-    if (selectedCategory && !loading) {
+    if (selectedCategory && selectedGender && !loading) {
       fetchRankings()
     }
-  }, [selectedCategory, page])
+  }, [selectedCategory, selectedGender, page])
 
   const fetchRankings = async (isRefresh = false) => {
     if (isRefresh) {
@@ -114,6 +115,7 @@ const LiveRankingPage: React.FC = () => {
         page,
         page_size: pageSize,
         category: selectedCategory,
+        gender: selectedGender,
       })
       setRankingData(data)
     } catch (err) {
@@ -129,6 +131,11 @@ const LiveRankingPage: React.FC = () => {
   const handleCategoryChange = (event: any) => {
     setSelectedCategory(event.target.value)
     setPage(1) // Reset to first page when changing category
+  }
+
+  const handleGenderChange = (event: any) => {
+    setSelectedGender(event.target.value)
+    setPage(1) // Reset to first page when changing gender
   }
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -251,6 +258,19 @@ const LiveRankingPage: React.FC = () => {
           </Select>
         </FormControl>
 
+        <FormControl sx={{ minWidth: { xs: '100%', sm: 150 } }}>
+          <InputLabel>Gender</InputLabel>
+          <Select
+            value={selectedGender}
+            label="Gender"
+            onChange={handleGenderChange}
+            size="small"
+          >
+            <MenuItem value="H">Men (H)</MenuItem>
+            <MenuItem value="F">Women (F)</MenuItem>
+          </Select>
+        </FormControl>
+
         {rankingData && (
           <Box sx={{ 
             display: 'flex', 
@@ -315,7 +335,7 @@ const LiveRankingPage: React.FC = () => {
                           {entry.first_name} {entry.last_name}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          Dossard #{entry.dossard}
+                          Dossard #{entry.dossard} • {entry.gender === 'H' ? 'Men' : 'Women'}
                         </Typography>
                       </Box>
                       <Chip 
@@ -347,6 +367,7 @@ const LiveRankingPage: React.FC = () => {
                     <TableCell>Rank</TableCell>
                     <TableCell>Participant</TableCell>
                     <TableCell>Dossard</TableCell>
+                    <TableCell>Gender</TableCell>
                     <TableCell align="right">Total Points</TableCell>
                     <TableCell align="right">Time</TableCell>
                     <TableCell align="right">Penalty</TableCell>
@@ -378,6 +399,14 @@ const LiveRankingPage: React.FC = () => {
                         </Typography>
                       </TableCell>
                       <TableCell>{entry.dossard}</TableCell>
+                      <TableCell>
+                        <Chip 
+                          label={entry.gender === 'H' ? 'Men' : 'Women'}
+                          color={entry.gender === 'H' ? 'primary' : 'secondary'}
+                          size="small"
+                          variant="outlined"
+                        />
+                      </TableCell>
                       <TableCell align="right">
                         <Chip 
                           label={entry.total_points}

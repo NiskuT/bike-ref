@@ -51,6 +51,7 @@ export interface Participant {
   dossard_number: number
   first_name: string
   last_name: string
+  gender: 'H' | 'F' // H for men, F for women
 }
 
 // Participant creation model
@@ -60,6 +61,7 @@ export interface ParticipantInput {
   dossard_number: number
   first_name: string
   last_name: string
+  gender: 'H' | 'F' // H for men, F for women
 }
 
 // Participant list response
@@ -74,6 +76,7 @@ export interface RankingEntry {
   dossard: number
   first_name: string
   last_name: string
+  gender: 'H' | 'F' // H for men, F for women
   number_of_runs: number
   penality: number
   rank: number
@@ -82,6 +85,7 @@ export interface RankingEntry {
 
 export interface LiveRankingResponse {
   category: string
+  gender: 'H' | 'F' // Gender filter applied 
   competition_id: number
   page: number
   page_size: number

@@ -24,10 +24,9 @@ export const participantService = {
       .post<Participant>('/participant', participant)
       .then((r) => r.data),
       
-  uploadParticipants: (competitionId: number, category: string, file: File) => {
+  uploadParticipants: (competitionId: number, file: File) => {
     const formData = new FormData()
     formData.append('competitionID', competitionId.toString())
-    formData.append('category', category)
     formData.append('file', file)
     
     return client

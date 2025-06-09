@@ -90,7 +90,6 @@ const ParticipantManagementPage: React.FC = () => {
 
   // File upload state
   const [uploadFile, setUploadFile] = useState<File | null>(null)
-  const [uploadCategory, setUploadCategory] = useState<string>('')
   const [uploading, setUploading] = useState(false)
 
   // Single participant state
@@ -101,6 +100,7 @@ const ParticipantManagementPage: React.FC = () => {
     dossard_number: 0,
     first_name: '',
     last_name: '',
+    gender: 'H',
   })
   const [creatingParticipant, setCreatingParticipant] = useState(false)
 
@@ -131,7 +131,6 @@ const ParticipantManagementPage: React.FC = () => {
         if (!selectedCategory && response.zones.length > 0) {
           const firstCategory = response.zones[0].category
           setSelectedCategory(firstCategory)
-          setUploadCategory(firstCategory)
           setSingleParticipantForm(prev => ({ ...prev, category: firstCategory }))
         }
       })
@@ -170,8 +169,8 @@ const ParticipantManagementPage: React.FC = () => {
   }
 
   const handleFileUpload = async () => {
-    if (!uploadFile || !uploadCategory) {
-      setError('Please select a file and category.')
+    if (!uploadFile) {
+      setError('Please select a file.')
       return
     }
 
@@ -179,13 +178,11 @@ const ParticipantManagementPage: React.FC = () => {
     setError(null)
 
     try {
-      await participantService.uploadParticipants(competitionIdNum, uploadCategory, uploadFile)
+      await participantService.uploadParticipants(competitionIdNum, uploadFile)
       setUploadFile(null)
       
-      // Refresh participants if viewing the same category
-      if (selectedCategory === uploadCategory) {
-        await fetchParticipants()
-      }
+      // Refresh participants for current category
+      await fetchParticipants()
       
       // Reset form
       const fileInput = document.getElementById('file-upload') as HTMLInputElement
@@ -220,6 +217,7 @@ const ParticipantManagementPage: React.FC = () => {
         dossard_number: 0,
         first_name: '',
         last_name: '',
+        gender: 'H',
       })
       setSingleParticipantDialog(false)
       
@@ -244,6 +242,7 @@ const ParticipantManagementPage: React.FC = () => {
       dossard_number: 0,
       first_name: '',
       last_name: '',
+      gender: 'H',
     })
     setSingleParticipantDialog(true)
   }
@@ -357,25 +356,10 @@ const ParticipantManagementPage: React.FC = () => {
               Upload Participants from File
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Upload a CSV or XLSX file with columns: Last Name, First Name, Dossard Number
+              Upload a CSV or XLSX file with 5 columns in this exact order: Dossard Number, Category, Last Name, First Name, Gender (H/F)
             </Typography>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <FormControl>
-                <InputLabel>Category for Upload</InputLabel>
-                <Select
-                  value={uploadCategory}
-                  label="Category for Upload"
-                  onChange={(e) => setUploadCategory(e.target.value)}
-                  size="small"
-                >
-                  {categories.map((category) => (
-                    <MenuItem key={category} value={category}>
-                      {category}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
 
               <Box>
                 <input
@@ -400,7 +384,7 @@ const ParticipantManagementPage: React.FC = () => {
               <Button
                 variant="contained"
                 onClick={handleFileUpload}
-                disabled={!uploadFile || !uploadCategory || uploading}
+                disabled={!uploadFile || uploading}
                 startIcon={uploading ? <CircularProgress size={20} /> : <UploadIcon />}
                 fullWidth={isMobile}
               >
@@ -462,7 +446,7 @@ const ParticipantManagementPage: React.FC = () => {
                             {participant.first_name} {participant.last_name}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            Category: {participant.category}
+                            Category: {participant.category} • {participant.gender === 'H' ? 'Men' : 'Women'}
                           </Typography>
                         </Box>
                         <Chip 
@@ -485,6 +469,7 @@ const ParticipantManagementPage: React.FC = () => {
                       <TableCell>First Name</TableCell>
                       <TableCell>Last Name</TableCell>
                       <TableCell>Category</TableCell>
+                      <TableCell>Gender</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -500,6 +485,14 @@ const ParticipantManagementPage: React.FC = () => {
                         <TableCell>{participant.first_name}</TableCell>
                         <TableCell>{participant.last_name}</TableCell>
                         <TableCell>{participant.category}</TableCell>
+                        <TableCell>
+                          <Chip 
+                            label={participant.gender === 'H' ? 'Men' : 'Women'}
+                            color={participant.gender === 'H' ? 'primary' : 'secondary'}
+                            size="small"
+                            variant="outlined"
+                          />
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -560,6 +553,18 @@ const ParticipantManagementPage: React.FC = () => {
               required
               fullWidth
             />
+
+            <FormControl>
+              <InputLabel>Gender</InputLabel>
+              <Select
+                value={singleParticipantForm.gender}
+                label="Gender"
+                onChange={(e) => setSingleParticipantForm(prev => ({ ...prev, gender: e.target.value as 'H' | 'F' }))}
+              >
+                <MenuItem value="H">Men (H)</MenuItem>
+                <MenuItem value="F">Women (F)</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
         </DialogContent>
         <DialogActions>
