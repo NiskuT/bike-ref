@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom'
 import { competitionService } from '../api/competitionService'
 import type { CompetitionResponse } from '../api/models'
 import { format } from 'date-fns'
-import { Add as AddIcon, Logout as LogoutIcon, DirectionsBike as BikeIcon } from '@mui/icons-material'
+import { Add as AddIcon, Logout as LogoutIcon, DirectionsBike as BikeIcon, Lock as LockIcon } from '@mui/icons-material'
 import { useAuth } from '../contexts/AuthContext'
 import { getErrorMessage } from '../utils/errorHandling'
 
@@ -152,6 +152,16 @@ const CompetitionListPage: React.FC = () => {
                 New
               </Button>
             )}
+            <Button
+              variant="outlined"
+              color="primary"
+              startIcon={<LockIcon />}
+              onClick={() => navigate('/change-password')}
+              size="small"
+              sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
+            >
+              Password
+            </Button>
             <Button
               variant="outlined"
               color="secondary"

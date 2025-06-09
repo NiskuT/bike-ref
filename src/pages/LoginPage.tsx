@@ -112,6 +112,25 @@ const LoginPage: React.FC = () => {
           >
             {loading ? 'Signing in…' : 'Sign In'}
           </Button>
+          <Box sx={{ textAlign: 'center', mt: 2 }}>
+            <Typography
+              component="button"
+              variant="body2"
+              onClick={() => navigate('/forgot-password')}
+              sx={{
+                color: 'primary.main',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                border: 'none',
+                background: 'none',
+                '&:hover': {
+                  color: 'primary.dark',
+                },
+              }}
+            >
+              Forgot your password?
+            </Typography>
+          </Box>
         </Box>
       </Paper>
     </Container>

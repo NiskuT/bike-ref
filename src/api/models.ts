@@ -103,6 +103,17 @@ export interface LoginResponse {
   roles: string[]
 }
 
+// Password Reset Request
+export interface ForgotPasswordRequest {
+  email: string
+}
+
+// Change Password Request
+export interface ChangePasswordRequest {
+  current_password: string
+  new_password: string
+}
+
 // src/api/models.ts
 export interface CompetitionResponse {
   id: number

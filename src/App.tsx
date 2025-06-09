@@ -1,4 +1,6 @@
 import LoginPage from './pages/LoginPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import ChangePasswordPage from './pages/ChangePasswordPage'
 import CompetitionListPage from './pages/CompetitionListPage'
 import CreateCompetition from './pages/CreateCompetition'
 import ZoneListPage from './pages/ZoneListPage'
@@ -31,12 +33,22 @@ export const App = () => (
         <Routes>
           <Route path="/" element={<Navigate to="/competitions" replace />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           
           <Route 
             path="/competitions" 
             element={
               <ProtectedRoute requireAuth={true}>
                 <CompetitionListPage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/change-password" 
+            element={
+              <ProtectedRoute requireAuth={true}>
+                <ChangePasswordPage />
               </ProtectedRoute>
             } 
           />
