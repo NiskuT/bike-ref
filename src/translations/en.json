@@ -189,6 +189,13 @@
         "confirmText": "I understand this action is irreversible",
         "deleteButton": "DELETE RUN"
       },
+      "updateDialog": {
+        "title": "Update Run - CAUTION",
+        "message": "Are you sure you want to modify this run? This will change the participant's recorded performance.",
+        "warningMessage": "⚠️ CAUTION: Modifying run data may affect competition rankings and results!",
+        "confirmText": "I understand this will modify the competition results",
+        "updateButton": "UPDATE RUN"
+      },
       "success": {
         "updated": "Run updated successfully",
         "deleted": "Run deleted successfully"

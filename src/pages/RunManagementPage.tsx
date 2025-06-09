@@ -65,6 +65,13 @@ const RunManagementPage: React.FC = () => {
     confirmed: boolean
   }>({ open: false, run: null, confirmed: false })
 
+  // Update confirmation dialog state
+  const [updateDialog, setUpdateDialog] = useState<{
+    open: boolean
+    run: RunWithReferee | null
+    confirmed: boolean
+  }>({ open: false, run: null, confirmed: false })
+
   useEffect(() => {
     if (!competitionId || !dossard) {
       setError('Invalid competition ID or dossard')
@@ -120,8 +127,19 @@ const RunManagementPage: React.FC = () => {
     setEditForm({})
   }
 
-  const handleEditSave = async () => {
+  const handleEditSave = () => {
     if (!editForm.run_number) return
+    
+    // Find the current run being edited
+    const currentRun = runs.find(run => run.run_number === editForm.run_number)
+    if (!currentRun) return
+    
+    // Show confirmation dialog
+    setUpdateDialog({ open: true, run: currentRun, confirmed: false })
+  }
+
+  const handleUpdateConfirm = async () => {
+    if (!updateDialog.run || !updateDialog.confirmed || !editForm.run_number) return
     
     setSaving(true)
     try {
@@ -138,6 +156,7 @@ const RunManagementPage: React.FC = () => {
       
       setEditingRun(null)
       setEditForm({})
+      setUpdateDialog({ open: false, run: null, confirmed: false })
     } catch (err) {
       const apiError = getErrorMessage(err)
       setError(apiError.message)
@@ -490,6 +509,69 @@ const RunManagementPage: React.FC = () => {
           </Stack>
         )}
       </Container>
+
+      {/* Update Confirmation Dialog */}
+      <Dialog
+        open={updateDialog.open}
+        onClose={() => setUpdateDialog({ open: false, run: null, confirmed: false })}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <WarningIcon color="warning" />
+          {t('participants.runManagement.updateDialog.title')}
+        </DialogTitle>
+        <DialogContent>
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            {t('participants.runManagement.updateDialog.warningMessage')}
+          </Alert>
+          
+          <Typography variant="body1" gutterBottom>
+            {t('participants.runManagement.updateDialog.message')}
+          </Typography>
+          
+          {updateDialog.run && (
+            <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
+              <Typography variant="body2">
+                <strong>Run #{updateDialog.run.run_number}</strong> - {updateDialog.run.zone}
+              </Typography>
+              <Typography variant="body2">
+                Time: {formatTime(updateDialog.run.chrono_sec)} | Penalty: {updateDialog.run.penality} pts
+              </Typography>
+            </Box>
+          )}
+          
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={updateDialog.confirmed}
+                onChange={(e) =>
+                  setUpdateDialog(prev => ({ ...prev, confirmed: e.target.checked }))
+                }
+              />
+            }
+            label={t('participants.runManagement.updateDialog.confirmText')}
+            sx={{ mt: 2 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setUpdateDialog({ open: false, run: null, confirmed: false })}
+            disabled={saving}
+          >
+            {t('common.buttons.cancel')}
+          </Button>
+          <Button
+            onClick={handleUpdateConfirm}
+            disabled={!updateDialog.confirmed || saving}
+            color="warning"
+            variant="contained"
+            startIcon={saving ? <CircularProgress size={16} /> : <SaveIcon />}
+          >
+            {saving ? t('common.loading.saving') : t('participants.runManagement.updateDialog.updateButton')}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Delete Confirmation Dialog */}
       <Dialog

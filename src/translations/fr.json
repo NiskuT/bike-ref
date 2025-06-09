@@ -87,7 +87,7 @@
       "liveRanking": "Classement en direct",
       "createZone": "Créer une zone",
       "editZone": "Modifier la zone",
-      "referee": "Arbitre"
+      "referee": "Arbitrer"
     },
     "noZones": "Aucune zone trouvée pour cette compétition.",
     "createZoneTitle": "Créer une nouvelle zone",
@@ -179,7 +179,7 @@
         "labels": {
           "time": "Temps (secondes)",
           "penalty": "Points de Pénalité",
-          "doors": "État des Portes"
+          "doors": "Portes validées"
         }
       },
       "deleteDialog": {
@@ -188,6 +188,13 @@
         "warningMessage": "⚠️ ATTENTION : Ceci supprimera toutes les données de ce passage et ne peut pas être annulé !",
         "confirmText": "Je comprends que cette action est irréversible",
         "deleteButton": "SUPPRIMER LE PASSAGE"
+      },
+      "updateDialog": {
+        "title": "Modifier le Passage - PRUDENCE",
+        "message": "Êtes-vous sûr de vouloir modifier ce passage ? Cela changera la performance enregistrée du participant.",
+        "warningMessage": "⚠️ PRUDENCE : Modifier les données du passage peut affecter les classements et résultats de la compétition !",
+        "confirmText": "Je comprends que cela modifiera les résultats de la compétition",
+        "updateButton": "MODIFIER LE PASSAGE"
       },
       "success": {
         "updated": "Passage mis à jour avec succès",
