@@ -44,6 +44,45 @@ export interface RunResponse {
   door6: boolean
 }
 
+// Run with referee information (for admin management)
+export interface RunWithReferee {
+  chrono_sec: number
+  competition_id: number
+  door1: boolean
+  door2: boolean
+  door3: boolean
+  door4: boolean
+  door5: boolean
+  door6: boolean
+  dossard: number
+  penality: number
+  referee_id: number
+  referee_name: string
+  run_number: number
+  zone: string
+}
+
+// Response for participant runs
+export interface ParticipantRunsResponse {
+  runs: RunWithReferee[]
+}
+
+// Run update model (for admin edits)
+export interface RunUpdateInput {
+  chrono_sec: number
+  competition_id: number
+  door1: boolean
+  door2: boolean
+  door3: boolean
+  door4: boolean
+  door5: boolean
+  door6: boolean
+  dossard: number
+  penality: number
+  run_number: number
+  zone: string
+}
+
 // Participant model
 export interface Participant {
   category: string

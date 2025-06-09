@@ -144,11 +144,58 @@
         "firstName": "First Name",
         "lastName": "Last Name",
         "category": "Category",
-        "gender": "Gender"
+        "gender": "Gender",
+        "actions": "Actions"
       },
       "genderLabels": {
         "men": "Men",
         "women": "Women"
+      },
+      "buttons": {
+        "viewRuns": "View Runs"
+      }
+    },
+    "runManagement": {
+      "title": "Manage Runs",
+      "participantInfo": "Runs for",
+      "noRuns": "No runs found for this participant.",
+      "tableHeaders": {
+        "runNumber": "Run #",
+        "zone": "Zone",
+        "time": "Time",
+        "penalty": "Penalty",
+        "doors": "Doors",
+        "referee": "Referee",
+        "actions": "Actions"
+      },
+      "buttons": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "editDialog": {
+        "title": "Edit Run",
+        "labels": {
+          "time": "Time (seconds)",
+          "penalty": "Penalty Points",
+          "doors": "Doors Status"
+        }
+      },
+      "deleteDialog": {
+        "title": "Delete Run - DANGER",
+        "message": "Are you sure you want to delete this run? This action is IRREVERSIBLE and will permanently remove the run data.",
+        "warningMessage": "⚠️ WARNING: This will delete all data for this run and cannot be undone!",
+        "confirmText": "I understand this action is irreversible",
+        "deleteButton": "DELETE RUN"
+      },
+      "success": {
+        "updated": "Run updated successfully",
+        "deleted": "Run deleted successfully"
+      },
+      "doors": {
+        "passed": "Passed",
+        "failed": "Failed"
       }
     }
   },

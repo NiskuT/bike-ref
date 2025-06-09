@@ -39,6 +39,7 @@ import {
   Group as GroupIcon,
   Person as PersonIcon,
   CloudUpload as CloudUploadIcon,
+  Visibility as ViewIcon,
 } from '@mui/icons-material'
 import { useParams, useNavigate } from 'react-router-dom'
 import { participantService } from '../api/participantService'
@@ -47,6 +48,7 @@ import type { Participant, ParticipantInput, Zone } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
 import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
+import RunManagementDialog from '../components/RunManagementDialog'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -105,6 +107,12 @@ const ParticipantManagementPage: React.FC = () => {
     gender: 'H',
   })
   const [creatingParticipant, setCreatingParticipant] = useState(false)
+
+  // Run management state
+  const [runManagementDialog, setRunManagementDialog] = useState<{
+    open: boolean
+    participant: Participant | null
+  }>({ open: false, participant: null })
 
   // Get unique categories from zones
   const categories = zones.map(zone => zone.category)
@@ -247,6 +255,14 @@ const ParticipantManagementPage: React.FC = () => {
       gender: 'H',
     })
     setSingleParticipantDialog(true)
+  }
+
+  const handleViewRuns = (participant: Participant) => {
+    setRunManagementDialog({ open: true, participant })
+  }
+
+  const handleCloseRunManagement = () => {
+    setRunManagementDialog({ open: false, participant: null })
   }
 
   if (loading) {
@@ -463,11 +479,22 @@ const ParticipantManagementPage: React.FC = () => {
                             {t('participants.viewParticipants.tableHeaders.category')}: {participant.category} • {participant.gender === 'H' ? t('participants.viewParticipants.genderLabels.men') : t('participants.viewParticipants.genderLabels.women')}
                           </Typography>
                         </Box>
-                        <Chip 
-                          label={`#${participant.dossard_number}`}
-                          color="primary"
-                          size="small"
-                        />
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
+                          <Chip 
+                            label={`#${participant.dossard_number}`}
+                            color="primary"
+                            size="small"
+                          />
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            startIcon={<ViewIcon />}
+                            onClick={() => handleViewRuns(participant)}
+                            sx={{ fontSize: '0.75rem' }}
+                          >
+                            {t('participants.viewParticipants.buttons.viewRuns')}
+                          </Button>
+                        </Box>
                       </Box>
                     </CardContent>
                   </Card>
@@ -484,6 +511,7 @@ const ParticipantManagementPage: React.FC = () => {
                       <TableCell>{t('participants.viewParticipants.tableHeaders.lastName')}</TableCell>
                       <TableCell>{t('participants.viewParticipants.tableHeaders.category')}</TableCell>
                       <TableCell>{t('participants.viewParticipants.tableHeaders.gender')}</TableCell>
+                      <TableCell>{t('participants.viewParticipants.tableHeaders.actions')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -506,6 +534,21 @@ const ParticipantManagementPage: React.FC = () => {
                             size="small"
                             variant="outlined"
                           />
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            startIcon={<ViewIcon />}
+                            onClick={() => handleViewRuns(participant)}
+                            sx={{ 
+                              fontSize: '0.75rem',
+                              minWidth: { xs: 'auto', sm: '120px' },
+                              px: { xs: 1, sm: 1.5 }
+                            }}
+                          >
+                            {t('participants.viewParticipants.buttons.viewRuns')}
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -594,6 +637,14 @@ const ParticipantManagementPage: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Run Management Dialog */}
+      <RunManagementDialog
+        open={runManagementDialog.open}
+        onClose={handleCloseRunManagement}
+        participant={runManagementDialog.participant}
+        competitionId={competitionIdNum}
+      />
     </Container>
   )
 }

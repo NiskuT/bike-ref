@@ -144,11 +144,58 @@
         "firstName": "Prénom",
         "lastName": "Nom de famille",
         "category": "Catégorie",
-        "gender": "Sexe"
+        "gender": "Sexe",
+        "actions": "Actions"
       },
       "genderLabels": {
         "men": "Hommes",
         "women": "Femmes"
+      },
+      "buttons": {
+        "viewRuns": "Voir les Passages"
+      }
+    },
+    "runManagement": {
+      "title": "Gérer les Passages",
+      "participantInfo": "Passages pour",
+      "noRuns": "Aucun passage trouvé pour ce participant.",
+      "tableHeaders": {
+        "runNumber": "Passage #",
+        "zone": "Zone",
+        "time": "Temps",
+        "penalty": "Pénalité",
+        "doors": "Portes",
+        "referee": "Arbitre",
+        "actions": "Actions"
+      },
+      "buttons": {
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "save": "Sauvegarder",
+        "cancel": "Annuler"
+      },
+      "editDialog": {
+        "title": "Modifier le Passage",
+        "labels": {
+          "time": "Temps (secondes)",
+          "penalty": "Points de Pénalité",
+          "doors": "État des Portes"
+        }
+      },
+      "deleteDialog": {
+        "title": "Supprimer le Passage - DANGER",
+        "message": "Êtes-vous sûr de vouloir supprimer ce passage ? Cette action est IRRÉVERSIBLE et supprimera définitivement les données du passage.",
+        "warningMessage": "⚠️ ATTENTION : Ceci supprimera toutes les données de ce passage et ne peut pas être annulé !",
+        "confirmText": "Je comprends que cette action est irréversible",
+        "deleteButton": "SUPPRIMER LE PASSAGE"
+      },
+      "success": {
+        "updated": "Passage mis à jour avec succès",
+        "deleted": "Passage supprimé avec succès"
+      },
+      "doors": {
+        "passed": "Réussie",
+        "failed": "Échouée"
       }
     }
   },
