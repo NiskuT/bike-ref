@@ -33,12 +33,14 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { competitionService } from '../api/competitionService'
 import type { Zone, ZoneInput, RefereeInput } from '../api/models'
 import { useAuth } from '../contexts/AuthContext'
+import { useTranslation } from '../contexts/TranslationContext'
 import { getErrorMessage } from '../utils/errorHandling'
 
 const ZoneListPage: React.FC = () => {
   const { competitionId } = useParams<{ competitionId: string }>()
   const navigate = useNavigate()
   const { canAccessCompetition } = useAuth()
+  const { t } = useTranslation()
   
   const [zones, setZones] = useState<Zone[]>([])
   const [loading, setLoading] = useState(true)
@@ -271,7 +273,7 @@ const ZoneListPage: React.FC = () => {
         </Alert>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant="outlined" onClick={() => navigate('/competitions')}>
-            Back to Competitions
+            {t('common.buttons.back')}
           </Button>
         </Box>
       </Container>
@@ -290,41 +292,43 @@ const ZoneListPage: React.FC = () => {
       {/* Header */}
       <Box sx={{ 
         display: 'flex', 
-        alignItems: 'center', 
+        alignItems: { xs: 'flex-start', sm: 'center' }, 
         mb: { xs: 2, sm: 3 },
-        flexWrap: 'wrap',
-        gap: { xs: 1, sm: 0 }
+        flexDirection: { xs: 'column', sm: 'row' },
+        gap: { xs: 2, sm: 0 }
       }}>
-        <IconButton 
-          onClick={() => navigate('/competitions')} 
-          sx={{ 
-            mr: { xs: 1, sm: 2 },
-            p: { xs: 1, sm: 1.5 }
-          }}
-        >
-          <BackIcon />
-        </IconButton>
-        <Typography 
-          variant="h4" 
-          component="h1"
-          sx={{
-            fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
-            fontWeight: 500,
-            lineHeight: 1.2,
-            flexGrow: 1
-          }}
-        >
-          Competition Zones
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+          <IconButton 
+            onClick={() => navigate('/competitions')} 
+            sx={{ 
+              mr: { xs: 1, sm: 2 },
+              p: { xs: 1, sm: 1.5 }
+            }}
+          >
+            <BackIcon />
+          </IconButton>
+          <Typography 
+            variant="h4" 
+            component="h1"
+            sx={{
+              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
+              fontWeight: 500,
+              lineHeight: 1.2
+            }}
+          >
+            {t('zones.title')}
+          </Typography>
+        </Box>
         
         {/* Action Buttons */}
         {canRefereeCompetition && (
           <Box sx={{ 
             display: 'flex', 
-            gap: 1, 
-            ml: 'auto',
+            gap: { xs: 1, sm: 1.5 }, 
             flexDirection: { xs: 'column', sm: 'row' },
-            alignItems: 'stretch'
+            alignItems: 'stretch',
+            minWidth: 0,
+            width: { xs: '100%', sm: 'auto' }
           }}>
             {canAdminCompetition && (
               <>
@@ -336,10 +340,13 @@ const ZoneListPage: React.FC = () => {
                   size="small"
                   sx={{
                     fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                    px: { xs: 1.5, sm: 2 }
+                    px: { xs: 1, sm: 1.5 },
+                    py: { xs: 0.5, sm: 0.75 },
+                    minWidth: { xs: 'auto', sm: '120px' },
+                    whiteSpace: 'nowrap'
                   }}
                 >
-                  Participants
+                  {t('zones.buttons.participants')}
                 </Button>
                 <Button
                   variant="outlined"
@@ -349,10 +356,13 @@ const ZoneListPage: React.FC = () => {
                   size="small"
                   sx={{
                     fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                    px: { xs: 1.5, sm: 2 }
+                    px: { xs: 1, sm: 1.5 },
+                    py: { xs: 0.5, sm: 0.75 },
+                    minWidth: { xs: 'auto', sm: '120px' },
+                    whiteSpace: 'nowrap'
                   }}
                 >
-                  Add Referee
+                  {t('zones.buttons.addReferee')}
                 </Button>
               </>
             )}
@@ -364,10 +374,13 @@ const ZoneListPage: React.FC = () => {
               size="small"
               sx={{
                 fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                px: { xs: 1.5, sm: 2 }
+                px: { xs: 1, sm: 1.5 },
+                py: { xs: 0.5, sm: 0.75 },
+                minWidth: { xs: 'auto', sm: '120px' },
+                whiteSpace: 'nowrap'
               }}
             >
-              Live Ranking
+              {t('zones.buttons.liveRanking')}
             </Button>
           </Box>
         )}
@@ -376,7 +389,7 @@ const ZoneListPage: React.FC = () => {
       {/* Zones Grid */}
       {zones.length === 0 ? (
         <Alert severity="info">
-          No zones found for this competition.
+          {t('zones.noZones')}
         </Alert>
       ) : (
         <Box 
@@ -437,7 +450,7 @@ const ZoneListPage: React.FC = () => {
                         onClick={() => handleRefereeZone(zone)}
                         size="small"
                       >
-                        Referee
+                        {t('zones.buttons.referee')}
                       </Button>
                     )}
                   </Box>
@@ -492,12 +505,12 @@ const ZoneListPage: React.FC = () => {
         fullWidth
       >
         <DialogTitle>
-          {zoneDialog.mode === 'create' ? 'Create New Zone' : `Edit Zone: ${zoneDialog.zone?.zone}`}
+          {zoneDialog.mode === 'create' ? t('zones.createZoneTitle') : `${t('zones.editZoneTitle')}: ${zoneDialog.zone?.zone}`}
         </DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
             <TextField
-              label="Zone Name"
+              label={t('zones.labels.zoneName')}
               value={zoneForm.zone}
               onChange={handleZoneFormChange('zone')}
               disabled={zoneDialog.mode === 'edit'} // Zone name shouldn't be editable in edit mode
@@ -506,7 +519,7 @@ const ZoneListPage: React.FC = () => {
             />
             
             <TextField
-              label="Category"
+              label={t('zones.labels.category')}
               value={zoneForm.category}
               onChange={handleZoneFormChange('category')}
               disabled={zoneDialog.mode === 'edit'} // Category shouldn't be editable in edit mode
@@ -515,7 +528,7 @@ const ZoneListPage: React.FC = () => {
             />
             
             <Typography variant="subtitle2" sx={{ mt: 2 }}>
-              Points per Door
+              {t('zones.labels.pointsDoor')}
             </Typography>
             
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
@@ -523,7 +536,7 @@ const ZoneListPage: React.FC = () => {
                 <TextField
                   key={doorNum}
                   type="number"
-                  label={`Door ${doorNum}`}
+                  label={`${t('zones.labels.pointsDoor')} ${doorNum}`}
                   value={zoneForm[`points_door${doorNum}` as keyof ZoneInput]}
                   onChange={handleZoneFormChange(`points_door${doorNum}` as keyof ZoneInput)}
                   InputProps={{ inputProps: { min: 0 } }}
@@ -535,14 +548,14 @@ const ZoneListPage: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setZoneDialog({ open: false, mode: 'create', zone: null })}>
-            Cancel
+            {t('common.buttons.cancel')}
           </Button>
           <Button 
             onClick={handleSaveZone} 
             variant="contained"
             disabled={zoneFormLoading}
           >
-            {zoneFormLoading ? 'Saving...' : (zoneDialog.mode === 'create' ? 'Create Zone' : 'Save Changes')}
+            {zoneFormLoading ? t('common.loading.saving') : (zoneDialog.mode === 'create' ? t('zones.buttons.createZone') : t('common.buttons.save'))}
           </Button>
         </DialogActions>
       </Dialog>
@@ -555,12 +568,12 @@ const ZoneListPage: React.FC = () => {
         fullWidth
       >
         <DialogTitle>
-          Add New Referee
+          {t('zones.addRefereeTitle')}
         </DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
             <TextField
-              label="Email"
+              label={t('zones.addRefereeLabels.email')}
               type="email"
               value={refereeForm.email}
               onChange={handleRefereeFormChange('email')}
@@ -570,7 +583,7 @@ const ZoneListPage: React.FC = () => {
             />
             
             <TextField
-              label="First Name"
+              label={t('zones.addRefereeLabels.firstName')}
               value={refereeForm.first_name}
               onChange={handleRefereeFormChange('first_name')}
               fullWidth
@@ -578,7 +591,7 @@ const ZoneListPage: React.FC = () => {
             />
             
             <TextField
-              label="Last Name"
+              label={t('zones.addRefereeLabels.lastName')}
               value={refereeForm.last_name}
               onChange={handleRefereeFormChange('last_name')}
               fullWidth
@@ -588,14 +601,14 @@ const ZoneListPage: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setRefereeDialog(false)}>
-            Cancel
+            {t('common.buttons.cancel')}
           </Button>
           <Button 
             onClick={handleSaveReferee} 
             variant="contained"
             disabled={refereeFormLoading || !refereeForm.email || !refereeForm.first_name || !refereeForm.last_name}
           >
-            {refereeFormLoading ? 'Adding Referee...' : 'Add Referee'}
+            {refereeFormLoading ? t('common.loading.saving') : t('zones.buttons.addReferee')}
           </Button>
                  </DialogActions>
        </Dialog>
@@ -613,7 +626,7 @@ const ZoneListPage: React.FC = () => {
            variant="filled"
            sx={{ width: '100%' }}
          >
-           Referee added successfully! An email with login credentials has been sent.
+           {t('zones.addRefereeSuccess')}
          </Alert>
        </Snackbar>
      </Container>
