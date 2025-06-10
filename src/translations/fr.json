@@ -322,7 +322,15 @@
       "chrono": "Chrono"
     },
     "buttons": {
-      "validate": "Valider"
+      "validate": "Valider",
+      "confirmSubmit": "Confirmer et soumettre"
+    },
+    "summary": {
+      "title": "Résumé du passage",
+      "dossard": "Dossard",
+      "points": "pts",
+      "pointsTitle": "Points",
+      "totalPoints": "Total des points"
     }
   }
 } 

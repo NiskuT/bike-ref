@@ -488,7 +488,7 @@ const ZoneListPage: React.FC = () => {
                     {[1, 2, 3, 4, 5, 6].map(doorNum => (
                       <Chip
                         key={doorNum}
-                        label={`D${doorNum}: ${zone[`points_door${doorNum}` as keyof Zone]}`}
+                        label={`P${doorNum}: ${zone[`points_door${doorNum}` as keyof Zone]}`}
                         variant="outlined"
                         size="small"
                       />

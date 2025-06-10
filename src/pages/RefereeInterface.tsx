@@ -182,6 +182,28 @@ const RefereeInterface: React.FC = () => {
     navigate(`/competitions/${competitionId}/zones`)
   }
 
+  // Calculate total points based on doors passed and zone data
+  const calculateTotalPoints = (): number => {
+    if (!state.runData) return 0
+    
+    let total = 0
+    if (state.runData.door1) total += state.zone.points_door1
+    if (state.runData.door2) total += state.zone.points_door2
+    if (state.runData.door3) total += state.zone.points_door3
+    if (state.runData.door4) total += state.zone.points_door4
+    if (state.runData.door5) total += state.zone.points_door5
+    if (state.runData.door6) total += state.zone.points_door6
+    
+    return total
+  }
+
+  // Format time as MM:SS
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins}:${secs.toString().padStart(2, '0')}`
+  }
+
   if (error && (!competitionId || !zoneData || !canRefereeCompetition)) {
     return (
       <Container maxWidth="md" sx={{ mt: { xs: 2, sm: 4 }, px: { xs: 2, sm: 3 } }}>
@@ -398,18 +420,84 @@ const RefereeInterface: React.FC = () => {
 
       case 'success':
         return (
-          <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
-            <CheckIcon color="success" sx={{ fontSize: 48, mb: 2 }} />
-            <Typography variant="h5" gutterBottom>
-              {t('referee.success.title')}
-            </Typography>
-            
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              {t('referee.success.message')} {state.participant?.first_name} {state.participant?.last_name} 
-              (#{state.participant?.dossard_number}).
-            </Typography>
+          <Paper elevation={3} sx={{ p: 4 }}>
+            <Box sx={{ textAlign: 'center', mb: 3 }}>
+              <CheckIcon color="success" sx={{ fontSize: 48, mb: 2 }} />
+              <Typography variant="h5" gutterBottom>
+                {t('referee.success.title')}
+              </Typography>
+            </Box>
+
+            {/* Participant Info */}
+            {state.participant && (
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                  {state.participant.first_name} {state.participant.last_name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {t('runRegistration.summary.dossard')}: #{state.participant.dossard_number}
+                </Typography>
+              </Box>
+            )}
+
+            <Divider sx={{ mb: 3 }} />
+
+            {/* Points Summary */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle1" gutterBottom>
+                {t('runRegistration.summary.pointsTitle')}
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+                {[1, 2, 3, 4, 5, 6].map(doorNum => {
+                  const doorKey = `door${doorNum}`
+                  const doorPassed = state.runData ? state.runData[doorKey] : false
+                  const doorPoints = state.zone[`points_door${doorNum}` as keyof Zone] as number
+                  
+                  return (
+                    <Chip
+                      key={doorNum}
+                      label={`P${doorNum}: ${doorPoints} pts`}
+                      color={doorPassed ? 'success' : 'default'}
+                      variant={doorPassed ? 'filled' : 'outlined'}
+                      size="small"
+                    />
+                  )
+                })}
+              </Box>
+              <Typography variant="h6" color="primary">
+                {t('runRegistration.summary.totalPoints')}: {calculateTotalPoints()} {t('runRegistration.summary.points')}
+              </Typography>
+            </Box>
+
+            <Divider sx={{ mb: 3 }} />
+
+            {/* Penalty and Time */}
+            <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  {t('runRegistration.labels.penalty')}
+                </Typography>
+                <Typography variant="h6">
+                  {state.runData?.penality || 0} {t('runRegistration.summary.points')}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  {t('runRegistration.labels.chrono')}
+                </Typography>
+                <Typography variant="h6">
+                  {formatTime(state.runData?.chrono_sec || 0)}
+                </Typography>
+              </Box>
+            </Box>
 
             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+              <Button
+                variant="outlined"
+                onClick={handleBackToDossard}
+              >
+                {t('common.buttons.cancel')}
+              </Button>
               <Button
                 variant="contained"
                 color="primary"

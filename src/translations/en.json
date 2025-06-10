@@ -322,7 +322,15 @@
       "chrono": "Timer"
     },
     "buttons": {
-      "validate": "Validate"
+      "validate": "Validate",
+      "confirmSubmit": "Confirm & Submit"
+    },
+    "summary": {
+      "title": "Run Summary",
+      "dossard": "Dossard",
+      "points": "pts",
+      "totalPoints": "Total Points",
+      "pointsTitle": "Points"
     }
   }
 } 
