@@ -31,11 +31,7 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({ childr
     if (savedLanguage && supportedLanguages.includes(savedLanguage)) {
       setLanguageState(savedLanguage)
     } else {
-      // Try to detect browser language
-      const browserLang = navigator.language.substring(0, 2) as Language
-      if (supportedLanguages.includes(browserLang)) {
-        setLanguageState(browserLang)
-      }
+      setLanguageState(defaultLanguage)
     }
   }, [])
 
