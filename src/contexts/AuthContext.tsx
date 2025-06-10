@@ -11,6 +11,7 @@ export interface AuthContextType {
   canCreateCompetition: () => boolean
   isAdmin: () => boolean
   setRoles: (roles: string[]) => void
+
   logout: () => Promise<void>
 }
 
@@ -50,6 +51,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Mark loading as complete
     setIsLoading(false)
 
+    // Handle token refresh events from API client
+    const handleTokenRefresh = (event: CustomEvent) => {
+      const { roles: newRoles } = event.detail
+      console.log('Auth context received token refresh event:', newRoles)
+      setRolesState(newRoles)
+      setIsAuthenticated(newRoles.length > 0)
+    }
+
+    // Handle manual role refresh requests
+    const handleRoleRefreshRequest = () => {
+      console.log('Auth context received manual role refresh request - header-based refresh only')
+      // Manual refresh removed - relying only on header-based refresh from backend
+    }
+
     // Handle app visibility changes (mobile specific)
     const handleVisibilityChange = () => {
       if (!document.hidden && isAuthenticated) {
@@ -72,16 +87,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Don't logout on offline - wait for connection to restore
     }
 
-    // Add event listeners for mobile app lifecycle
+    // Add event listeners for mobile app lifecycle and token refresh
     document.addEventListener('visibilitychange', handleVisibilityChange)
     window.addEventListener('online', handleOnline)
     window.addEventListener('offline', handleOffline)
+    window.addEventListener('auth-token-refreshed', handleTokenRefresh as EventListener)
+    window.addEventListener('auth-role-refresh-requested', handleRoleRefreshRequest as EventListener)
 
     // Cleanup event listeners
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       window.removeEventListener('online', handleOnline)
       window.removeEventListener('offline', handleOffline)
+      window.removeEventListener('auth-token-refreshed', handleTokenRefresh as EventListener)
+      window.removeEventListener('auth-role-refresh-requested', handleRoleRefreshRequest as EventListener)
     }
   }, [isAuthenticated])
 
@@ -96,6 +115,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.removeItem('userRoles')
     }
   }
+
+
 
   const logout = async (): Promise<void> => {
     try {

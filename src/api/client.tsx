@@ -44,11 +44,33 @@ client.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Add response interceptor to handle authentication errors and retries
+// Add response interceptor to handle authentication errors, token refresh, and retries
 client.interceptors.response.use(
   (response) => {
     // Reset 401 error counter on successful response
     consecutive401Errors = 0;
+    
+    // Check for token refresh header
+    const tokenRefreshHeader = response.headers['x-token-refreshed'];
+    const newRolesHeader = response.headers['x-user-roles'];
+    
+    if (tokenRefreshHeader === 'true' && newRolesHeader) {
+      console.log('Token refreshed, updating user roles');
+      try {
+        const newRoles = JSON.parse(newRolesHeader);
+        
+        // Update localStorage
+        localStorage.setItem('userRoles', JSON.stringify(newRoles));
+        
+        // Trigger auth context update by dispatching a custom event
+        window.dispatchEvent(new CustomEvent('auth-token-refreshed', {
+          detail: { roles: newRoles }
+        }));
+      } catch (error) {
+        console.error('Failed to parse new roles from token refresh:', error);
+      }
+    }
+    
     return response;
   },
   async (error: AxiosError) => {
