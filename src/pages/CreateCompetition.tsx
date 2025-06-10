@@ -54,12 +54,12 @@ const CreateCompetition: React.FC = () => {
     competition_id: 0,
     zone: '',
     category: '',
-    points_door1: 0,
-    points_door2: 0,
-    points_door3: 0,
-    points_door4: 0,
-    points_door5: 0,
-    points_door6: 0,
+    points_door1: '' as any, // Will be converted to number on submit
+    points_door2: '' as any,
+    points_door3: '' as any,
+    points_door4: '' as any,
+    points_door5: '' as any,
+    points_door6: '' as any,
   })
   
   // Handle text input changes for the competition form
@@ -73,11 +73,11 @@ const CreateCompetition: React.FC = () => {
   const handleZoneChange = (field: keyof ZoneInput) => (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    // For number fields, convert to number type
+    // For number fields, keep as string until validation
     if (field.startsWith('points_door')) {
       setCurrentZone({
         ...currentZone,
-        [field]: parseInt(e.target.value, 10) || 0,
+        [field]: e.target.value as any,
       })
     } else {
       setCurrentZone({ ...currentZone, [field]: e.target.value })
@@ -91,7 +91,36 @@ const CreateCompetition: React.FC = () => {
       return
     }
     
-    const newZone = { ...currentZone, competition_id: competitionId! }
+    // Validate and convert door points
+    const points1 = parseInt(String(currentZone.points_door1), 10)
+    const points2 = parseInt(String(currentZone.points_door2), 10)
+    const points3 = parseInt(String(currentZone.points_door3), 10)
+    const points4 = parseInt(String(currentZone.points_door4), 10)
+    const points5 = parseInt(String(currentZone.points_door5), 10)
+    const points6 = parseInt(String(currentZone.points_door6), 10)
+    
+    if (isNaN(points1) || points1 <= 0 ||
+        isNaN(points2) || points2 <= 0 ||
+        isNaN(points3) || points3 <= 0 ||
+        isNaN(points4) || points4 <= 0 ||
+        isNaN(points5) || points5 <= 0 ||
+        isNaN(points6) || points6 <= 0) {
+      setError('Tous les points des portes doivent être remplis avec des valeurs strictement supérieures à 0')
+      return
+    }
+    
+    // Create zone with validated points
+    const newZone = {
+      ...currentZone,
+      competition_id: competitionId!,
+      points_door1: points1,
+      points_door2: points2,
+      points_door3: points3,
+      points_door4: points4,
+      points_door5: points5,
+      points_door6: points6,
+    }
+    
     setZones([...zones, newZone])
     
     // Reset form for next zone
@@ -99,12 +128,12 @@ const CreateCompetition: React.FC = () => {
       competition_id: competitionId!,
       zone: '',
       category: '',
-      points_door1: 0,
-      points_door2: 0,
-      points_door3: 0,
-      points_door4: 0,
-      points_door5: 0,
-      points_door6: 0,
+      points_door1: '' as any,
+      points_door2: '' as any,
+      points_door3: '' as any,
+      points_door4: '' as any,
+      points_door5: '' as any,
+      points_door6: '' as any,
     })
     
     setSuccessMessage(t('createCompetition.success.message'))
@@ -149,9 +178,38 @@ const CreateCompetition: React.FC = () => {
     setLoading(true)
     
     try {
-      // Add current zone if it has content
+      // Add current zone if it has content and validate it
       if (currentZone.zone.trim() !== '' && currentZone.category.trim() !== '') {
-        zones.push({ ...currentZone, competition_id: competitionId! })
+        // Validate and convert door points for current zone
+        const points1 = parseInt(String(currentZone.points_door1), 10)
+        const points2 = parseInt(String(currentZone.points_door2), 10)
+        const points3 = parseInt(String(currentZone.points_door3), 10)
+        const points4 = parseInt(String(currentZone.points_door4), 10)
+        const points5 = parseInt(String(currentZone.points_door5), 10)
+        const points6 = parseInt(String(currentZone.points_door6), 10)
+        
+        if (isNaN(points1) || points1 <= 0 ||
+            isNaN(points2) || points2 <= 0 ||
+            isNaN(points3) || points3 <= 0 ||
+            isNaN(points4) || points4 <= 0 ||
+            isNaN(points5) || points5 <= 0 ||
+            isNaN(points6) || points6 <= 0) {
+          setError('Tous les points des portes doivent être remplis avec des valeurs strictement supérieures à 0')
+          return
+        }
+        
+        // Add validated zone
+        const validatedZone = {
+          ...currentZone,
+          competition_id: competitionId!,
+          points_door1: points1,
+          points_door2: points2,
+          points_door3: points3,
+          points_door4: points4,
+          points_door5: points5,
+          points_door6: points6,
+        }
+        zones.push(validatedZone)
       }
       
       // Submit all zones sequentially

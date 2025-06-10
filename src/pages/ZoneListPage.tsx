@@ -60,12 +60,12 @@ const ZoneListPage: React.FC = () => {
     competition_id: 0,
     zone: '',
     category: '',
-    points_door1: 0,
-    points_door2: 0,
-    points_door3: 0,
-    points_door4: 0,
-    points_door5: 0,
-    points_door6: 0,
+    points_door1: '' as any, // Will be converted to number on submit
+    points_door2: '' as any,
+    points_door3: '' as any,
+    points_door4: '' as any,
+    points_door5: '' as any,
+    points_door6: '' as any,
   })
   const [zoneFormLoading, setZoneFormLoading] = useState(false)
 
@@ -159,12 +159,12 @@ const ZoneListPage: React.FC = () => {
       competition_id: competitionIdNum,
       zone: '',
       category: '',
-      points_door1: 0,
-      points_door2: 0,
-      points_door3: 0,
-      points_door4: 0,
-      points_door5: 0,
-      points_door6: 0,
+      points_door1: '' as any,
+      points_door2: '' as any,
+      points_door3: '' as any,
+      points_door4: '' as any,
+      points_door5: '' as any,
+      points_door6: '' as any,
     })
     setZoneDialog({ open: true, mode: 'create', zone: null })
   }
@@ -172,28 +172,63 @@ const ZoneListPage: React.FC = () => {
   const handleSaveZone = async () => {
     setZoneFormLoading(true)
     try {
+      // Validate zone name and category
+      if (!zoneForm.zone.trim() || !zoneForm.category.trim()) {
+        setError(`${t('zones.labels.zoneName')} and ${t('zones.labels.category')} are required`)
+        return
+      }
+
+      // Validate and convert door points
+      const points1 = parseInt(String(zoneForm.points_door1), 10)
+      const points2 = parseInt(String(zoneForm.points_door2), 10)
+      const points3 = parseInt(String(zoneForm.points_door3), 10)
+      const points4 = parseInt(String(zoneForm.points_door4), 10)
+      const points5 = parseInt(String(zoneForm.points_door5), 10)
+      const points6 = parseInt(String(zoneForm.points_door6), 10)
+      
+      if (isNaN(points1) || points1 <= 0 ||
+          isNaN(points2) || points2 <= 0 ||
+          isNaN(points3) || points3 <= 0 ||
+          isNaN(points4) || points4 <= 0 ||
+          isNaN(points5) || points5 <= 0 ||
+          isNaN(points6) || points6 <= 0) {
+        setError('Tous les points des portes doivent être remplis avec des valeurs strictement supérieures à 0')
+        return
+      }
+
+      // Create validated zone object
+      const validatedZoneForm = {
+        ...zoneForm,
+        points_door1: points1,
+        points_door2: points2,
+        points_door3: points3,
+        points_door4: points4,
+        points_door5: points5,
+        points_door6: points6,
+      }
+
       if (zoneDialog.mode === 'create') {
-        await competitionService.addZone(zoneForm)
+        await competitionService.addZone(validatedZoneForm)
         
         // Add to local state
         const newZone: Zone = {
-          zone: zoneForm.zone,
-          category: zoneForm.category,
-          points_door1: zoneForm.points_door1,
-          points_door2: zoneForm.points_door2,
-          points_door3: zoneForm.points_door3,
-          points_door4: zoneForm.points_door4,
-          points_door5: zoneForm.points_door5,
-          points_door6: zoneForm.points_door6,
+          zone: validatedZoneForm.zone,
+          category: validatedZoneForm.category,
+          points_door1: validatedZoneForm.points_door1,
+          points_door2: validatedZoneForm.points_door2,
+          points_door3: validatedZoneForm.points_door3,
+          points_door4: validatedZoneForm.points_door4,
+          points_door5: validatedZoneForm.points_door5,
+          points_door6: validatedZoneForm.points_door6,
         }
         setZones([...zones, newZone])
       } else {
-        await competitionService.updateZone(zoneForm)
+        await competitionService.updateZone(validatedZoneForm)
         
         // Update local state
         setZones(zones.map(z => 
-          z.zone === zoneForm.zone && z.category === zoneForm.category
-            ? { ...zoneForm } 
+          z.zone === validatedZoneForm.zone && z.category === validatedZoneForm.category
+            ? { ...validatedZoneForm } 
             : z
         ))
       }
@@ -242,7 +277,7 @@ const ZoneListPage: React.FC = () => {
     if (field.startsWith('points_door')) {
       setZoneForm({
         ...zoneForm,
-        [field]: parseInt(e.target.value, 10) || 0,
+        [field]: e.target.value as any,
       })
     } else {
       setZoneForm({ ...zoneForm, [field]: e.target.value })
