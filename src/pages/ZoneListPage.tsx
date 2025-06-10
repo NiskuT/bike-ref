@@ -482,7 +482,7 @@ const ZoneListPage: React.FC = () => {
                   />
                   
                   <Typography variant="body2" color="text.secondary" gutterBottom>
-                    Door Points:
+                    Points par porte:
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {[1, 2, 3, 4, 5, 6].map(doorNum => (
