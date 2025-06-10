@@ -269,8 +269,8 @@
       "points": "points"
     },
     "success": {
-      "title": "Passage soumis avec succès",
-      "message": "Le passage a été enregistré pour le participant",
+      "title": "Passage prêt à être envoyé",
+      "message": "Le passage est prêt à être enregistré pour le participant",
       "totalPoints": "Points totaux",
       "finalTime": "Temps final"
     },

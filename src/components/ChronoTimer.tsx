@@ -8,9 +8,10 @@ import ReplayIcon from '@mui/icons-material/Replay'
 interface ChronoTimerProps {
   initial?: number  // seconds
   onChange?: (seconds: number) => void
+  onRunningChange?: (isRunning: boolean) => void
 }
 
-export const ChronoTimer: React.FC<ChronoTimerProps> = ({ initial = 0, onChange }) => {
+export const ChronoTimer: React.FC<ChronoTimerProps> = ({ initial = 0, onChange, onRunningChange }) => {
   const [seconds, setSeconds] = useState(initial)
   const [running, setRunning] = useState(false)
   const intervalRef = useRef<number | null>(null)
@@ -20,7 +21,10 @@ export const ChronoTimer: React.FC<ChronoTimerProps> = ({ initial = 0, onChange 
       intervalRef.current = window.setInterval(() => {
         setSeconds(s => {
           const next = s + 1
-          onChange?.(next)
+          // Use a timeout to avoid setState during render
+          setTimeout(() => {
+            onChange?.(next)
+          }, 0)
           return next
         })
       }, 1000)
@@ -36,10 +40,18 @@ export const ChronoTimer: React.FC<ChronoTimerProps> = ({ initial = 0, onChange 
     }
   }, [running, onChange])
 
+  // Notify parent when running state changes
+  useEffect(() => {
+    onRunningChange?.(running)
+  }, [running, onRunningChange])
+
   const reset = () => {
     setRunning(false)
     setSeconds(initial)
-    onChange?.(initial)
+    // Use timeout to avoid setState during render
+    setTimeout(() => {
+      onChange?.(initial)
+    }, 0)
   }
 
   const mm = String(Math.floor(seconds / 60)).padStart(1, '0')

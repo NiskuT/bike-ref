@@ -28,6 +28,7 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
   })
   const [penalty, setPenalty] = useState(0)
   const [chrono, setChrono] = useState(0)
+  const [chronoRunning, setChronoRunning] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -79,9 +80,17 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
         <PenaltyCounter value={penalty} onChange={setPenalty} />
 
         <Typography variant="subtitle1">{t('runRegistration.labels.chrono')}</Typography>
-        <ChronoTimer initial={0} onChange={setChrono} />
+        <ChronoTimer 
+          initial={0} 
+          onChange={setChrono} 
+          onRunningChange={setChronoRunning} 
+        />
 
-        <CustomSubmitButton loading={loading} label={t('runRegistration.buttons.validate')} />
+        <CustomSubmitButton 
+          loading={loading} 
+          disabled={chronoRunning || loading}
+          label={t('runRegistration.buttons.validate')} 
+        />
       </Box>
     </Container>
   )
