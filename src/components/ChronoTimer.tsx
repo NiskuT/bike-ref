@@ -65,29 +65,58 @@ export const ChronoTimer: React.FC<ChronoTimerProps> = ({ initial = 0, onChange,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 2,
-        mt: 1,
+        gap: 3,
+        mt: 2,
       }}
     >
-      <IconButton onClick={reset}>
-        <ReplayIcon />
+      <IconButton 
+        onClick={reset}
+        size="large"
+        sx={{ 
+          width: 64, 
+          height: 64,
+          border: 1,
+          borderColor: 'grey.300',
+          bgcolor: 'grey.50',
+          '&:hover': {
+            bgcolor: 'grey.100',
+          }
+        }}
+      >
+        <ReplayIcon sx={{ fontSize: 32 }} />
       </IconButton>
       <Box
         sx={{
-          border: 1,
-          borderRadius: 1,
-          px: 2,
-          py: 1,
-          minWidth: 80,
+          border: 2,
+          borderRadius: 2,
+          borderColor: 'primary.main',
+          px: 3,
+          py: 2,
+          minWidth: 120,
           textAlign: 'center',
+          bgcolor: 'background.paper',
+          boxShadow: 1,
         }}
       >
-        <Typography variant="h6">
+        <Typography variant="h3" fontWeight="bold" color="primary">
           {mm}:{ss}
         </Typography>
       </Box>
-      <IconButton onClick={() => setRunning(r => !r)}>
-        {running ? <PauseIcon /> : <PlayArrowIcon />}
+      <IconButton 
+        onClick={() => setRunning(r => !r)}
+        size="large"
+        sx={{ 
+          width: 64, 
+          height: 64,
+          border: 1,
+          borderColor: running ? 'warning.main' : 'success.main',
+          bgcolor: running ? 'rgba(255, 193, 7, 0.1)' : 'rgba(76, 175, 80, 0.1)',
+          '&:hover': {
+            bgcolor: running ? 'rgba(255, 193, 7, 0.2)' : 'rgba(76, 175, 80, 0.2)',
+          }
+        }}
+      >
+        {running ? <PauseIcon sx={{ fontSize: 32 }} /> : <PlayArrowIcon sx={{ fontSize: 32 }} />}
       </IconButton>
     </Box>
   )
