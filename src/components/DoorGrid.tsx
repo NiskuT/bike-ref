@@ -27,8 +27,8 @@ export const DoorGrid: React.FC<DoorGridProps> = ({ doors, onChange, disabled = 
       sx={{
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: 1,
-        mt: 1,
+        gap: 6,
+        mt: 0,
       }}
     >
       { (Object.keys(doors) as DoorKeys[]).map((k) => (

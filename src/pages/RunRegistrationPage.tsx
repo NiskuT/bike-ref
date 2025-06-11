@@ -75,16 +75,6 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
         )}
 
         <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
-          {t('runRegistration.labels.doors')}
-        </Typography>
-        <DoorGrid doors={doors} onChange={setDoors} disabled={!chronoStarted} />
-
-        <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
-          {t('runRegistration.labels.penalty')}
-        </Typography>
-        <PenaltyCounter value={penalty} onChange={setPenalty} />
-
-        <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
           {t('runRegistration.labels.chrono')}
         </Typography>
         <ChronoTimer 
@@ -100,6 +90,18 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
             setChronoStarted(false)
           }} 
         />
+
+        <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
+          {t('runRegistration.labels.doors')}
+        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+          <DoorGrid doors={doors} onChange={setDoors} disabled={!chronoStarted} />
+        </Box>
+
+        <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
+          {t('runRegistration.labels.penalty')}
+        </Typography>
+        <PenaltyCounter value={penalty} onChange={setPenalty} />
 
         <CustomSubmitButton 
           loading={loading} 
