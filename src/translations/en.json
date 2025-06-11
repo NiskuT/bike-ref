@@ -262,7 +262,8 @@
       "searchParticipant": "Search Participant",
       "confirmParticipant": "Confirm Participant",
       "submitRun": "Submit Run",
-      "newRun": "New Run"
+      "newRun": "New Run",
+      "backToZones": "Go back to zones"
     },
     "doors": {
       "door": "Door",

@@ -10,7 +10,6 @@ import {
   Alert,
   Card,
   CardContent,
-  IconButton,
   Divider,
   Chip,
 } from '@mui/material'
@@ -257,7 +256,7 @@ const RefereeInterface: React.FC = () => {
               autoFocus
             />
 
-            <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Button
                 variant="contained"
                 color="primary"
@@ -270,6 +269,19 @@ const RefereeInterface: React.FC = () => {
                 }}
               >
                 {loading ? t('common.loading.loading') : t('referee.buttons.searchParticipant')}
+              </Button>
+              
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleBackToZones}
+                startIcon={<BackIcon />}
+                sx={{
+                  minWidth: { xs: 'auto', sm: '200px' },
+                  px: { xs: 1, sm: 2 }
+                }}
+              >
+                {t('referee.buttons.backToZones')}
               </Button>
             </Box>
           </Paper>

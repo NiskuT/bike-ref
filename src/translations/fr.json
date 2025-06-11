@@ -262,7 +262,8 @@
       "searchParticipant": "Chercher le participant",
       "confirmParticipant": "Confirmer le participant",
       "submitRun": "Soumettre le passage",
-      "newRun": "Nouveau passage"
+      "newRun": "Nouveau passage",
+      "backToZones": "Retourner à la liste des zones"
     },
     "doors": {
       "door": "Porte",
