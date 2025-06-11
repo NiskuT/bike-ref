@@ -227,7 +227,7 @@ const RunManagementPage: React.FC = () => {
         {doors.map((door, index) => (
           <Chip
             key={door.key}
-            label={`D${index + 1}`}
+            label={`P${index + 1}`}
             size="small"
             color={door.value ? 'success' : 'error'}
             variant="outlined"
@@ -259,7 +259,7 @@ const RunManagementPage: React.FC = () => {
                 size="small"
               />
             }
-            label={`D${index + 1}`}
+            label={`P${index + 1}`}
             sx={{ mr: 1 }}
           />
         ))}
