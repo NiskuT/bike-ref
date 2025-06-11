@@ -29,6 +29,7 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
   const [penalty, setPenalty] = useState(0)
   const [chrono, setChrono] = useState(0)
   const [chronoRunning, setChronoRunning] = useState(false)
+  const [chronoStarted, setChronoStarted] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -74,7 +75,7 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
         )}
 
         <Typography variant="subtitle1">{t('runRegistration.labels.doors')}</Typography>
-        <DoorGrid doors={doors} onChange={setDoors} />
+        <DoorGrid doors={doors} onChange={setDoors} disabled={!chronoStarted} />
 
         <Typography variant="subtitle1">{t('runRegistration.labels.penalty')}</Typography>
         <PenaltyCounter value={penalty} onChange={setPenalty} />
@@ -83,7 +84,15 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
         <ChronoTimer 
           initial={0} 
           onChange={setChrono} 
-          onRunningChange={setChronoRunning} 
+          onRunningChange={(running) => {
+            setChronoRunning(running)
+            if (running && !chronoStarted) {
+              setChronoStarted(true)
+            }
+          }}
+          onReset={() => {
+            setChronoStarted(false)
+          }} 
         />
 
         <CustomSubmitButton 

@@ -9,9 +9,10 @@ interface ChronoTimerProps {
   initial?: number  // seconds
   onChange?: (seconds: number) => void
   onRunningChange?: (isRunning: boolean) => void
+  onReset?: () => void
 }
 
-export const ChronoTimer: React.FC<ChronoTimerProps> = ({ initial = 0, onChange, onRunningChange }) => {
+export const ChronoTimer: React.FC<ChronoTimerProps> = ({ initial = 0, onChange, onRunningChange, onReset }) => {
   const [seconds, setSeconds] = useState(initial)
   const [running, setRunning] = useState(false)
   const intervalRef = useRef<number | null>(null)
@@ -51,6 +52,7 @@ export const ChronoTimer: React.FC<ChronoTimerProps> = ({ initial = 0, onChange,
     // Use timeout to avoid setState during render
     setTimeout(() => {
       onChange?.(initial)
+      onReset?.()
     }, 0)
   }
 

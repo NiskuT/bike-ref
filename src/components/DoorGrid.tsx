@@ -8,6 +8,7 @@ export type DoorsState = Record<DoorKeys, boolean>
 interface DoorGridProps {
   doors: DoorsState
   onChange: (doors: DoorsState) => void
+  disabled?: boolean
 }
 
 const LABELS: Record<DoorKeys,string> = {
@@ -15,8 +16,9 @@ const LABELS: Record<DoorKeys,string> = {
   door4: 'P4', door5: 'P5', door6: 'P6',
 }
 
-export const DoorGrid: React.FC<DoorGridProps> = ({ doors, onChange }) => {
+export const DoorGrid: React.FC<DoorGridProps> = ({ doors, onChange, disabled = false }) => {
   const toggle = (key: DoorKeys) => {
+    if (disabled) return
     onChange({ ...doors, [key]: !doors[key] })
   }
 
@@ -34,14 +36,23 @@ export const DoorGrid: React.FC<DoorGridProps> = ({ doors, onChange }) => {
           key={k}
           onClick={() => toggle(k)}
           variant="contained"
+          disabled={disabled}
           sx={{
-            bgcolor: doors[k] ? 'success.main' : 'error.main',
+            bgcolor: disabled 
+              ? 'grey.400' 
+              : doors[k] ? 'success.main' : 'error.main',
             color: '#fff',
             width: 64,
             height: 64,
             fontSize: '1.1rem',
             '&:hover': {
-              bgcolor: doors[k] ? 'success.dark' : 'error.dark',
+              bgcolor: disabled 
+                ? 'grey.400' 
+                : doors[k] ? 'success.dark' : 'error.dark',
+            },
+            '&.Mui-disabled': {
+              bgcolor: 'grey.400',
+              color: 'grey.600',
             },
           }}
         >
