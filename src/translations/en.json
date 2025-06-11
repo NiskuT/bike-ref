@@ -29,7 +29,8 @@
       "network": "Network error. Please check your connection.",
       "permission": "You don't have permission to perform this action.",
       "notFound": "The requested resource was not found.",
-      "serverError": "Server error. Please try again later."
+      "serverError": "Server error. Please try again later.",
+      "sessionExpired": "Your session has expired. Please log in again to continue."
     }
   },
   "auth": {

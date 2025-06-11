@@ -29,7 +29,8 @@
       "network": "Erreur réseau. Veuillez vérifier votre connexion.",
       "permission": "Vous n'avez pas la permission d'effectuer cette action.",
       "notFound": "La ressource demandée n'a pas été trouvée.",
-      "serverError": "Erreur serveur. Veuillez réessayer plus tard."
+      "serverError": "Erreur serveur. Veuillez réessayer plus tard.",
+      "sessionExpired": "Votre session a expiré. Veuillez vous connecter à nouveau pour continuer."
     }
   },
   "auth": {

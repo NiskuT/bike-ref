@@ -20,7 +20,7 @@ import { format } from 'date-fns'
 import { Add as AddIcon, Logout as LogoutIcon, DirectionsBike as BikeIcon, Lock as LockIcon } from '@mui/icons-material'
 import { useAuth } from '../contexts/AuthContext'
 import { useTranslation } from '../contexts/TranslationContext'
-import { getErrorMessage } from '../utils/errorHandling'
+import { getErrorMessage, isAuthErrorFromMessage, redirectToLogin } from '../utils/errorHandling'
 import LanguageSelector from '../components/LanguageSelector'
 
 const CompetitionListPage: React.FC = () => {
@@ -67,16 +67,41 @@ const CompetitionListPage: React.FC = () => {
   }
 
   if (error) {
+    const isAuthError = isAuthErrorFromMessage(error)
+    
     return (
       <Container maxWidth="sm" sx={{ mt: 4 }}>
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert severity={isAuthError ? "warning" : "error"} sx={{ mb: 2 }}>
           {error}
         </Alert>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="outlined" onClick={() => window.location.reload()}>
-            Retry
-          </Button>
-        </Box>
+        {isAuthError ? (
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
+            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
+              {t('common.errors.sessionExpired')}
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Button 
+                variant="contained" 
+                color="primary"
+                onClick={redirectToLogin}
+              >
+                {t('auth.login.loginButton')}
+              </Button>
+              <Button 
+                variant="outlined" 
+                onClick={() => window.location.reload()}
+              >
+                {t('common.buttons.retry')}
+              </Button>
+            </Box>
+          </Box>
+        ) : (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button variant="outlined" onClick={() => window.location.reload()}>
+              {t('common.buttons.retry')}
+            </Button>
+          </Box>
+        )}
       </Container>
     )
   }

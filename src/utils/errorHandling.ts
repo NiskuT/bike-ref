@@ -105,6 +105,23 @@ export const isAuthError = (error: unknown): boolean => {
   return false
 }
 
+export const isAuthErrorFromMessage = (errorMessage: string): boolean => {
+  return errorMessage.includes('Session expired') || 
+         errorMessage.includes('invalid credentials') || 
+         errorMessage.includes('Please login again') ||
+         errorMessage.includes('401')
+}
+
+export const redirectToLogin = (): void => {
+  // Clear any existing auth data
+  localStorage.removeItem('userRoles')
+  
+  // Force redirect to login page
+  if (window.location.pathname !== '/login') {
+    window.location.href = '/login'
+  }
+}
+
 export const isConnectionError = (error: unknown): boolean => {
   const apiError = getErrorMessage(error)
   return apiError.isNetworkError || apiError.isConnectionError || false
