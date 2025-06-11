@@ -524,34 +524,6 @@ const RefereeInterface: React.FC = () => {
         px: { xs: 2, sm: 3 }
       }}
     >
-      {/* Header */}
-      <Box sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        mb: { xs: 2, sm: 3 },
-        flexWrap: 'wrap'
-      }}>
-        <IconButton 
-          onClick={handleBackToZones} 
-          sx={{ 
-            mr: { xs: 1, sm: 2 },
-            p: { xs: 1, sm: 1.5 }
-          }}
-        >
-          <BackIcon />
-        </IconButton>
-        <Typography 
-          variant="h4" 
-          component="h1"
-          sx={{
-            fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
-            fontWeight: 500,
-            lineHeight: 1.2
-          }}
-        >
-          {t('referee.title')}
-        </Typography>
-      </Box>
 
       {/* Error Display */}
       {error && (

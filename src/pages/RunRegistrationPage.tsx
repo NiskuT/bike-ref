@@ -67,20 +67,26 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
 
   return (
     <Container maxWidth="xs">
-      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, display: 'grid', gap: 3 }}>
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, display: 'grid', gap: 2 }}>
         {competitorName && (
           <Typography variant="h5" align="center">
             {competitorName}
           </Typography>
         )}
 
-        <Typography variant="subtitle1">{t('runRegistration.labels.doors')}</Typography>
+        <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
+          {t('runRegistration.labels.doors')}
+        </Typography>
         <DoorGrid doors={doors} onChange={setDoors} disabled={!chronoStarted} />
 
-        <Typography variant="subtitle1">{t('runRegistration.labels.penalty')}</Typography>
+        <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
+          {t('runRegistration.labels.penalty')}
+        </Typography>
         <PenaltyCounter value={penalty} onChange={setPenalty} />
 
-        <Typography variant="subtitle1">{t('runRegistration.labels.chrono')}</Typography>
+        <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
+          {t('runRegistration.labels.chrono')}
+        </Typography>
         <ChronoTimer 
           initial={0} 
           onChange={setChrono} 
