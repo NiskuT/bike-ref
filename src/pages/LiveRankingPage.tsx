@@ -50,7 +50,7 @@ const LiveRankingPage: React.FC = () => {
   const { shouldRefreshData, isOnline } = useConnectionMonitor()
 
   const competitionIdNum = Number(competitionId)
-  const canViewCompetition = canAccessCompetition(competitionIdNum, 'referee')
+  const canViewCompetition = canAccessCompetition(competitionIdNum, 'admin')
 
   const [menRankingData, setMenRankingData] = useState<LiveRankingResponse | null>(null)
   const [womenRankingData, setWomenRankingData] = useState<LiveRankingResponse | null>(null)

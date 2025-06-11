@@ -423,22 +423,24 @@ const ZoneListPage: React.FC = () => {
               </Button>
             </>
           )}
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<TrophyIcon />}
-            onClick={() => navigate(`/competitions/${competitionId}/live-ranking`)}
-            size="small"
-            sx={{
-              fontSize: { xs: '0.75rem', sm: '0.875rem' },
-              px: { xs: 1, sm: 2 },
-              py: { xs: 0.5, sm: 0.75 },
-              minWidth: { xs: 'auto', sm: '150px' },
-              whiteSpace: 'nowrap'
-            }}
-          >
-            {t('zones.buttons.liveRanking')}
-          </Button>
+          {canAdminCompetition && (
+            <Button
+              variant="outlined"
+              color="primary"
+              startIcon={<TrophyIcon />}
+              onClick={() => navigate(`/competitions/${competitionId}/live-ranking`)}
+              size="small"
+              sx={{
+                fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                px: { xs: 1, sm: 2 },
+                py: { xs: 0.5, sm: 0.75 },
+                minWidth: { xs: 'auto', sm: '150px' },
+                whiteSpace: 'nowrap'
+              }}
+            >
+              {t('zones.buttons.liveRanking')}
+            </Button>
+          )}
         </Box>
       )}
 
