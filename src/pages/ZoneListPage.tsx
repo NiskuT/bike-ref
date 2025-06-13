@@ -32,6 +32,7 @@ import {
   PersonAdd as PersonAddIcon,
   Warning as WarningIcon,
   QrCode as QrCodeIcon,
+  FileDownload as FileDownloadIcon,
 } from '@mui/icons-material'
 import { useParams, useNavigate } from 'react-router-dom'
 import { competitionService } from '../api/competitionService'
@@ -93,6 +94,9 @@ const ZoneListPage: React.FC = () => {
   })
   const [refereeFormLoading, setRefereeFormLoading] = useState(false)
   const [refereeSuccessMessage, setRefereeSuccessMessage] = useState(false)
+
+  // Export state
+  const [exportLoading, setExportLoading] = useState(false)
 
   const competitionIdNum = Number(competitionId)
   const canAdminCompetition = canAccessCompetition(competitionIdNum, 'admin')
@@ -318,6 +322,43 @@ const ZoneListPage: React.FC = () => {
     setRefereeForm({ ...refereeForm, [field]: e.target.value })
   }
 
+  const handleExportResults = async () => {
+    setExportLoading(true)
+    setError(null)
+
+    try {
+      const response = await competitionService.exportResults(competitionIdNum)
+      
+      // Extract filename from Content-Disposition header
+      const contentDisposition = response.headers['content-disposition']
+      let filename = `competition-${competitionIdNum}-results.xlsx` // fallback
+      
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename\s*=\s*"([^"]+)"/)
+        if (filenameMatch && filenameMatch[1]) {
+          filename = filenameMatch[1]
+        }
+      }
+      
+      // Create download link
+      const url = window.URL.createObjectURL(response.data)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+      
+    } catch (err) {
+      console.error(err)
+      const apiError = getErrorMessage(err)
+      setError(apiError.message)
+    } finally {
+      setExportLoading(false)
+    }
+  }
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 4, sm: 8 } }}>
@@ -441,22 +482,41 @@ const ZoneListPage: React.FC = () => {
             </>
           )}
           {canAdminCompetition && (
-            <Button
-              variant="outlined"
-              color="primary"
-              startIcon={<TrophyIcon />}
-              onClick={() => navigate(`/competitions/${competitionId}/live-ranking`)}
-              size="small"
-              sx={{
-                fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                px: { xs: 1, sm: 2 },
-                py: { xs: 0.5, sm: 0.75 },
-                minWidth: { xs: 'auto', sm: '150px' },
-                whiteSpace: 'nowrap'
-              }}
-            >
-              {t('zones.buttons.liveRanking')}
-            </Button>
+            <>
+              <Button
+                variant="outlined"
+                color="primary"
+                startIcon={<TrophyIcon />}
+                onClick={() => navigate(`/competitions/${competitionId}/live-ranking`)}
+                size="small"
+                sx={{
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  px: { xs: 1, sm: 2 },
+                  py: { xs: 0.5, sm: 0.75 },
+                  minWidth: { xs: 'auto', sm: '150px' },
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {t('zones.buttons.liveRanking')}
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                startIcon={exportLoading ? <CircularProgress size={16} /> : <FileDownloadIcon />}
+                onClick={handleExportResults}
+                disabled={exportLoading}
+                size="small"
+                sx={{
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  px: { xs: 1, sm: 2 },
+                  py: { xs: 0.5, sm: 0.75 },
+                  minWidth: { xs: 'auto', sm: '150px' },
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {exportLoading ? t('common.loading.loading') : t('zones.buttons.exportResults')}
+              </Button>
+            </>
           )}
         </Box>
       )}

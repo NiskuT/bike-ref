@@ -45,4 +45,11 @@ export const competitionService = {
     client
       .post('/competition/referee', referee)
       .then((r) => r.data),
+      
+  exportResults: (competitionId: number) =>
+    client
+      .get(`/competition/${competitionId}/results/export`, {
+        responseType: 'blob',
+      })
+      .then((r) => ({ data: r.data, headers: r.headers })),
 }
