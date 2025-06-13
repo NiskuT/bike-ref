@@ -223,3 +223,21 @@ export interface RefereeInput {
   first_name: string
   last_name: string
 }
+
+// Referee Invitation via QR Code
+export interface RefereeInvitationResponse {
+  expires_at: number // Timestamp in seconds
+  token: string
+}
+
+export interface AcceptInvitationRequest {
+  token: string
+}
+
+export interface AcceptInvitationUnauthenticatedRequest {
+  email: string
+  first_name: string
+  last_name: string
+  password: string
+  token: string
+}

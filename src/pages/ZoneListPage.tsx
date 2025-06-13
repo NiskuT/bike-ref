@@ -31,6 +31,7 @@ import {
   Group as GroupIcon,
   PersonAdd as PersonAddIcon,
   Warning as WarningIcon,
+  QrCode as QrCodeIcon,
 } from '@mui/icons-material'
 import { useParams, useNavigate } from 'react-router-dom'
 import { competitionService } from '../api/competitionService'
@@ -420,6 +421,22 @@ const ZoneListPage: React.FC = () => {
                 }}
               >
                 {t('zones.buttons.addReferee')}
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                startIcon={<QrCodeIcon />}
+                onClick={() => navigate(`/competitions/${competitionId}/qr-invitation`)}
+                size="small"
+                sx={{
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  px: { xs: 1, sm: 2 },
+                  py: { xs: 0.5, sm: 0.75 },
+                  minWidth: { xs: 'auto', sm: '160px' },
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {t('zones.buttons.qrInvite')}
               </Button>
             </>
           )}

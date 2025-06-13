@@ -8,6 +8,8 @@ import RefereeInterface from './pages/RefereeInterface'
 import LiveRankingPage from './pages/LiveRankingPage'
 import ParticipantManagementPage from './pages/ParticipantManagementPage'
 import RunManagementPage from './pages/RunManagementPage'
+import { RefereeInvitationPage } from './pages/RefereeInvitationPage'
+import { QRInvitationPage } from './pages/QRInvitationPage'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { TranslationProvider } from './contexts/TranslationContext'
@@ -37,6 +39,7 @@ export const App = () => (
           <Route path="/" element={<Navigate to="/competitions" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/referee/invitation" element={<RefereeInvitationPage />} />
           
           <Route 
             path="/competitions" 
@@ -106,6 +109,15 @@ export const App = () => (
           element={
             <ProtectedRoute requireAuth={true}>
               <RunManagementPage />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/competitions/:competitionId/qr-invitation"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <QRInvitationPage />
             </ProtectedRoute>
           }
         />

@@ -12,11 +12,15 @@
       "confirm": "Confirmer",
       "retry": "Réessayer",
       "refresh": "Actualiser",
-      "close": "Fermer",
       "ok": "OK",
       "yes": "Oui",
       "no": "Non"
     },
+    "close": "Fermer",
+    "email": "Adresse e-mail",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille", 
+    "password": "Mot de passe",
     "loading": {
       "loading": "Chargement...",
       "saving": "Enregistrement...",
@@ -85,6 +89,7 @@
     "buttons": {
       "participants": "Participants",
       "addReferee": "Ajouter un arbitre",
+      "qrInvite": "Inviter par QR",
       "liveRanking": "Classement en direct",
       "createZone": "Créer une zone",
       "editZone": "Modifier la zone",
@@ -334,5 +339,33 @@
       "pointsTitle": "Points",
       "totalPoints": "Total des points"
     }
+  },
+  "competition": {
+    "qrInvitation": {
+      "title": "Invitation par QR Code",
+      "instructions": "Scannez ce QR code pour inviter des arbitres à rejoindre la compétition",
+      "expiresIn": "Expire dans",
+      "regenerate": "Régénérer le QR Code",
+      "description": "Partagez ce QR code avec les arbitres pour les inviter à rejoindre la compétition. Chaque scan peut être utilisé plusieurs fois dans la limite de temps."
+    }
+  },
+  "invitation": {
+    "title": "Invitation Arbitre",
+    "description": "Vous avez été invité(e) à rejoindre une compétition en tant qu'arbitre.",
+    "acceptInvitation": "Accepter l'invitation",
+    "createAccount": "Créer un compte",
+    "createAccountDescription": "Veuillez créer un compte pour accepter l'invitation.",
+    "createAccountAndAccept": "Créer un compte et accepter",
+    "loggedInAs": "Connecté(e) en tant qu'utilisateur enregistré",
+    "success": {
+      "title": "Invitation acceptée !",
+      "redirecting": "Redirection vers les compétitions..."
+    },
+    "error": {
+      "noToken": "Token d'invitation invalide ou manquant.",
+      "fillAllFields": "Veuillez remplir tous les champs requis.",
+      "sessionExpired": "Votre session a expiré. Veuillez vous connecter à nouveau pour accepter l'invitation."
+    },
+    "loginAgain": "Se connecter à nouveau"
   }
 } 

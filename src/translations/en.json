@@ -12,11 +12,15 @@
       "confirm": "Confirm",
       "retry": "Retry",
       "refresh": "Refresh",
-      "close": "Close",
       "ok": "OK",
       "yes": "Yes",
       "no": "No"
     },
+    "close": "Close",
+    "email": "Email Address",
+    "firstName": "First Name", 
+    "lastName": "Last Name",
+    "password": "Password",
     "loading": {
       "loading": "Loading...",
       "saving": "Saving...",
@@ -85,6 +89,7 @@
     "buttons": {
       "participants": "Participants",
       "addReferee": "Add Referee",
+      "qrInvite": "QR Invite",
       "liveRanking": "Live Ranking",
       "createZone": "Create Zone",
       "editZone": "Edit Zone",
@@ -334,5 +339,33 @@
       "totalPoints": "Total Points",
       "pointsTitle": "Points"
     }
+  },
+  "competition": {
+    "qrInvitation": {
+      "title": "QR Code Invitation",
+      "instructions": "Scan this QR code to invite referees to join the competition",
+      "expiresIn": "Expires in",
+      "regenerate": "Regenerate QR Code",
+      "description": "Share this QR code with referees to invite them to join the competition. Each scan can be used multiple times within the time limit."
+    }
+  },
+  "invitation": {
+    "title": "Referee Invitation",
+    "description": "You have been invited to join a competition as a referee.",
+    "acceptInvitation": "Accept Invitation",
+    "createAccount": "Create Account",
+    "createAccountDescription": "Please create an account to accept the invitation.",
+    "createAccountAndAccept": "Create Account & Accept",
+    "loggedInAs": "Logged in as a registered user",
+    "success": {
+      "title": "Invitation Accepted!",
+      "redirecting": "Redirecting to competitions..."
+    },
+    "error": {
+      "noToken": "Invalid or missing invitation token.",
+      "fillAllFields": "Please fill in all required fields.",
+      "sessionExpired": "Your session has expired. Please log in again to accept the invitation."
+    },
+    "loginAgain": "Log In Again"
   }
 } 
