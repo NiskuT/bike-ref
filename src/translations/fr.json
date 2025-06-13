@@ -187,7 +187,7 @@
         "runNumber": "Passage #",
         "zone": "Zone",
         "time": "Temps",
-        "penalty": "Pénalité",
+        "penalty": "Pénalités",
         "doors": "Portes",
         "referee": "Arbitre",
         "actions": "Actions"
@@ -244,7 +244,7 @@
       "club": "Club",
       "totalPoints": "Points totaux",
       "time": "Temps",
-      "penalty": "Pénalité",
+      "penalty": "Pénalités",
       "runs": "Passages"
     },
     "noRankings": "Aucun classement trouvé pour",
