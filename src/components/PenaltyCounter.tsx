@@ -17,7 +17,7 @@ export const PenaltyCounter: React.FC<PenaltyCounterProps> = ({ value, onChange 
     <Typography variant="h5" sx={{ width: 32, textAlign: 'center' }}>
       {value}
     </Typography>
-    <IconButton onClick={() => onChange(value + 1)}>
+    <IconButton onClick={() => onChange(Math.min(5, value + 1))}>
       <AddIcon sx={{ fontSize: 28 }} />
     </IconButton>
   </Box>
