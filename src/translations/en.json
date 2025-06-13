@@ -21,6 +21,7 @@
     "firstName": "First Name", 
     "lastName": "Last Name",
     "password": "Password",
+    "club": "Club",
     "loading": {
       "loading": "Loading...",
       "saving": "Saving...",
@@ -135,7 +136,7 @@
     },
     "fileUpload": {
       "title": "Upload Participants from File",
-      "description": "Upload a CSV or XLSX file with 5 columns in this exact order: Dossard Number, Category, Last Name, First Name, Gender (H/F)",
+      "description": "Upload a CSV or XLSX file with 5 columns in this exact order: Dossard Number, Category, Last Name, First Name, Gender (H/F). Optional 6th column: Club",
       "chooseFile": "Choose File",
       "uploadButton": "Upload Participants"
     },
@@ -148,7 +149,8 @@
         "category": "Category",
         "firstName": "First Name",
         "lastName": "Last Name",
-        "gender": "Gender"
+        "gender": "Gender",
+        "club": "Club"
       },
       "genderOptions": {
         "men": "Men (H)",
@@ -165,6 +167,7 @@
         "lastName": "Last Name",
         "category": "Category",
         "gender": "Gender",
+        "club": "Club",
         "actions": "Actions"
       },
       "genderLabels": {
@@ -237,6 +240,7 @@
       "rank": "Rank",
       "participant": "Participant",
       "dossard": "Dossard",
+      "club": "Club",
       "totalPoints": "Total Points",
       "time": "Time",
       "penalty": "Penalty",

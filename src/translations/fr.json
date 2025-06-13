@@ -21,6 +21,7 @@
     "firstName": "Prénom",
     "lastName": "Nom de famille", 
     "password": "Mot de passe",
+    "club": "Club",
     "loading": {
       "loading": "Chargement...",
       "saving": "Enregistrement...",
@@ -135,7 +136,7 @@
     },
     "fileUpload": {
       "title": "Télécharger les participants depuis un fichier",
-      "description": "Téléchargez un fichier CSV ou XLSX avec 5 colonnes dans cet ordre exact : Numéro de dossard, Catégorie, Nom de famille, Prénom, Sexe (H/F)",
+      "description": "Téléchargez un fichier CSV ou XLSX avec 5 colonnes dans cet ordre exact : Numéro de dossard, Catégorie, Nom de famille, Prénom, Sexe (H/F). Colonne optionnelle 6 : Club",
       "chooseFile": "Choisir un fichier",
       "uploadButton": "Télécharger les participants"
     },
@@ -148,7 +149,8 @@
         "category": "Catégorie",
         "firstName": "Prénom",
         "lastName": "Nom de famille",
-        "gender": "Sexe"
+        "gender": "Sexe",
+        "club": "Club"
       },
       "genderOptions": {
         "men": "Hommes (H)",
@@ -165,6 +167,7 @@
         "lastName": "Nom de famille",
         "category": "Catégorie",
         "gender": "Sexe",
+        "club": "Club",
         "actions": "Actions"
       },
       "genderLabels": {
@@ -237,6 +240,7 @@
       "rank": "Rang",
       "participant": "Participant",
       "dossard": "Dossard",
+      "club": "Club",
       "totalPoints": "Points totaux",
       "time": "Temps",
       "penalty": "Pénalité",

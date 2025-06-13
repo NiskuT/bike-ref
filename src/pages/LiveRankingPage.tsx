@@ -247,6 +247,7 @@ const LiveRankingPage: React.FC = () => {
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {t('liveRanking.tableHeaders.dossard')} #{entry.dossard}
+                        {entry.club && ` • ${entry.club}`}
                       </Typography>
                     </Box>
                     <Chip 
@@ -278,6 +279,7 @@ const LiveRankingPage: React.FC = () => {
                   <TableCell>{t('liveRanking.tableHeaders.rank')}</TableCell>
                   <TableCell>{t('liveRanking.tableHeaders.participant')}</TableCell>
                   <TableCell>{t('liveRanking.tableHeaders.dossard')}</TableCell>
+                  <TableCell>{t('liveRanking.tableHeaders.club')}</TableCell>
                   <TableCell align="right">{t('liveRanking.tableHeaders.totalPoints')}</TableCell>
                   <TableCell align="right">{t('liveRanking.tableHeaders.time')}</TableCell>
                   <TableCell align="right">{t('liveRanking.tableHeaders.penalty')}</TableCell>
@@ -309,6 +311,7 @@ const LiveRankingPage: React.FC = () => {
                       </Typography>
                     </TableCell>
                     <TableCell>{entry.dossard}</TableCell>
+                    <TableCell>{entry.club || '-'}</TableCell>
                     <TableCell align="right">
                       <Chip 
                         label={entry.total_points}

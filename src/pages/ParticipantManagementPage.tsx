@@ -104,6 +104,7 @@ const ParticipantManagementPage: React.FC = () => {
     first_name: '',
     last_name: '',
     gender: 'H',
+    club: '',
   })
   const [creatingParticipant, setCreatingParticipant] = useState(false)
 
@@ -246,6 +247,7 @@ const ParticipantManagementPage: React.FC = () => {
       first_name: '',
       last_name: '',
       gender: 'H',
+      club: '',
     })
     setSingleParticipantDialog(true)
   }
@@ -466,6 +468,7 @@ const ParticipantManagementPage: React.FC = () => {
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
                             {t('participants.viewParticipants.tableHeaders.category')}: {participant.category} • {participant.gender === 'H' ? t('participants.viewParticipants.genderLabels.men') : t('participants.viewParticipants.genderLabels.women')}
+                            {participant.club && ` • ${participant.club}`}
                           </Typography>
                         </Box>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
@@ -500,6 +503,7 @@ const ParticipantManagementPage: React.FC = () => {
                       <TableCell>{t('participants.viewParticipants.tableHeaders.lastName')}</TableCell>
                       <TableCell>{t('participants.viewParticipants.tableHeaders.category')}</TableCell>
                       <TableCell>{t('participants.viewParticipants.tableHeaders.gender')}</TableCell>
+                      <TableCell>{t('participants.viewParticipants.tableHeaders.club')}</TableCell>
                       <TableCell>{t('participants.viewParticipants.tableHeaders.actions')}</TableCell>
                     </TableRow>
                   </TableHead>
@@ -524,6 +528,7 @@ const ParticipantManagementPage: React.FC = () => {
                             variant="outlined"
                           />
                         </TableCell>
+                        <TableCell>{participant.club || '-'}</TableCell>
                         <TableCell>
                           <Button
                             size="small"
@@ -611,6 +616,14 @@ const ParticipantManagementPage: React.FC = () => {
                 <MenuItem value="F">{t('participants.singleEntry.genderOptions.women')}</MenuItem>
               </Select>
             </FormControl>
+
+            <TextField
+              label={t('participants.singleEntry.labels.club')}
+              value={singleParticipantForm.club}
+              onChange={(e) => setSingleParticipantForm(prev => ({ ...prev, club: e.target.value }))}
+              fullWidth
+              placeholder="Optional"
+            />
           </Box>
         </DialogContent>
         <DialogActions>

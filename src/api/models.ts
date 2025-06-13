@@ -91,6 +91,7 @@ export interface Participant {
   first_name: string
   last_name: string
   gender: 'H' | 'F' // H for men, F for women
+  club?: string // Optional club field
 }
 
 // Participant creation model
@@ -101,6 +102,7 @@ export interface ParticipantInput {
   first_name: string
   last_name: string
   gender: 'H' | 'F' // H for men, F for women
+  club?: string // Optional club field
 }
 
 // Participant list response
@@ -120,6 +122,7 @@ export interface RankingEntry {
   penality: number
   rank: number
   total_points: number
+  club?: string // Optional club field
 }
 
 export interface LiveRankingResponse {
