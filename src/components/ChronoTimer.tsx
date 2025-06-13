@@ -66,7 +66,7 @@ export const ChronoTimer: React.FC<ChronoTimerProps> = ({ initial = 0, onChange,
         alignItems: 'center',
         justifyContent: 'center',
         gap: 3,
-        mt: 2,
+        mt: 0,
       }}
     >
       <IconButton 

@@ -490,7 +490,7 @@ const RefereeInterface: React.FC = () => {
                   {t('runRegistration.labels.penalty')}
                 </Typography>
                 <Typography variant="h6">
-                  {state.runData?.penality || 0} {t('runRegistration.summary.points')}
+                  {state.runData?.penality || 0}
                 </Typography>
               </Box>
               <Box>

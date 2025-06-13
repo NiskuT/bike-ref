@@ -91,14 +91,14 @@ export const RunRegistrationPage: React.FC<RunRegistrationPageProps> = ({
           }} 
         />
 
-        <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
+        <Typography variant="h6" fontWeight="medium" color="text.primary" sx={{ mt: 4 }} gutterBottom>
           {t('runRegistration.labels.doors')}
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
           <DoorGrid doors={doors} onChange={setDoors} disabled={!chronoStarted} />
         </Box>
 
-        <Typography variant="h6" fontWeight="medium" color="text.primary" gutterBottom>
+        <Typography variant="h6" fontWeight="medium" color="text.primary" sx={{ mt: 4 }} gutterBottom>
           {t('runRegistration.labels.penalty')}
         </Typography>
         <PenaltyCounter value={penalty} onChange={setPenalty} />

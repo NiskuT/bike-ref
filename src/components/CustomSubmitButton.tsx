@@ -15,6 +15,7 @@ export const CustomSubmitButton: React.FC<CustomSubmitButtonProps> = ({
   <Button
     type="submit"
     variant="contained"
+    sx={{ mt: 1 }}
     fullWidth
     disabled={loading || disabled}
     startIcon={loading ? <CircularProgress size={20} /> : null}

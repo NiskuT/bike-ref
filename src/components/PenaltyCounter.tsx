@@ -10,7 +10,7 @@ interface PenaltyCounterProps {
 }
 
 export const PenaltyCounter: React.FC<PenaltyCounterProps> = ({ value, onChange }) => (
-  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mt: 1 }}>
+  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mt: -2 }}>
     <IconButton onClick={() => onChange(Math.max(0, value - 1))}>
       <RemoveIcon sx={{ fontSize: 28 }} />
     </IconButton>
